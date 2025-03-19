@@ -1,6 +1,7 @@
 {
   "images" : [
     {
+      "filename" : "1974 Z Avocado Av Melbourne copy.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -43,6 +44,7 @@
       "size" : "32x32"
     },
     {
+      "filename" : "1974 Z 64.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "32x32"
@@ -68,11 +70,13 @@
       "size" : "256x256"
     },
     {
+      "filename" : "1974 Z 512.png",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "512x512"
     },
     {
+      "filename" : "1974 Z Avocado Av Melbourne copy 1.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "512x512"
