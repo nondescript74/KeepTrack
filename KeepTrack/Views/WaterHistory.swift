@@ -22,23 +22,24 @@ struct WaterHistory: View {
     }
     
     var body: some View {
-        Text("Water history")
-        
-        
-        List {
-            Section(header: Text("Today")) {
-                ForEach(getToday(), id: \.self.date) { entry in
-                    Text(entry.date, style: .time)
+        NavigationStack {
+            List {
+                Section(header: Text("Today")) {
+                    ForEach(getToday(), id: \.self.date) { entry in
+                        Text(entry.date, style: .time)
+                    }
+                    Text("Total " + getToday().count.description + " - 14 oz glasses")
+                }
+                
+                Section(header: Text("Yesterday")) {
+                    ForEach(getYesterday(), id: \.self.date) { entry in
+                        Text(entry.date, style: .time)
+                    }
+                    Text("Total " + getYesterday().count.description + " - 14 oz glasses")
                 }
             }
+            .navigationTitle(Text("Water History"))
             
-            Section(header: Text("Yesterday")) {
-                ForEach(getYesterday(), id: \.self.date) { entry in
-                    Text(entry.date, style: .time)
-                }
-            }
-            
-
         }
     }
 }

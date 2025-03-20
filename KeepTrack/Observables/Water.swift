@@ -8,7 +8,7 @@
 import Foundation
 import OSLog
 
-
+@MainActor
 @Observable final class Water {
     fileprivate let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "Water")
     var waterHistory: [WaterEntry]
