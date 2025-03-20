@@ -15,14 +15,12 @@ struct AppDashboard: View {
     
     //    let columnLayout = Array(repeating: GridItem(.flexible()), count: 5)
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                WaterHistory()
-                EnterWater()
-            }
-            .environment(water)
+        VStack    {
+            WaterHistory()
+            EnterWater()
+            Spacer()
         }
-        
+        .environment(water)
     }
 }
 
