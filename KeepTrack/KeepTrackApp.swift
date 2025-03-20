@@ -11,7 +11,7 @@ import SwiftUI
 struct KeepTrackApp: App {
     var body: some Scene {
         WindowGroup {
-            EnterWater()
+            AppDashboard()
         }
     }
 }
