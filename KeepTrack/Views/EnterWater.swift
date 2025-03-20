@@ -6,8 +6,11 @@
 //
 
 import SwiftUI
+import OSLog
 
 struct EnterWater: View {
+    let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "EnterWater")
+    @Environment(Water.self) fileprivate var water
     @State var waterIntake: Int = 1
     
     var body: some View {
@@ -19,13 +22,17 @@ struct EnterWater: View {
                 }
             }
             .onChange(of: waterIntake) { newValue in
-                print(newValue)
+                logger.info("waterIntake changed to \(newValue)")
             }
-
+            
+            Button("Add") {
+                water.addWater(waterIntake)
+            }
         }
     }
 }
 
 #Preview {
     EnterWater(waterIntake: 3)
+        .environment(Water())
 }
