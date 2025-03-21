@@ -10,7 +10,7 @@ import OSLog
 
 struct EnterWater: View {
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "EnterWater")
-    @Environment(Water.self) fileprivate var water
+    @Environment(Water.self) var water
     @State var waterIntake: Int = 1
     
     var body: some View {
@@ -33,6 +33,7 @@ struct EnterWater: View {
             }
         }
         .padding(.horizontal)
+        .environment(water)
     }
 }
 

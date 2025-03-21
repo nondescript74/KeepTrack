@@ -13,6 +13,9 @@ import OSLog
     fileprivate let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "Water")
     var waterHistory: [WaterEntry]
     
+    let fileMgr = FileManager.default
+    let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+    
     init() {
         let fileMgr = FileManager.default
         let urls = fileMgr.urls(for: .documentDirectory, in: .userDomainMask)
@@ -49,10 +52,16 @@ import OSLog
     }
     
     fileprivate func save() {
-        let fileMgr = FileManager.default
-        let urls = fileMgr.urls(for: .documentDirectory, in: .userDomainMask)
+        
         let fileURL = URL(fileURLWithPath: urls[0].appendingPathComponent("waterhistory.json").path)
-        logger.info( "fileURL for existing history \(fileURL)")
+//        logger.info( "fileURL for existing history \(fileURL)")
+        do {
+            try fileMgr.removeItem(at: fileURL)
+            logger.info( "Removed existing history file")
+        } catch {
+            logger.info( "Error removing existing history file \(error)")
+        }
+        
         do {
             let data = try JSONEncoder().encode(waterHistory)
             try data.write(to: fileURL)
