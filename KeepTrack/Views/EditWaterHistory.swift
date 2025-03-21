@@ -10,6 +10,7 @@ import OSLog
 
 struct EditWaterHistory: View {
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "EditWaterHistory")
+    @Environment(Water.self) var water
     @Binding var items: [WaterEntry]
     
     
@@ -17,16 +18,18 @@ struct EditWaterHistory: View {
         NavigationView {
             VStack {
                 EditableList($items) { item in
-                    Text(item.id.uuidString)
+                    Text("\(item.date.wrappedValue.formatted(date: .abbreviated, time: .standard))" + ": " + "\(item.units.wrappedValue)" + " units")
                 }
             }
             .navigationTitle(Text("Edit Water History"))
         }
+        .environment(water)
     }
 }
 
 #Preview {
     @Previewable @State var items: [WaterEntry] = [WaterEntry(id: UUID(), date: Date(), units: 1), WaterEntry(id: UUID(), date: Date(), units: 2)]
     EditWaterHistory(items: $items)
+        .environment(Water())
     
 }

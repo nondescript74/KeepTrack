@@ -39,8 +39,8 @@ struct WaterHistory: View {
                 }
             }
             .navigationTitle(Text("Water History"))
-            
         }
+        .environment(water)
     }
 }
 
