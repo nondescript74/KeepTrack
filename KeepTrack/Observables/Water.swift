@@ -19,7 +19,7 @@ import OSLog
         if UserDefaults.standard.string(forKey: "launchedBefore") == nil {
             if let docDirUrl = urls.first {
                 logger.info( "docDirUrl \(docDirUrl)")
-                let waterEntryInitial = WaterEntry(date: Date(), units: 0)
+                let waterEntryInitial = WaterEntry(id: UUID(), date: Date(), units: 0)
                 let data = try! JSONEncoder().encode(waterEntryInitial)
                 logger.info( "Data \(data)")
                 fileMgr.createFile(atPath: docDirUrl.path().appending("waterhistory.json"), contents: data)
@@ -64,8 +64,14 @@ import OSLog
     }
     
     func addWater(_ amount: Int) {
-        waterHistory.append(WaterEntry(date: Date(), units: amount))
+        waterHistory.append(WaterEntry(id: UUID(), date: Date(), units: amount))
         save()
         logger.info("Added \(amount) units of water")
+    }
+    
+    func removeWaterAtId(uuid: UUID) {
+        waterHistory.removeAll { $0.id == uuid }
+        save()
+        logger.info("Removed water entry with id \(uuid)")
     }
 }

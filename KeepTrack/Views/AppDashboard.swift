@@ -18,7 +18,7 @@ struct AppDashboard: View {
         VStack    {
             WaterHistory()
             EnterWater()
-            Spacer()
+            EditWaterHistory(items: $water.waterHistory)
         }
         .environment(water)
     }

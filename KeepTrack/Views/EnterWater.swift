@@ -25,10 +25,14 @@ struct EnterWater: View {
                 logger.info("waterIntake changed to \(newValue)")
             }
             
+            Spacer()
+
+            
             Button("Add") {
                 water.addWater(waterIntake)
             }
         }
+        .padding(.horizontal)
     }
 }
 
