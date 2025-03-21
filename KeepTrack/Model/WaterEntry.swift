@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct WaterEntry: Codable {
+struct WaterEntry: Codable, Identifiable {
+    let id: UUID
     var date: Date
     var units: Int
 }
