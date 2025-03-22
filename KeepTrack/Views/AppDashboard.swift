@@ -52,6 +52,7 @@ struct AppDashboard: View {
                     Text("Edit")
                 }
             }
+            Spacer()
         }
         .environment(water)
     }

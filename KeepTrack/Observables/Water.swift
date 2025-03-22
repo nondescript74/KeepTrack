@@ -37,7 +37,7 @@ import OSLog
         } else {
             // launched before
             let fileURL = URL(fileURLWithPath: urls[0].appendingPathComponent("waterhistory.json").path)
-            logger.info( "fileURL for existing history \(fileURL)")
+            logger.info( "fileURL for existing history \(fileURL.lastPathComponent)")
             do {
                 let data = try fileMgr.contentsOfDirectory(atPath: urls[0].path())
                 logger.info( "Data \(data)")
@@ -54,7 +54,7 @@ import OSLog
     fileprivate func save() {
         
         let fileURL = URL(fileURLWithPath: urls[0].appendingPathComponent("waterhistory.json").path)
-//        logger.info( "fileURL for existing history \(fileURL)")
+        logger.info( "fileURL for existing history \(fileURL.lastPathComponent)")
         do {
             try fileMgr.removeItem(at: fileURL)
             logger.info( "Removed existing history file")
@@ -66,6 +66,8 @@ import OSLog
             let data = try JSONEncoder().encode(waterHistory)
             try data.write(to: fileURL)
             logger.info( "Saved history to file")
+            self.waterHistory = try JSONDecoder().decode([WaterEntry].self, from: data)
+            logger.info("reloaded water history from data")
         } catch {
             logger.info( "Error saving history \(error)")
             fatalError( "Couldn't save history file")
@@ -74,13 +76,14 @@ import OSLog
     
     func addWater(_ amount: Int) {
         waterHistory.append(WaterEntry(id: UUID(), date: Date(), units: amount))
-        save()
         logger.info("Added \(amount) units of water")
+        save()
     }
     
     func removeWaterAtId(uuid: UUID) {
         waterHistory.removeAll { $0.id == uuid }
-        save()
         logger.info("Removed water entry with id \(uuid)")
+        save()
+        
     }
 }
