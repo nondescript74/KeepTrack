@@ -17,18 +17,19 @@ struct AppDashboard: View {
     
     var body: some View {
         NavigationStack {
+            WaterHistory()
             LazyVGrid(columns: columnLayout) {
-                VStack {
-                    NavigationLink(destination: WaterHistory()) {
-                        Image(systemName: "fork.knife.circle.fill")
-                            .symbolRenderingMode(.multicolor)
-                            .frame(minHeight: 70)
-                    }
-                    .padding(.horizontal)
-                    .overlay(Circle().stroke(Color.blue, lineWidth: 2).frame(width:50, height:50))
-                    .padding(.horizontal)
-                    Text("History")
-                }
+//                VStack {
+//                    NavigationLink(destination: WaterHistory()) {
+//                        Image(systemName: "fork.knife.circle.fill")
+//                            .symbolRenderingMode(.multicolor)
+//                            .frame(minHeight: 70)
+//                    }
+//                    .padding(.horizontal)
+//                    .overlay(Circle().stroke(Color.blue, lineWidth: 2).frame(width:50, height:50))
+//                    .padding(.horizontal)
+//                    Text("History")
+//                }
                 VStack {
                     NavigationLink(destination: EnterWater()) {
                         Image(systemName: "magnifyingglass")
