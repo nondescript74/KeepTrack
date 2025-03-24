@@ -13,16 +13,20 @@ struct WaterHistory: View {
     
     private func getToday() -> [WaterEntry] {
         let todays = water.waterHistory.filter { Calendar.current.isDateInToday($0.date) }
+            .filter { $0.units > 0 }
         return  todays
     }
     
     private func getYesterday() -> [WaterEntry] {
         let yesterdays = water.waterHistory.filter { Calendar.current.isDateInYesterday($0.date) }
+            .filter { $0.units > 0 }
         return  yesterdays
     }
     
     var body: some View {
-        NavigationStack {
+        VStack {
+            Text("Water")
+                .font(.headline)
             List {
                 Section(header: Text("Today")) {
                     ForEach(getToday(), id: \.self.date) { entry in
@@ -38,7 +42,6 @@ struct WaterHistory: View {
                     Text("Total " + getYesterday().count.description + " - 14 oz glasses")
                 }
             }
-            .navigationTitle(Text("Water History"))
         }
         .environment(water)
     }

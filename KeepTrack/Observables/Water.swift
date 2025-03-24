@@ -36,22 +36,41 @@ import OSLog
             }
         } else {
             // launched before
-            let fileURL = URL(fileURLWithPath: urls[0].appendingPathComponent("waterhistory.json").path)
-            logger.info( "fileURL for existing history \(fileURL.lastPathComponent)")
-            do {
-                let data = try fileMgr.contentsOfDirectory(atPath: urls[0].path())
-                logger.info( "Data \(data)")
-                let temp: [WaterEntry] = try JSONDecoder().decode([WaterEntry].self, from: try Data(contentsOf: fileURL))
-                waterHistory = temp
-                logger.info(" decoded history: \(temp)")
-            } catch {
-                logger.info( "Error reading directory \(error)")
-                fatalError( "Couldn't read history file or decode history")
+            let docDirUrl = urls.first!
+            // check for older file name
+            let test = fileMgr.fileExists(atPath: docDirUrl.path().appending("savedHistory.json"))
+            if test {
+                // for upgrading older versions without destroying history
+                let docDirUrl = urls.first!
+                let fileURL = docDirUrl.appendingPathComponent("savedHistory.json")
+                logger.info( "fileURL for existing savedHistory \(fileURL)")
+                do {
+                    let temp: [WaterEntry] = try JSONDecoder().decode([WaterEntry].self, from: try Data(contentsOf: fileURL))
+                    waterHistory = temp
+                    logger.info(" decoded history from savedHistory.json: \(temp)")
+                    self.save()
+                } catch {
+                    logger.info( "Error reading directory \(error)")
+                    fatalError( "Couldn't read history file or decode history from savedHistory.json")
+                }
+            } else {
+                // no older versions
+                let fileURL = docDirUrl.appendingPathComponent("waterhistory.json")
+                logger.info( "fileURL for existing history \(fileURL)")
+                do {
+                    let temp: [WaterEntry] = try JSONDecoder().decode([WaterEntry].self, from: try Data(contentsOf: fileURL))
+                    waterHistory = temp
+                    logger.info(" decoded history: \(temp)")
+                } catch {
+                    logger.info( "Error reading directory \(error)")
+                    fatalError( "Couldn't read history file or decode history")
+                }
             }
         }
     }
     
     fileprivate func save() {
+        
         
         let fileURL = URL(fileURLWithPath: urls[0].appendingPathComponent("waterhistory.json").path)
         logger.info( "fileURL for existing history \(fileURL.lastPathComponent)")
