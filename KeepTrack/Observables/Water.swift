@@ -105,4 +105,11 @@ import OSLog
         save()
         
     }
+    
+    func showTodaysWater() -> Int {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let todaysEntries = waterHistory.filter { calendar.startOfDay(for: $0.date) == today }
+        return todaysEntries.reduce(0) { $0 + $1.units }
+    }
 }
