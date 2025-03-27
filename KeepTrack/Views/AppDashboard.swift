@@ -48,6 +48,16 @@ struct AppDashboard: View {
                         .foregroundColor(.blue)
                 }
                 VStack {
+                    NavigationLink(destination: EnterWaterTimeGoal()) {
+                        Image(systemName: "sportscourt.circle.fill")
+                            .symbolRenderingMode(.multicolor)
+                            .frame(minHeight: 50)
+                    }
+                    .overlay(Circle().stroke(Color.blue, lineWidth: 2).frame(width:50, height:50))
+                    Text("Enter Goal")
+                        .foregroundColor(.blue)
+                }
+                VStack {
                     NavigationLink(destination: EditWaterHistory(items: $water.waterHistory)) {
                         Image(systemName: "heart.text.clipboard")
                             .symbolRenderingMode(.multicolor)
@@ -65,16 +75,6 @@ struct AppDashboard: View {
                     }
                     .overlay(Circle().stroke(Color.blue, lineWidth: 2).frame(width:50, height:50))
                     Text("Edit Meds")
-                        .foregroundColor(.red)
-                }
-                VStack {
-                    NavigationLink(destination: EnterWaterTimeGoal()) {
-                        Image(systemName: "sportscourt.circle.fill")
-                            .symbolRenderingMode(.multicolor)
-                            .frame(minHeight: 50)
-                    }
-                    .overlay(Circle().stroke(Color.blue, lineWidth: 2).frame(width:50, height:50))
-                    Text("Enter Goal")
                         .foregroundColor(.red)
                 }
                 VStack {
