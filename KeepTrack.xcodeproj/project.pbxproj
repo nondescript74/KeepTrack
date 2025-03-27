@@ -6,20 +6,6 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		F897BF4E2D95EC1700F7225B /* KeepTrackClip.app in Embed App Clips */ = {isa = PBXBuildFile; fileRef = F897BF422D95EC1600F7225B /* KeepTrackClip.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-/* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		F897BF4C2D95EC1700F7225B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F81C71CA2D8A29280037FCCB /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = F897BF412D95EC1600F7225B;
-			remoteInfo = KeepTrackClip;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXCopyFilesBuildPhase section */
 		F897BF532D95EC1700F7225B /* Embed App Clips */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -27,7 +13,6 @@
 			dstPath = "$(CONTENTS_FOLDER_PATH)/AppClips";
 			dstSubfolderSpec = 16;
 			files = (
-				F897BF4E2D95EC1700F7225B /* KeepTrackClip.app in Embed App Clips */,
 			);
 			name = "Embed App Clips";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -36,7 +21,6 @@
 
 /* Begin PBXFileReference section */
 		F81C71D22D8A29280037FCCB /* KeepTrack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KeepTrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		F897BF422D95EC1600F7225B /* KeepTrackClip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KeepTrackClip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -46,13 +30,6 @@
 				Info.plist,
 			);
 			target = F81C71D12D8A29280037FCCB /* KeepTrack */;
-		};
-		F897BF522D95EC1700F7225B /* Exceptions for "KeepTrackClip" folder in "KeepTrackClip" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = F897BF412D95EC1600F7225B /* KeepTrackClip */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -67,9 +44,6 @@
 		};
 		F897BF432D95EC1600F7225B /* KeepTrackClip */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				F897BF522D95EC1700F7225B /* Exceptions for "KeepTrackClip" folder in "KeepTrackClip" target */,
-			);
 			path = KeepTrackClip;
 			sourceTree = "<group>";
 		};
@@ -77,13 +51,6 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		F81C71CF2D8A29280037FCCB /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		F897BF3F2D95EC1600F7225B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -106,7 +73,6 @@
 			isa = PBXGroup;
 			children = (
 				F81C71D22D8A29280037FCCB /* KeepTrack.app */,
-				F897BF422D95EC1600F7225B /* KeepTrackClip.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -126,7 +92,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				F897BF4D2D95EC1700F7225B /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				F81C71D42D8A29280037FCCB /* KeepTrack */,
@@ -137,28 +102,6 @@
 			productName = KeepTrack;
 			productReference = F81C71D22D8A29280037FCCB /* KeepTrack.app */;
 			productType = "com.apple.product-type.application";
-		};
-		F897BF412D95EC1600F7225B /* KeepTrackClip */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = F897BF4F2D95EC1700F7225B /* Build configuration list for PBXNativeTarget "KeepTrackClip" */;
-			buildPhases = (
-				F897BF3E2D95EC1600F7225B /* Sources */,
-				F897BF3F2D95EC1600F7225B /* Frameworks */,
-				F897BF402D95EC1600F7225B /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				F897BF432D95EC1600F7225B /* KeepTrackClip */,
-			);
-			name = KeepTrackClip;
-			packageProductDependencies = (
-			);
-			productName = KeepTrackClip;
-			productReference = F897BF422D95EC1600F7225B /* KeepTrackClip.app */;
-			productType = "com.apple.product-type.application.on-demand-install-capable";
 		};
 /* End PBXNativeTarget section */
 
@@ -171,9 +114,6 @@
 				LastUpgradeCheck = 1630;
 				TargetAttributes = {
 					F81C71D12D8A29280037FCCB = {
-						CreatedOnToolsVersion = 16.3;
-					};
-					F897BF412D95EC1600F7225B = {
 						CreatedOnToolsVersion = 16.3;
 					};
 				};
@@ -193,20 +133,12 @@
 			projectRoot = "";
 			targets = (
 				F81C71D12D8A29280037FCCB /* KeepTrack */,
-				F897BF412D95EC1600F7225B /* KeepTrackClip */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		F81C71D02D8A29280037FCCB /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		F897BF402D95EC1600F7225B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -223,22 +155,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F897BF3E2D95EC1600F7225B /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		F897BF4D2D95EC1700F7225B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = F897BF412D95EC1600F7225B /* KeepTrackClip */;
-			targetProxy = F897BF4C2D95EC1700F7225B /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		F81C71DC2D8A292A0037FCCB /* Debug */ = {
@@ -364,7 +281,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = KeepTrack/KeepTrack.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 25;
+				CURRENT_PROJECT_VERSION = 26;
 				DEVELOPMENT_TEAM = YKHW2TJ32G;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -407,7 +324,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = KeepTrack/KeepTrack.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 25;
+				CURRENT_PROJECT_VERSION = 26;
 				DEVELOPMENT_TEAM = YKHW2TJ32G;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -443,73 +360,6 @@
 			};
 			name = Release;
 		};
-		F897BF502D95EC1700F7225B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = KeepTrackClip/KeepTrackClip.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = YKHW2TJ32G;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = KeepTrackClip/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = KeepTrack;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.headydiscy.KeepTrack.Clip;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		F897BF512D95EC1700F7225B /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = KeepTrackClip/KeepTrackClip.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = YKHW2TJ32G;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = KeepTrackClip/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = KeepTrack;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.headydiscy.KeepTrack.Clip;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -527,15 +377,6 @@
 			buildConfigurations = (
 				F81C71DF2D8A292A0037FCCB /* Debug */,
 				F81C71E02D8A292A0037FCCB /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		F897BF4F2D95EC1700F7225B /* Build configuration list for PBXNativeTarget "KeepTrackClip" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				F897BF502D95EC1700F7225B /* Debug */,
-				F897BF512D95EC1700F7225B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

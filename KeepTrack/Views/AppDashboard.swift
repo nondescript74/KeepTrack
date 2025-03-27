@@ -11,9 +11,9 @@ import OSLog
 
 struct AppDashboard: View {
     fileprivate let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "AppDashboard")
-    @State var water = Water()
-    @State var medicationStore: MedicationStore = MedicationStore()
-    @State var goals: Goals = Goals()
+    @State private var water = Water()
+    @State private var medicationStore: MedicationStore = MedicationStore()
+    @State private var goals: Goals = Goals()
     
     let columnLayout = Array(repeating: GridItem(.flexible(minimum: 50)), count: 6)
     
