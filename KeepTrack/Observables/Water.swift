@@ -13,7 +13,6 @@ import OSLog
     fileprivate let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "Water")
     var waterHistory: [WaterEntry]
     
-    let fileMgr = FileManager.default
     let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
     
     init() {
@@ -22,14 +21,11 @@ import OSLog
         if UserDefaults.standard.string(forKey: "launchedBefore") == nil {
             if let docDirUrl = urls.first {
                 logger.info( "docDirUrl \(docDirUrl)")
-                let waterEntryInitial = WaterEntry(id: UUID(), date: Date(), units: 0)
-                let data = try! JSONEncoder().encode(waterEntryInitial)
-                logger.info( "Data \(data)")
-                fileMgr.createFile(atPath: docDirUrl.path().appending("waterhistory.json"), contents: data)
-                logger.info( "Created file with initial data")
+                fileMgr.createFile(atPath: docDirUrl.path().appending("waterhistory.json"), contents: nil)
+                logger.info( "Created file waterhistory.json")
                 UserDefaults.standard.set("true", forKey: "launchedBefore")
                 logger.info("set launchedBefore to true")
-                waterHistory = [waterEntryInitial]
+                waterHistory = []
                 
             } else {
                 fatalError( "Couldn't find document directory or encode data")
@@ -37,45 +33,35 @@ import OSLog
         } else {
             // launched before
             let docDirUrl = urls.first!
-            // check for older file name
-            let test = fileMgr.fileExists(atPath: docDirUrl.path().appending("savedHistory.json"))
-            if test {
-                // for upgrading older versions without destroying history
-                let docDirUrl = urls.first!
-                let fileURL = docDirUrl.appendingPathComponent("savedHistory.json")
-                logger.info( "fileURL for existing savedHistory \(fileURL)")
-                do {
-                    let temp: [WaterEntry] = try JSONDecoder().decode([WaterEntry].self, from: try Data(contentsOf: fileURL))
-                    waterHistory = temp
-                    logger.info(" decoded history from savedHistory.json: \(temp)")
-                    self.save()
-                } catch {
-                    logger.info( "Error reading directory \(error)")
-                    fatalError( "Couldn't read history file or decode history from savedHistory.json")
-                }
-            } else {
                 // no older versions
                 let fileURL = docDirUrl.appendingPathComponent("waterhistory.json")
                 logger.info( "fileURL for existing history \(fileURL)")
                 do {
-                    let temp: [WaterEntry] = try JSONDecoder().decode([WaterEntry].self, from: try Data(contentsOf: fileURL))
-                    waterHistory = temp
-                    logger.info(" decoded history: \(temp)")
+                    if fileMgr.fileExists(atPath: fileURL.path) {
+                        let temp = fileMgr.contents(atPath: fileURL.path)!
+                        if temp.count == 0 {
+                            waterHistory = []
+                            logger.info("water history is empty")
+                        } else {
+                            let tempContents: [WaterEntry] = try JSONDecoder().decode([WaterEntry].self, from: try Data(contentsOf: fileURL))
+                            waterHistory = tempContents
+                            logger.info(" decoded water history: \(tempContents)")
+                        }
+                    } else {
+                        fatalError( "Couldn't find history file")
+                    }
                 } catch {
                     logger.info( "Error reading directory \(error)")
-                    fatalError( "Couldn't read history file or decode history")
+                    fatalError( "Couldn't read history")
                 }
-            }
         }
     }
     
     fileprivate func save() {
-        
-        
         let fileURL = URL(fileURLWithPath: urls[0].appendingPathComponent("waterhistory.json").path)
         logger.info( "fileURL for existing history \(fileURL.lastPathComponent)")
         do {
-            try fileMgr.removeItem(at: fileURL)
+            try FileManager.default.removeItem(at: fileURL)
             logger.info( "Removed existing history file")
         } catch {
             logger.info( "Error removing existing history file \(error)")
@@ -84,12 +70,12 @@ import OSLog
         do {
             let data = try JSONEncoder().encode(waterHistory)
             try data.write(to: fileURL)
-            logger.info( "Saved history to file")
+            logger.info( "Saved water history to file")
             self.waterHistory = try JSONDecoder().decode([WaterEntry].self, from: data)
             logger.info("reloaded water history from data")
         } catch {
-            logger.info( "Error saving history \(error)")
-            fatalError( "Couldn't save history file")
+            logger.info( "Error saving water history \(error)")
+            fatalError( "Couldn't save water history file")
         }
     }
     

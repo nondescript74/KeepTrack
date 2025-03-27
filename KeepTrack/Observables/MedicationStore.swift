@@ -14,7 +14,6 @@ import OSLog
     fileprivate let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "MedicationStore")
     var medicationHistory: [MedicationEntry]
     
-    let fileMgr = FileManager.default
     let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
     
     init() {
@@ -24,7 +23,7 @@ import OSLog
             if let docDirUrl = urls.first {
                 logger.info( "docDirUrl \(docDirUrl)")
                 fileMgr.createFile(atPath: docDirUrl.path().appending("medicationhistory.json"), contents: nil)
-                logger.info( "Created file")
+                logger.info( "Created file medicationhistory.json")
                 UserDefaults.standard.set("true", forKey: "medicationsLaunchedBefore")
                 logger.info("set medicationsLaunchedBefore to true")
                 medicationHistory = []
@@ -35,18 +34,28 @@ import OSLog
         } else {
             // launched before
             let docDirUrl = urls.first!
-            // no older versions
-            let fileURL = docDirUrl.appendingPathComponent("medicationhistory.json")
-            logger.info( "fileURL for existing history \(fileURL)")
-            do {
-                let temp: [MedicationEntry] = try JSONDecoder().decode([MedicationEntry].self, from: try Data(contentsOf: fileURL))
-                medicationHistory = temp
-                logger.info(" decoded medication history: \(temp)")
-            } catch {
-                logger.info( "Error reading directory \(error)")
-                fatalError( "Couldn't read history file or decode medication history")
-            }
-            
+                // no older versions
+                let fileURL = docDirUrl.appendingPathComponent("medicationhistory.json")
+                logger.info( "fileURL for existing history \(fileURL)")
+                do {
+                    if fileMgr.fileExists(atPath: fileURL.path) {
+                        let temp = fileMgr.contents(atPath: fileURL.path)!
+                        if temp.count == 0 {
+                            medicationHistory = []
+                            logger.info("medication history is empty")
+                        } else {
+                            let tempContents: [MedicationEntry] = try JSONDecoder().decode([MedicationEntry].self, from: try Data(contentsOf: fileURL))
+                            medicationHistory = tempContents
+                            logger.info(" decoded medication history: \(tempContents)")
+                        }
+                    } else {
+                        logger.error( "Couldn't find medication history file")
+                        fatalError( "Couldn't find medication history file")
+                    }
+                } catch {
+                    logger.error( "Error reading directory \(error)")
+                    fatalError( "Couldn't read history")
+                }
         }
     }
     
@@ -55,7 +64,7 @@ import OSLog
         let fileURL = URL(fileURLWithPath: urls[0].appendingPathComponent("medicationhistory.json").path)
         logger.info( "fileURL for existing history \(fileURL.lastPathComponent)")
         do {
-            try fileMgr.removeItem(at: fileURL)
+            try FileManager.default.removeItem(at: fileURL)
             logger.info( "Removed existing history file")
         } catch {
             logger.info( "Error removing existing history file \(error)")
