@@ -32,28 +32,35 @@ import OSLog
             }
         } else {
             // launched before
-            let docDirUrl = urls.first!
+            let fileMgr = FileManager.default
+            let urls = fileMgr.urls(for: .documentDirectory, in: .userDomainMask)
                 // no older versions
+            if let docDirUrl = urls.first {
                 let fileURL = docDirUrl.appendingPathComponent("waterhistory.json")
-                logger.info( "fileURL for existing history \(fileURL)")
-                do {
-                    if fileMgr.fileExists(atPath: fileURL.path) {
-                        let temp = fileMgr.contents(atPath: fileURL.path)!
-                        if temp.count == 0 {
-                            waterHistory = []
-                            logger.info("water history is empty")
+                    logger.info( "fileURL for existing water history \(fileURL)")
+                    do {
+                        if fileMgr.fileExists(atPath: fileURL.path) {
+                            let temp = fileMgr.contents(atPath: fileURL.path)!
+                            if temp.count == 0 {
+                                waterHistory = []
+                                logger.info("water history is empty")
+                            } else {
+                                let tempContents: [WaterEntry] = try JSONDecoder().decode([WaterEntry].self, from: try Data(contentsOf: fileURL))
+                                waterHistory = tempContents
+                                logger.info(" decoded water history: \(tempContents)")
+                            }
                         } else {
-                            let tempContents: [WaterEntry] = try JSONDecoder().decode([WaterEntry].self, from: try Data(contentsOf: fileURL))
-                            waterHistory = tempContents
-                            logger.info(" decoded water history: \(tempContents)")
+                            fatalError( "Couldn't find history file")
                         }
-                    } else {
-                        fatalError( "Couldn't find history file")
+                    } catch {
+                        logger.info( "Error reading directory \(error)")
+                        fatalError( "Couldn't read history")
                     }
-                } catch {
-                    logger.info( "Error reading directory \(error)")
-                    fatalError( "Couldn't read history")
-                }
+            } else {
+                logger.error( "Couldn't find document directory")
+                fatalError("Couldn't find document directory")
+            }
+
         }
     }
     
