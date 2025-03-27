@@ -1,17 +1,17 @@
 //
-//  EditableMedList.swift
+//  EditableGoalsList.swift
 //  KeepTrack
 //
-//  Created by Zahirudeen Premji on 3/24/25.
+//  Created by Zahirudeen Premji on 3/26/25.
 //
 
 import SwiftUI
 import OSLog
 
-struct EditableMedList<Element: Identifiable, Content: View>: View {
-    let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "EditableMedList")
+struct EditableGoalsList<Element: Identifiable, Content: View>: View {
+    let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "EditableGoalsList")
     
-    @Environment(MedicationStore.self) var medicationStore
+    @Environment(Goals.self) var goals
     
     @Binding var data: [Element]
     
@@ -28,11 +28,11 @@ struct EditableMedList<Element: Identifiable, Content: View>: View {
                 .onDelete { indexSet in
                     for idx in indexSet.reversed() {
                         let id = data[idx].id
-                        medicationStore.removeMedicationAtId(uuid: id as! UUID)
+                        goals.removeGoalAtId(uuid: id as! UUID)
                     }
                 }
         }
         .toolbar { EditButton() }
-        .environment(medicationStore)
+        .environment(goals)
     }
 }

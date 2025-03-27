@@ -36,11 +36,3 @@ struct EditableList<Element: Identifiable, Content: View>: View {
         .toolbar { EditButton() }
     }
 }
-
-#Preview {
-//        @Previewable @Environment(MedicationStore.self) var medicationStore
-//    @Previewable @State var items: [MedicationEntry] = [MedicationEntry(id: UUID(uuidstring: "AE697F2E-E594-475D-BB20-57C6DEBEB95E"), date: Date()), KeepTrack.MedicationEntry(id: UUID(uuidstring: "C9ADCBAD-F4DC-461B-944F-B51E362EEA8F"), date: Date())]
-//    //    EditableList<WaterEntry, <#Content: View#>>($items)
-    //
-    //
-}

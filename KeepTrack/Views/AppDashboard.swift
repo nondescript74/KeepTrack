@@ -13,74 +13,86 @@ struct AppDashboard: View {
     fileprivate let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "AppDashboard")
     @State private var water = Water()
     @State private var medicationStore: MedicationStore = MedicationStore()
+    @State private var goals: Goals = Goals()
     
-    let columnLayout = Array(repeating: GridItem(.flexible(minimum: 100)), count: 2)
-    let rowLayout = Array(repeating: GridItem(.flexible(minimum: 100)), count: 5)
+    let columnLayout = Array(repeating: GridItem(.flexible(minimum: 50)), count: 6)
+    let rowLayout = Array(repeating: GridItem(.flexible(minimum: 100)), count: 2)
     
     var body: some View {
         NavigationStack {
             HStack {
                 WaterHistory()
+                    .padding(.leading)
                 MedHistory()
+                    .padding(.trailing)
             }
             LazyVGrid(columns: columnLayout) {
-                VStack {
-                    NavigationLink(destination: EnterMedication()) {
-                        Image(systemName: "fork.knife.circle.fill")
-                            .symbolRenderingMode(.multicolor)
-                            .frame(minHeight: 70)
-                    }
-                    .padding(.horizontal)
-                    .overlay(Circle().stroke(Color.blue, lineWidth: 2).frame(width:50, height:50))
-                    .padding(.horizontal)
-                    Text("Enter Meds")
-                        .padding(.horizontal)
-                        .foregroundColor(.blue)
-                }
                 VStack {
                     NavigationLink(destination: EnterWater()) {
                         Image(systemName: "wineglass")
                             .symbolRenderingMode(.multicolor)
-                            .frame(minHeight: 70)
+                            .frame(minHeight: 50)
                     }
-                    .padding(.horizontal)
                     .overlay(Circle().stroke(Color.blue, lineWidth: 2).frame(width:50, height:50))
-                    .padding(.horizontal)
                     Text("Enter Water")
-                        .padding(.horizontal)
+                        .foregroundColor(.blue)
+                }
+                VStack {
+                    NavigationLink(destination: EnterMedication()) {
+                        Image(systemName: "fork.knife.circle.fill")
+                            .symbolRenderingMode(.multicolor)
+                            .frame(minHeight: 50)
+                    }
+                    .overlay(Circle().stroke(Color.blue, lineWidth: 2).frame(width:50, height:50))
+                    Text("Enter Meds")
                         .foregroundColor(.blue)
                 }
                 VStack {
                     NavigationLink(destination: EditWaterHistory(items: $water.waterHistory)) {
                         Image(systemName: "heart.text.clipboard")
                             .symbolRenderingMode(.multicolor)
-                            .frame(minHeight: 70)
+                            .frame(minHeight: 50)
                     }
-                    .padding(.horizontal)
                     .overlay(Circle().stroke(Color.blue, lineWidth: 2).frame(width:50, height:50))
-                    .padding(.horizontal)
                     Text("Edit Water")
-                        .padding(.horizontal)
                         .foregroundColor(.red)
                 }
                 VStack {
                     NavigationLink(destination: EditMedHistory(items: $medicationStore.medicationHistory)) {
                         Image(systemName: "heart.text.clipboard")
                             .symbolRenderingMode(.multicolor)
-                            .frame(minHeight: 70)
+                            .frame(minHeight: 50)
                     }
-                    .padding(.horizontal)
                     .overlay(Circle().stroke(Color.blue, lineWidth: 2).frame(width:50, height:50))
-                    .padding(.horizontal)
-                    Text("Edit meds")
-                        .padding(.horizontal)
+                    Text("Edit Meds")
+                        .foregroundColor(.red)
+                }
+                VStack {
+                    NavigationLink(destination: EnterWaterTimeGoal()) {
+                        Image(systemName: "sportscourt.circle.fill")
+                            .symbolRenderingMode(.multicolor)
+                            .frame(minHeight: 50)
+                    }
+                    .overlay(Circle().stroke(Color.blue, lineWidth: 2).frame(width:50, height:50))
+                    Text("Enter Goal")
+                        .foregroundColor(.red)
+                }
+                VStack {
+                    NavigationLink(destination: EditGoals(items: $goals.goals)) {
+                        Image(systemName: "sportscourt")
+                            .symbolRenderingMode(.multicolor)
+                            .frame(minHeight: 50)
+                    }
+                    .overlay(Circle().stroke(Color.blue, lineWidth: 2).frame(width:50, height:50))
+                    Text("Edit Goals")
                         .foregroundColor(.red)
                 }
             }
-            Spacer()
+             
         }
         .environment(water)
         .environment(medicationStore)
+        .environment(goals)
     }
 }
 
@@ -88,4 +100,5 @@ struct AppDashboard: View {
     AppDashboard()
         .environment(Water())
         .environment(MedicationStore())
+        .environment(Goals())
 }
