@@ -16,7 +16,6 @@ struct AppDashboard: View {
     @State private var goals: Goals = Goals()
     
     let columnLayout = Array(repeating: GridItem(.flexible(minimum: 50)), count: 6)
-    let rowLayout = Array(repeating: GridItem(.flexible(minimum: 100)), count: 2)
     
     var body: some View {
         NavigationStack {
