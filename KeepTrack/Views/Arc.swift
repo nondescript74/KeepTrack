@@ -15,11 +15,12 @@ struct Arc: View {
     var endangle: Angle
     var clockwise: Bool
     var color: Color
+    var size: CGFloat?
     
     var body: some View {
         ArcShape(startAngle: startangle, endAngle: endangle, clockwise: clockwise, color: color)
-            .stroke(color, lineWidth: 6)
-            .frame(width: 50, height: 50)
+            .stroke(color, lineWidth: 5)
+            .frame(width: (size != nil) ? size : 50, height: (size != nil) ? size : 50)
     }
 }
 
@@ -41,14 +42,16 @@ struct ArcShape: Shape {
         return path
     }
 }
+
 #Preview {
     ZStack {
         Arc(startangle: .degrees(0), endangle: .degrees(60), clockwise: false, color: Color.red)
-//        Arc(startangle: .degrees(60), endangle: .degrees(120), clockwise: false, color: Color.green)
-//        Arc(startangle: .degrees(120), endangle: .degrees(180), clockwise: false, color: Color.blue)
-//        Arc(startangle: .degrees(180), endangle: .degrees(240), clockwise: false, color: Color.yellow)
-//        Arc(startangle: .degrees(240), endangle: .degrees(300), clockwise: false, color: Color.purple)
-//        Arc(startangle: .degrees(300), endangle: .degrees(360), clockwise: false, color: Color.orange)
+        Arc(startangle: .degrees(60), endangle: .degrees(120), clockwise: false, color: Color.green)
+        Arc(startangle: .degrees(120), endangle: .degrees(180), clockwise: false, color: Color.blue)
+        Arc(startangle: .degrees(180), endangle: .degrees(240), clockwise: false, color: Color.yellow)
+        Arc(startangle: .degrees(240), endangle: .degrees(300), clockwise: false, color: Color.purple)
+        Arc(startangle: .degrees(300), endangle: .degrees(360), clockwise: false, color: Color.orange)
+        Arc(startangle: .degrees(300), endangle: .degrees(360), clockwise: false, color: Color.orange, size: 62)
     }
 
     
