@@ -50,7 +50,8 @@ import OSLog
                                 logger.info(" decoded water history: \(tempContents)")
                             }
                         } else {
-                            fatalError( "Couldn't find history file")
+                            logger.error( "No water history file found")
+                            waterHistory = []
                         }
                     } catch {
                         logger.info( "Error reading directory \(error)")

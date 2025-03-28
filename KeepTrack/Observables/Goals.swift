@@ -48,7 +48,7 @@ import OSLog
                         }
                     } else {
                         logger.error( "Couldn't find goals file")
-                        fatalError( "Couldn't find goals file")
+                        goals = []
                     }
                 } catch {
                     logger.error( "Error reading directory \(error)")
@@ -73,12 +73,6 @@ import OSLog
     fileprivate func save() {
         let fileURL = URL(fileURLWithPath: urls[0].appendingPathComponent("goals.json").path)
         logger.info( "fileURL for existing history \(fileURL.lastPathComponent)")
-        do {
-            try FileManager.default.removeItem(at: fileURL)
-            logger.info( "Removed existing goals file")
-        } catch {
-            logger.error( "Error removing existing goals file \(error)")
-        }
         
         do {
             let data = try JSONEncoder().encode(goals)
