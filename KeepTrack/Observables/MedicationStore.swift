@@ -50,7 +50,7 @@ import OSLog
                         }
                     } else {
                         logger.error( "Couldn't find medication history file")
-                        fatalError( "Couldn't find medication history file")
+                        medicationHistory = []
                     }
                 } catch {
                     logger.error( "Error reading directory \(error)")
@@ -63,12 +63,6 @@ import OSLog
         
         let fileURL = URL(fileURLWithPath: urls[0].appendingPathComponent("medicationhistory.json").path)
         logger.info( "fileURL for existing history \(fileURL.lastPathComponent)")
-        do {
-            try FileManager.default.removeItem(at: fileURL)
-            logger.info( "Removed existing history file")
-        } catch {
-            logger.info( "Error removing existing history file \(error)")
-        }
         
         do {
             let data = try JSONEncoder().encode(medicationHistory)
