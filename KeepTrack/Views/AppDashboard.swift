@@ -19,12 +19,10 @@ struct AppDashboard: View {
     
     var body: some View {
         NavigationStack {
-            HStack {
-                WaterHistory()
-                    .padding(.leading)
-                MedHistory()
-                    .padding(.trailing)
-            }
+            WaterHistory()
+                
+            MedHistory()
+                
             LazyVGrid(columns: columnLayout) {
                 VStack {
                     NavigationLink(destination: EnterWater()) {
@@ -87,7 +85,7 @@ struct AppDashboard: View {
                         .foregroundColor(.red)
                 }
             }
-             
+            
         }
         .environment(water)
         .environment(medicationStore)

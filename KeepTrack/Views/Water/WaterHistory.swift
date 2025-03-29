@@ -10,6 +10,7 @@ import OSLog
 
 struct WaterHistory: View {
     @Environment(Water.self) var water
+    @Environment(Goals.self) var goals
     
     private func getToday() -> [WaterEntry] {
         let todays = water.waterHistory.filter { Calendar.current.isDateInToday($0.date) }
@@ -29,8 +30,14 @@ struct WaterHistory: View {
                 .font(.headline)
             List {
                 Section(header: Text("Today")) {
-                    ForEach(getToday(), id: \.self.date) { entry in
-                        Text(entry.date, style: .time)
+                    HStack {
+                        VStack(alignment: .leading) {
+                            ForEach(getToday(), id: \.self.date) { entry in
+                                Text(entry.date, style: .time)
+                            }
+                        }
+                        Spacer()
+                        GoalsDisplay()
                     }
                     Text("Total " + getToday().count.description + " - 14 oz glasses")
                 }
@@ -44,10 +51,12 @@ struct WaterHistory: View {
             }
         }
         .environment(water)
+        .environment(goals)
     }
 }
 
 #Preview {
     WaterHistory()
         .environment(Water())
+        .environment(Goals())
 }

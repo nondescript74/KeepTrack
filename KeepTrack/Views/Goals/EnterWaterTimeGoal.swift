@@ -36,10 +36,10 @@ struct EnterWaterTimeGoal: View {
                 Text("add")
             }))
         }
-        
     }
 }
 
 #Preview {
     EnterWaterTimeGoal()
+        .environment(Goals())
 }
