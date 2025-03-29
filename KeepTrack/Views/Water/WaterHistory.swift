@@ -39,13 +39,15 @@ struct WaterHistory: View {
                         Spacer()
                         GoalsDisplay()
                     }
+                    .background(Color.green.opacity(0.1))
                     Text("Total " + getToday().count.description + " - 14 oz glasses")
                 }
                 
                 Section(header: Text("Yesterday")) {
-                    ForEach(getYesterday(), id: \.self.date) { entry in
-                        Text(entry.date, style: .time)
-                    }
+//                    ForEach(getYesterday(), id: \.self.date) { entry in
+//                        Text(entry.date, style: .time)
+//                    }
+                    
                     Text("Total " + getYesterday().count.description + " - 14 oz glasses")
                 }
             }

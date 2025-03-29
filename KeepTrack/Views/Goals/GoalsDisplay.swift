@@ -50,16 +50,24 @@ struct GoalsDisplay: View {
             if goals.goals.isEmpty {
                 Text("No goals set yet.")
             } else {
-                ZStack {
-                    ForEach(getViews(), id: \.self.color) { arc in
-                        arc
+                VStack {
+                    ZStack {
+                        ForEach(getViews(), id: \.self.color) { arc in
+                            arc
+                        }
+                        ForEach(getWaterEntries(), id: \.self.startangle) { arc in
+                            arc
+                        }
+                        Text("\(goals.goals.count) goals")
+                            .font(.caption)
+                        
                     }
-                    ForEach(getWaterEntries(), id: \.self.startangle) { arc in
-                        arc
-                    }
+                    Text("Water")
                 }
             }
         }
+        .padding(10)
+        .background((Color.gray.opacity(0.1)))
         .environment(goals)
         .environment(water)
     }

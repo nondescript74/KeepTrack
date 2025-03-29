@@ -34,9 +34,9 @@ struct MedHistory: View {
                 }
                 
                 Section(header: Text("Yesterday")) {
-                    ForEach(getYesterday(), id: \.self.date) { entry in
-                        Text(entry.date, style: .time)
-                    }
+//                    ForEach(getYesterday(), id: \.self.date) { entry in
+//                        Text(entry.date, style: .time)
+//                    }
                     Text("Total " + getYesterday().count.description)
                 }
             }
