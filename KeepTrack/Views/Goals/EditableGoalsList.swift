@@ -22,9 +22,14 @@ struct EditableGoalsList<Element: Identifiable, Content: View>: View {
         self.content = content
     }
     
+    fileprivate func move(from source: IndexSet, to destination: Int) {
+        goals.goals.move(fromOffsets: source, toOffset: destination)
+    }
+    
     var body: some View {
         List {
             ForEach($data, content: content)
+                .onMove(perform: move)
                 .onDelete { indexSet in
                     for idx in indexSet.reversed() {
                         let id = data[idx].id
