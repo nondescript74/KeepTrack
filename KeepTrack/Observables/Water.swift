@@ -87,6 +87,12 @@ import OSLog
         }
     }
     
+    func addWater(_ amount: Int, goalmet: Bool) {
+        waterHistory.append(WaterEntry(id: UUID(), date: Date(), units: 1, goalMet: goalmet))
+        logger.info("Added 1 glass of water")
+        save()
+    }
+    
     func addWater(_ amount: Int) {
         waterHistory.append(WaterEntry(id: UUID(), date: Date(), units: amount))
         logger.info("Added \(amount) units of water")

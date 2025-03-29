@@ -11,4 +11,5 @@ struct WaterEntry: Codable, Identifiable {
     let id: UUID
     var date: Date
     var units: Int
+    var goalMet: Bool?
 }

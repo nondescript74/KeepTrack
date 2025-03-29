@@ -29,11 +29,11 @@ struct GoalsDisplay: View {
     fileprivate func getWaterEntries() -> [Arc] {
         var myReturn: [Arc] = []
         if getWaterToday().isEmpty { return myReturn }
-        for (index, _) in getWaterToday().enumerated() {
+        for (index, waterentry) in getWaterToday().enumerated() {
             let myStartDegrees: Double = startDegrees + 360 / Double(goals.goals.count) * Double(index)
             let endDegrees: Double = myStartDegrees + 360 / Double(goals.goals.count)
-            let met = water.waterHistory.count == goals.goals.count
-            myReturn.append(Arc(startangle: .degrees(myStartDegrees), endangle: .degrees(endDegrees), clockwise: false, color: met ? .green : .black, size: 66))
+            let met = waterentry.goalMet ?? false
+            myReturn.append(Arc(startangle: .degrees(myStartDegrees), endangle: .degrees(endDegrees), clockwise: false, color: met ? .green : .red, size: met ? 80 : 66))
              
         }
         return myReturn

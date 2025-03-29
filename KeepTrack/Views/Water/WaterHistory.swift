@@ -40,7 +40,7 @@ struct WaterHistory: View {
                         GoalsDisplay()
                     }
                     .background(Color.green.opacity(0.1))
-                    Text("Total " + getToday().count.description + " - 14 oz glasses")
+                    Text("Drank " + getToday().count.description + " - 14 oz glasses")
                 }
                 
                 Section(header: Text("Yesterday")) {
@@ -48,7 +48,7 @@ struct WaterHistory: View {
 //                        Text(entry.date, style: .time)
 //                    }
                     
-                    Text("Total " + getYesterday().count.description + " - 14 oz glasses")
+                    Text("Drank " + getYesterday().count.description + " - 14 oz glasses")
                 }
             }
         }
