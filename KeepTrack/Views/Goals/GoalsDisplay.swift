@@ -13,7 +13,7 @@ struct GoalsDisplay: View {
     @Environment(Goals.self) private var goals
     @Environment(Water.self) private var water
     fileprivate var startDegrees: Double = 270
-    fileprivate var colors: [Color] = [.red, .orange, .yellow, .green, .blue, .indigo, .purple, .pink, .cyan, .black]
+    fileprivate var colors: [Color] = [.orange, .yellow, .blue, .indigo, .purple, .pink, .cyan]
     
     fileprivate func getViews() -> [Arc] {
         var myReturn: [Arc] = []
@@ -62,11 +62,9 @@ struct GoalsDisplay: View {
                             .font(.caption)
                         
                     }
-                    Text("Water")
                 }
             }
         }
-        .padding(10)
         .background((Color.gray.opacity(0.1)))
         .environment(goals)
         .environment(water)

@@ -25,6 +25,8 @@ struct MedHistory: View {
         VStack {
             Text("Meds")
                 .font(.headline)
+        
+
             List {
                 Section(header: Text("Today")) {
                     ForEach(getToday(), id: \.self.date) { entry in
@@ -34,9 +36,6 @@ struct MedHistory: View {
                 }
                 
                 Section(header: Text("Yesterday")) {
-//                    ForEach(getYesterday(), id: \.self.date) { entry in
-//                        Text(entry.date, style: .time)
-//                    }
                     Text("Total " + getYesterday().count.description)
                 }
             }

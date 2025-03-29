@@ -12,6 +12,8 @@ struct WaterHistory: View {
     @Environment(Water.self) var water
     @Environment(Goals.self) var goals
     
+    let rowLayout = Array(repeating: GridItem(.flexible(minimum: 10)), count: 3)
+    
     private func getToday() -> [WaterEntry] {
         let todays = water.waterHistory.filter { Calendar.current.isDateInToday($0.date) }
             .filter { $0.units > 0 }
@@ -31,23 +33,30 @@ struct WaterHistory: View {
             List {
                 Section(header: Text("Today")) {
                     HStack {
+                        Spacer()
                         VStack(alignment: .leading) {
-                            ForEach(getToday(), id: \.self.date) { entry in
-                                Text(entry.date, style: .time)
+                            if getToday().isEmpty {
+                                Text("No water")
+                                    .foregroundColor(.gray)
+                            } else {
+                                LazyHGrid(rows: rowLayout) {
+                                    ForEach(getToday(), id: \.self.date) { entry in
+                                        Text(entry.date, style: .time)
+                                            .font(.caption)
+                                    }
+                                }
                             }
                         }
                         Spacer()
                         GoalsDisplay()
+                        Spacer()
                     }
                     .background(Color.green.opacity(0.1))
                     Text("Drank " + getToday().count.description + " - 14 oz glasses")
+                        .foregroundStyle(water.waterHistory.count >= goals.goals.count ? Color.green : Color.red)
                 }
                 
                 Section(header: Text("Yesterday")) {
-//                    ForEach(getYesterday(), id: \.self.date) { entry in
-//                        Text(entry.date, style: .time)
-//                    }
-                    
                     Text("Drank " + getYesterday().count.description + " - 14 oz glasses")
                 }
             }
