@@ -11,6 +11,7 @@ import OSLog
 struct EnterWater: View {
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "EnterWater")
     @Environment(Water.self) var water
+    @Environment(Goals.self) var goals
     @State var waterIntake: Int = 1
     
     var body: some View {
@@ -29,15 +30,17 @@ struct EnterWater: View {
 
             
             Button("Add") {
-                water.addWater(waterIntake)
+                water.addWater(waterIntake, goalmet: true)
             }
         }
         .padding(.horizontal)
         .environment(water)
+        .environment(goals)
     }
 }
 
 #Preview {
     EnterWater(waterIntake: 3)
         .environment(Water())
+        .environment(Goals())
 }
