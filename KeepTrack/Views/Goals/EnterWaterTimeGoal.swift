@@ -11,6 +11,7 @@ import OSLog
 struct EnterWaterTimeGoal: View {
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "EnterWaterTimeGoal")
     @Environment(Goals.self) var goals
+    @Environment(\.dismiss) var dismiss
     @State private var selectedStartTime:Date = Date()
     @State private var selectedEndTime:Date = Date()
     
@@ -21,20 +22,24 @@ struct EnterWaterTimeGoal: View {
     }()
     
     var body: some View {
-        HStack {
-            DatePicker("Select Start Time", selection: $selectedStartTime.animation(.default), displayedComponents: .hourAndMinute)
-            DatePicker("Select End Time", selection: $selectedEndTime.animation(.default), displayedComponents: .hourAndMinute)
-        }
-        .padding()
-        HStack {
-            Text("Time between \(dateFormatter.string(from: selectedStartTime)) to \(dateFormatter.string(from: selectedEndTime))")
-            Button(action: ({
-                goals.addGoal(id: UUID(), name: "Early", description: "First goal", startDate: selectedStartTime, endDate: selectedEndTime)
-                logger.log("Calculating time between \(dateFormatter.string(from: selectedStartTime)) to \(dateFormatter.string(from: selectedEndTime))")
-                
-            }), label: ({
-                Text("add")
-            }))
+        VStack {
+            HStack {
+                DatePicker("Select Start Time", selection: $selectedStartTime.animation(.default), displayedComponents: .hourAndMinute)
+                DatePicker("Select End Time", selection: $selectedEndTime.animation(.default), displayedComponents: .hourAndMinute)
+            }
+            .padding()
+            HStack {
+                Text("Time between \(dateFormatter.string(from: selectedStartTime)) to \(dateFormatter.string(from: selectedEndTime))")
+                Button(action: ({
+                    goals.addGoal(id: UUID(), name: "Early", description: "First goal", startDate: selectedStartTime, endDate: selectedEndTime)
+                    logger.log("Calculating time between \(dateFormatter.string(from: selectedStartTime)) to \(dateFormatter.string(from: selectedEndTime))")
+                    dismiss()
+                    
+                }), label: ({
+                    Text("add")
+                }))
+            }
+            Spacer()
         }
     }
 }
