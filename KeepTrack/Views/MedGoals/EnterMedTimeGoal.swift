@@ -11,6 +11,7 @@ import OSLog
 struct EnterMedTimeGoal: View {
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "EnterMedTimeGoal")
     @Environment(MedGoals.self) var medGoals
+    @Environment(\.dismiss) var dismiss
     @State private var selectedStartTime:Date = Date()
     @State private var name: String = ""
     
@@ -21,19 +22,26 @@ struct EnterMedTimeGoal: View {
     }()
     
     var body: some View {
-        HStack {
-            DatePicker("Start Time", selection: $selectedStartTime.animation(.default), displayedComponents: .hourAndMinute)
-            TextField("Name", text: $name)
-            
-            Button(action: ({
-                medGoals.addMedGoal(id: UUID(), name: self.name, dosage: 1, frequency: "twice daily", time: selectedStartTime, goalmet: false)
-                logger.log("Added medication goal \(dateFormatter.string(from: selectedStartTime))")
+        VStack {
+            HStack {
+                DatePicker("Start Time", selection: $selectedStartTime.animation(.default), displayedComponents: .hourAndMinute)
+                TextField("Name", text: $name)
                 
-            }), label: ({
-                Text("add")
-            }))
+                Button(action: ({
+                    if self.name.isEmpty {
+                        return
+                    }
+                    medGoals.addMedGoal(id: UUID(), name: self.name, dosage: 1, frequency: "twice daily", time: selectedStartTime, goalmet: false)
+                    logger.log("Added medication goal \(dateFormatter.string(from: selectedStartTime))")
+                    dismiss()
+                    
+                }), label: ({
+                    Text("add")
+                }))
+            }
+            .padding(.horizontal)
+            Spacer()
         }
-        .padding(.horizontal)
         
     }
 }
