@@ -15,7 +15,7 @@ struct AppDashboard: View {
     @State private var medicationStore: MedicationStore = MedicationStore()
     @State private var goals: Goals = Goals()
     @State private var medGoals: MedGoals = MedGoals()
-    let columnLayout = Array(repeating: GridItem(.flexible(minimum: 45)), count: 7)
+    let columnLayout = Array(repeating: GridItem(.flexible(minimum: 45)), count: 8)
     
     var body: some View {
         NavigationStack {
@@ -104,6 +104,18 @@ struct AppDashboard: View {
                     }
                     .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:40, height:40))
                     Text("Edit Water Goals")
+                        .foregroundColor(.red)
+                        .font(.caption)
+                }
+                .padding(.top)
+                VStack {
+                    NavigationLink(destination: EditMedGoals(items: $medGoals.medGoals)) {
+                        Image(systemName: "sportscourt.fill")
+                            .symbolRenderingMode(.multicolor)
+                            .frame(minHeight: 40)
+                    }
+                    .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:40, height:40))
+                    Text("Edit Med Goals")
                         .foregroundColor(.red)
                         .font(.caption)
                 }
