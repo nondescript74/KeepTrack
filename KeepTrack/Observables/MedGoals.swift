@@ -8,6 +8,7 @@
 import Foundation
 import OSLog
 
+@MainActor
 @Observable final class MedGoals {
     fileprivate let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "Goals")
     var medGoals: [MedicationGoal] = []
@@ -57,7 +58,7 @@ import OSLog
     }
     
     func addMedGoal(id: UUID, name: String, dosage: Int, frequency: String, time: Date, goalmet: Bool) {
-        medGoals.append(MedicationGoal(id: id, name: name, dosage: dosage, frequency: frequency, time: time, goalMet: goalmet))
+        medGoals.append(MedicationGoal(name: name, dosage: dosage, frequency: frequency))
         logger.info ("Added new medGoal: \(self.medGoals)")
         save()
     }

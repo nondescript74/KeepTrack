@@ -13,6 +13,6 @@ struct Goal: Codable, Identifiable {
     var description: String
     var startDate: Date
     var endDate: Date
-    var isAcdtive: Bool?
+    var isActive: Bool?
     var isCompleted: Bool?
 }
