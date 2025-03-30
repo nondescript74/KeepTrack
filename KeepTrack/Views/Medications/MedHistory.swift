@@ -10,7 +10,11 @@ import OSLog
 
 struct MedHistory: View {
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "MedHistory")
-    @Environment(MedicationStore.self) var medicationStore
+    @Environment(MedicationStore.self) private var medicationStore
+    @Environment(MedGoals.self) private var medGoals
+    
+    let rowLayout = Array(repeating: GridItem(.flexible(minimum: 10)), count: 3)
+
     
     private func getToday() -> [MedicationEntry] {
         let todays = medicationStore.medicationHistory.filter { Calendar.current.isDateInToday($0.date) }
@@ -29,10 +33,28 @@ struct MedHistory: View {
 
             List {
                 Section(header: Text("Today")) {
-                    ForEach(getToday(), id: \.self.date) { entry in
-                        Text(entry.date, style: .time)
+                    HStack {
+
+                        VStack(alignment: .leading) {
+                            if getToday().isEmpty {
+                                Text("No meds taken")
+                                    .foregroundColor(.gray)
+                            } else {
+                                LazyHGrid(rows: rowLayout) {
+                                    ForEach(getToday(), id: \.self.date) { entry in
+                                        Text(entry.date, style: .time)
+                                            .font(.caption)
+                                    }
+                                }
+                            }
+                        }
+                        Spacer()
+                        MedsDisplay()
+
                     }
-                    Text("Total " + getToday().count.description)
+                    .background(Color.green.opacity(0.1))
+                    Text("Took " + getToday().count.description + " - medications")
+                        .foregroundStyle(medicationStore.medicationHistory.count >= medGoals.medGoals.count ? Color.green : Color.red)
                 }
                 
                 Section(header: Text("Yesterday")) {
@@ -41,10 +63,12 @@ struct MedHistory: View {
             }
         }
         .environment(medicationStore)
+        .environment(medGoals)
     }
 }
 
 #Preview {
     MedHistory()
         .environment(MedicationStore())
+        .environment(MedGoals())
 }

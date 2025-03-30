@@ -14,8 +14,8 @@ struct AppDashboard: View {
     @State private var water = Water()
     @State private var medicationStore: MedicationStore = MedicationStore()
     @State private var goals: Goals = Goals()
-    
-    let columnLayout = Array(repeating: GridItem(.flexible(minimum: 50)), count: 6)
+    @State private var medGoals: MedGoals = MedGoals()
+    let columnLayout = Array(repeating: GridItem(.flexible(minimum: 45)), count: 7)
     
     var body: some View {
         NavigationStack {
@@ -23,83 +23,100 @@ struct AppDashboard: View {
                 
             MedHistory()
                 
-            LazyVGrid(columns: columnLayout) {
+            LazyVGrid(columns: columnLayout, alignment: .center) {
                 VStack {
                     NavigationLink(destination: EnterWater()) {
                         Image(systemName: "wineglass")
                             .symbolRenderingMode(.multicolor)
-                            .frame(minHeight: 50)
+                            .frame(minHeight: 40)
                     }
-                    .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50))
-                    Text("Enter Water")
+                    .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:40, height:40))
+                    Text("Enter Water taken")
                         .foregroundColor(.blue)
+                        .font(.caption)
                 }
                 .padding(.top)
                 VStack {
                     NavigationLink(destination: EnterMedication()) {
                         Image(systemName: "fork.knife.circle.fill")
                             .symbolRenderingMode(.multicolor)
-                            .frame(minHeight: 50)
+                            .frame(minHeight: 40)
                     }
-                    .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50))
-                    Text("Enter Meds")
+                    .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:40, height:40))
+                    Text("Enter Med taken")
                         .foregroundColor(.blue)
+                        .font(.caption)
                 }
                 .padding(.top)
                 VStack {
                     NavigationLink(destination: EnterWaterTimeGoal()) {
                         Image(systemName: "sportscourt.circle.fill")
                             .symbolRenderingMode(.multicolor)
-                            .frame(minHeight: 50)
+                            .frame(minHeight: 40)
                     }
-                    .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50))
-                    Text("Enter Goal")
+                    .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:40, height:40))
+                    Text("Enter Water Goal")
                         .foregroundColor(.blue)
+                        .font(.caption)
+                }
+                .padding(.top)
+                VStack {
+                    NavigationLink(destination: EnterMedTimeGoal()) {
+                        Image(systemName: "sportscourt.circle.fill")
+                            .symbolRenderingMode(.multicolor)
+                            .frame(minHeight: 40)
+                    }
+                    .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:40, height:40))
+                    Text("Enter Med Goal")
+                        .foregroundColor(.blue)
+                        .font(.caption)
                 }
                 .padding(.top)
                 VStack {
                     NavigationLink(destination: EditWaterHistory(items: $water.waterHistory)) {
                         Image(systemName: "heart.text.clipboard")
                             .symbolRenderingMode(.multicolor)
-                            .frame(minHeight: 50)
+                            .frame(minHeight: 40)
                     }
-                    .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50))
-                    Text("Edit Water")
+                    .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:40, height:40))
+                    Text("Edit Water History")
                         .foregroundColor(.red)
+                        .font(.caption)
                 }
                 .padding(.top)
                 VStack {
                     NavigationLink(destination: EditMedHistory(items: $medicationStore.medicationHistory)) {
                         Image(systemName: "heart.text.clipboard")
                             .symbolRenderingMode(.multicolor)
-                            .frame(minHeight: 50)
+                            .frame(minHeight: 40)
                     }
-                    .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50))
-                    Text("Edit Meds")
+                    .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:40, height:40))
+                    Text("Edit Meds History")
                         .foregroundColor(.red)
+                        .font(.caption)
                 }
                 .padding(.top)
                 VStack {
                     NavigationLink(destination: EditGoals(items: $goals.goals)) {
                         Image(systemName: "sportscourt")
                             .symbolRenderingMode(.multicolor)
-                            .frame(minHeight: 50)
+                            .frame(minHeight: 40)
                     }
-                    .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50))
-                    Text("Edit Goals")
+                    .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:40, height:40))
+                    Text("Edit Water Goals")
                         .foregroundColor(.red)
+                        .font(.caption)
                 }
                 .padding(.top)
             }
-            .padding(.all, 5)
             .overlay(Rectangle().stroke(style: StrokeStyle(lineWidth: 2)))
             .background(Color.gray.opacity(0.2))
-            .padding(.horizontal, 10)
             
         }
         .environment(water)
         .environment(medicationStore)
         .environment(goals)
+        .environment(medGoals)
     }
 }
 
@@ -108,4 +125,5 @@ struct AppDashboard: View {
         .environment(Water())
         .environment(MedicationStore())
         .environment(Goals())
+        .environment(MedGoals())
 }
