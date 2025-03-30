@@ -65,6 +65,7 @@ struct GoalsDisplay: View {
                 }
             }
         }
+        .padding(10)
         .background((Color.gray.opacity(0.1)))
         .environment(goals)
         .environment(water)

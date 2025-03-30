@@ -11,13 +11,16 @@ import OSLog
 struct EnterMedication: View {
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "EnterMedication")
     @Environment(MedicationStore.self) var medicationStore
+    @State var medicationName: String = ""
     
     var body: some View {
         HStack {
             Text("Enter medication")
             
+            TextField("Medication name", text: $medicationName)
+            
             Button("Add") {
-                medicationStore.addMedication()
+                medicationStore.addMedicationWithNameAndGoalmet(name: medicationName, goalmet: false)
             }
 
         }

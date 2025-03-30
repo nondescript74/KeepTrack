@@ -76,11 +76,17 @@ import OSLog
         }
     }
     
-    func addMedication() {
-        medicationHistory.append(MedicationEntry(id: UUID(), date: Date()))
-        logger.info("Added medication")
+    func addMedicationWithNameAndGoalmet(name:String, goalmet:Bool) {
+        medicationHistory.append(MedicationEntry(id: UUID(), date: Date(), name: name, goalMet: goalmet))
+        logger.info("Added medication with name and goalmet")
         save()
     }
+    
+//    func addMedication() {
+//        medicationHistory.append(MedicationEntry(id: UUID(), date: Date()))
+//        logger.info("Added medication")
+//        save()
+//    }
     
     func removeMedicationAtId(uuid: UUID) {
         medicationHistory.removeAll { $0.id == uuid }

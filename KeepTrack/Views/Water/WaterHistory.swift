@@ -33,7 +33,7 @@ struct WaterHistory: View {
             List {
                 Section(header: Text("Today")) {
                     HStack {
-                        Spacer()
+
                         VStack(alignment: .leading) {
                             if getToday().isEmpty {
                                 Text("No water")
@@ -47,9 +47,10 @@ struct WaterHistory: View {
                                 }
                             }
                         }
+                        .padding(.leading)
                         Spacer()
                         GoalsDisplay()
-                        Spacer()
+
                     }
                     .background(Color.green.opacity(0.1))
                     Text("Drank " + getToday().count.description + " - 14 oz glasses")
