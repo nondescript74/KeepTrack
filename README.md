@@ -1,8 +1,10 @@
-An application that keeps track of water intake and against goals
-It also tracks medications taken and against goals
+## About KeepTrack
 
-You can ask Siri to add a glass of water or to show your water consumption without opening the app
+An application that keeps track of water  and medication intake throughtout the day
 
-Intend to add a nag feature via siri
+It also tracks intake against goals setup throughout the day to ensure water and medications are taken on time.
 
-Uses the new @Observation 
+> [!TIP]
+> Try this out! Ask Siri "Siri, keeptrack add water" or "Siri, show water"
+
+Uses the new @Observation and @MainActor
