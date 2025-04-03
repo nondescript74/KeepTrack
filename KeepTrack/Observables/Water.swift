@@ -7,6 +7,7 @@
 
 import Foundation
 import OSLog
+import HealthKit
 
 @MainActor
 @Observable final class Water {
@@ -87,16 +88,18 @@ import OSLog
         }
     }
     
-    func addWater(_ amount: Int, goalmet: Bool) {
-        waterHistory.append(WaterEntry(id: UUID(), date: Date(), units: 1, goalMet: goalmet))
-        logger.info("Added 1 glass of water, goalmet is \(goalmet)")
+    func addLiquid(_ amount: Double, goalmet: Bool, name: String) {
+        waterHistory.append(WaterEntry(id: UUID(), date: Date(), units: Int(amount), goalMet: goalmet, amount: amount, name: name))
+        logger.info("Added \(amount) of liquid, goalmet is \(goalmet), name is \(name)")
         save()
     }
     
+    func addWater(_ amount: Int, goalmet: Bool) {
+        addLiquid(Double(amount), goalmet: goalmet, name: "Water")
+    }
+    
     func addWater(_ amount: Int) {
-        waterHistory.append(WaterEntry(id: UUID(), date: Date(), units: amount))
-        logger.info("Added \(amount) units of water")
-        save()
+        addLiquid(Double(amount), goalmet: false, name: "Water")
     }
     
     func removeWaterAtId(uuid: UUID) {

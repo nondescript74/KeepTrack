@@ -17,11 +17,10 @@ struct GoalsDisplay: View {
     
     fileprivate func getViews() -> [Arc] {
         var myReturn: [Arc] = []
-        for (index, _) in goals.goals.enumerated() {
-            let myStartDegrees: Double = startDegrees + 360 / Double(goals.goals.count) * Double(index)
-            let endDegrees: Double = myStartDegrees + 360 / Double(goals.goals.count)
+        for (index, _) in goals.goals.filter({$0.isActive ?? false}).enumerated() {
+            let myStartDegrees: Double = startDegrees + 360 / Double(goals.goals.filter({$0.isActive ?? false}).count) * Double(index)
+            let endDegrees: Double = myStartDegrees + 360 / Double(goals.goals.filter({$0.isActive ?? false}).count)
             myReturn.append(Arc(startangle: .degrees(myStartDegrees), endangle: .degrees(endDegrees), clockwise: false, color: colors[index], size: 50))
-             
         }
         return myReturn
     }
@@ -30,11 +29,10 @@ struct GoalsDisplay: View {
         var myReturn: [Arc] = []
         if getWaterToday().isEmpty { return myReturn }
         for (index, waterentry) in getWaterToday().enumerated() {
-            let myStartDegrees: Double = startDegrees + 360 / Double(goals.goals.count) * Double(index)
-            let endDegrees: Double = myStartDegrees + 360 / Double(goals.goals.count)
+            let myStartDegrees: Double = startDegrees + 360 / Double(goals.goals.filter({$0.isActive ?? false}).count) * Double(index)
+            let endDegrees: Double = myStartDegrees + 360 / Double(goals.goals.filter({$0.isActive ?? false}).count)
             let met = waterentry.goalMet ?? false
             myReturn.append(Arc(startangle: .degrees(myStartDegrees), endangle: .degrees(endDegrees), clockwise: false, color: met ? .green : .red, size: met ? 80 : 66))
-             
         }
         return myReturn
     }

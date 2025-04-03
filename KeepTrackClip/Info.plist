@@ -11,5 +11,11 @@
 	</dict>
 	<key>NSHealthShareUsageDescription</key>
 	<string>We collect your water intake and medication intake for sharing with the Apple Health app</string>
+	<key>NSHealthClinicalHealthRecordsShareUsageDescription</key>
+	<string>We share your app records via the Health app</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>We may update your Health usage</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 </dict>
 </plist>
