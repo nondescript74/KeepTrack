@@ -12,4 +12,6 @@ struct WaterEntry: Codable, Identifiable {
     var date: Date
     var units: Int
     var goalMet: Bool?
+    var amount: Double?
+    var name: String?
 }

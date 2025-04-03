@@ -42,8 +42,11 @@ struct MedHistory: View {
                             } else {
                                 LazyHGrid(rows: rowLayout) {
                                     ForEach(getToday(), id: \.self.date) { entry in
-                                        Text(entry.date, style: .time)
-                                            .font(.caption)
+                                        HStack {
+                                            Text(entry.date, style: .time)
+                                            Text(entry.name ?? "no name")
+                                        }
+                                        .font(.caption)
                                     }
                                 }
                             }

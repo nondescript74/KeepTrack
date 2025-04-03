@@ -33,7 +33,6 @@ struct WaterHistory: View {
             List {
                 Section(header: Text("Today")) {
                     HStack {
-
                         VStack(alignment: .leading) {
                             if getToday().isEmpty {
                                 Text("No water")
@@ -41,8 +40,12 @@ struct WaterHistory: View {
                             } else {
                                 LazyHGrid(rows: rowLayout) {
                                     ForEach(getToday(), id: \.self.date) { entry in
-                                        Text(entry.date, style: .time)
-                                            .font(.caption)
+                                        HStack {
+                                            Text(entry.date, style: .time)
+                                            Text(entry.name ?? "Water")
+                                                .foregroundStyle(entry.goalMet != nil && entry.goalMet! ? Color.green : Color.red)
+                                        }
+                                        .font(.caption)
                                     }
                                 }
                             }
@@ -59,6 +62,7 @@ struct WaterHistory: View {
                 
                 Section(header: Text("Yesterday")) {
                     Text("Drank " + getYesterday().count.description + " - 14 oz glasses")
+                        .foregroundStyle(water.waterHistory.count >= goals.goals.count ? Color.green : Color.red)
                 }
             }
         }
