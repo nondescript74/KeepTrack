@@ -97,7 +97,7 @@ struct AppDashboard: View {
                 }
                 .padding(.top)
                 VStack {
-                    NavigationLink(destination: EditGoals(items: $goals.goals)) {
+                    NavigationLink(destination: ShowNEditGoals(items: $goals.goals)) {
                         Image(systemName: "sportscourt")
                             .symbolRenderingMode(.multicolor)
                             .frame(minHeight: 40)

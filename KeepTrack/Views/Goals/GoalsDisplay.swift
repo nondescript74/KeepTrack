@@ -58,7 +58,7 @@ struct GoalsDisplay: View {
                         ForEach(getWaterEntries(), id: \.self.startangle) { arc in
                             arc
                         }
-                        Text("\(goals.goals.count) goals")
+                        Text("\(goals.goals.filter({$0.isActive ?? false}).count) goals")
                             .font(.caption)
                         
                     }

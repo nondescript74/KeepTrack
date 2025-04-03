@@ -57,8 +57,14 @@ import OSLog
         }
     }
     
-    func addGoal(id: UUID, name: String, description: String, startDate: Date, endDate: Date) {
-        goals.append(Goal(id: id, name: name, description: description, startDate: startDate, endDate: endDate))
+    func addGoal(goal: Goal) {
+        goals.append(goal)
+        logger.info ("Added new goal: \(self.goals)")
+        save()
+    }
+    
+    func addGoal(id: UUID, name: String, description: String, startDate: Date, endDate: Date, isActive: Bool) {
+        goals.append(Goal(id: id, name: name, description: description, startDate: startDate, endDate: endDate, isActive: isActive))
         logger.info ("Added new goal: \(self.goals)")
         save()
     }
