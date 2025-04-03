@@ -9,5 +9,7 @@
 		<key>NSAppClipRequestLocationConfirmation</key>
 		<false/>
 	</dict>
+	<key>NSHealthShareUsageDescription</key>
+	<string>We collect your water intake and medication intake for sharing with the Apple Health app</string>
 </dict>
 </plist>
