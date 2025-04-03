@@ -15,6 +15,23 @@ struct EnterWater: View {
     @Environment(\.dismiss) var dismiss
     @State var waterIntake: Int = 1
     
+    fileprivate func getTodaysWater() -> [WaterEntry] {
+        let todays = water.waterHistory.filter { Calendar.current.isDateInToday($0.date) }
+            .filter { $0.units > 0 }
+        logger.info("Todays water intake : \(todays)")
+        return todays
+    }
+    
+    fileprivate func getTodaysGoals() -> [Goal] {
+        let todaysGoals = goals.goals.filter { $0.isActive ?? false}
+        logger.info("Today's active goals: \(todaysGoals)")
+        return todaysGoals
+    }
+    
+    fileprivate func isGoalMet() -> Bool {
+        return getTodaysWater().count >= getTodaysGoals().count
+    }
+    
     var body: some View {
         VStack {
             HStack {
@@ -32,7 +49,7 @@ struct EnterWater: View {
                 
                 
                 Button("Add") {
-                    water.addWater(waterIntake, goalmet: true)
+                    water.addWater(waterIntake, goalmet: isGoalMet())
                     dismiss()
                 }
             }
@@ -45,7 +62,7 @@ struct EnterWater: View {
 }
 
 #Preview {
-    EnterWater(waterIntake: 3)
+    EnterWater(waterIntake: 1)
         .environment(Water())
         .environment(Goals())
 }

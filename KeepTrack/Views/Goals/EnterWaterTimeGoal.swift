@@ -31,7 +31,7 @@ struct EnterWaterTimeGoal: View {
             HStack {
                 Text("Time between \(dateFormatter.string(from: selectedStartTime)) to \(dateFormatter.string(from: selectedEndTime))")
                 Button(action: ({
-                    goals.addGoal(id: UUID(), name: "Early", description: "First goal", startDate: selectedStartTime, endDate: selectedEndTime)
+                    goals.addGoal(id: UUID(), name: "Early", description: "First goal", startDate: selectedStartTime, endDate: selectedEndTime, isActive: true)
                     logger.log("Calculating time between \(dateFormatter.string(from: selectedStartTime)) to \(dateFormatter.string(from: selectedEndTime))")
                     dismiss()
                     

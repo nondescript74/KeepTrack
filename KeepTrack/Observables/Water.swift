@@ -89,7 +89,7 @@ import OSLog
     
     func addWater(_ amount: Int, goalmet: Bool) {
         waterHistory.append(WaterEntry(id: UUID(), date: Date(), units: 1, goalMet: goalmet))
-        logger.info("Added 1 glass of water")
+        logger.info("Added 1 glass of water, goalmet is \(goalmet)")
         save()
     }
     
