@@ -66,6 +66,13 @@ import HealthKit
         }
     }
     
+//    fileprivate func createHKEntry(date: Date, amount: Double) -> HKQuantitySample {
+//        let quantityType = HKQuantityType(.dietaryWater)
+//        let quantity = HKQuantity(unit: .ounce(), doubleValue: amount * 14)
+//        let startDate = Calendar.current.startOfDay(for: date)
+//        return HKQuantitySample(type: quantityType, quantity: quantity, start: startDate, end: startDate.addingTimeInterval(10))
+//    }
+    
     fileprivate func save() {
         let fileURL = URL(fileURLWithPath: urls[0].appendingPathComponent("waterhistory.json").path)
         logger.info( "fileURL for existing history \(fileURL.lastPathComponent)")
@@ -86,6 +93,16 @@ import HealthKit
             logger.info( "Error saving water history \(error)")
             fatalError( "Couldn't save water history file")
         }
+        
+//        do {
+//            if HKHealthStore.isHealthDataAvailable() {
+//                try healthStore.requestAuthorization(toShare: allTypes, read: allTypes)
+//                logger.info("Authorized health data")
+//            }
+//        } catch {
+//            logger.error( "Error requesting health data authorization \(error)")
+//            fatalError( "Couldn't request health data authorization")
+//        }
     }
     
     func addLiquid(_ amount: Double, goalmet: Bool, name: String) {
