@@ -14,10 +14,14 @@ struct EnterWater: View {
     @Environment(Goals.self) var goals
     @Environment(\.dismiss) var dismiss
     @State var waterIntake: Int = 1
+    @State var name: String = "Water"
+    @State var amount: Double = 14.0
+    
+    let types: [String] = ["Water", "Smoothie", "Juice", "Milk", "Yoghurt"]
     
     fileprivate func getTodaysWater() -> [WaterEntry] {
         let todays = water.waterHistory.filter { Calendar.current.isDateInToday($0.date) }
-            .filter { $0.units > 0 }
+//            .filter { $0.units > 0 }
         logger.info("Todays water intake : \(todays)")
         return todays
     }
@@ -28,28 +32,75 @@ struct EnterWater: View {
         return todaysGoals
     }
     
+    fileprivate func getTodaysGoalsInTime() -> [Goal] {
+        let todaysGoalsActive = getTodaysGoals()
+        var todaysGoalsActiveInTime: [Goal] = []
+        let currentDateTime = Date()
+        let componentsNow = Calendar.current.dateComponents([.hour,.minute], from: currentDateTime)
+        let hourNow = componentsNow.hour
+        let minuteNow = componentsNow.minute
+        
+        for agoal in todaysGoalsActive {
+            let componentsGoal = Calendar.current.dateComponents([.hour,.minute], from: agoal.startDate)
+            let hourGoal = componentsGoal.hour
+            let minuteGoal = componentsGoal.minute
+            
+            if (hourGoal! < hourNow!) {
+                todaysGoalsActiveInTime.append(agoal)
+            } else if (hourGoal! == hourNow!) && (minuteGoal! <= minuteNow!) {
+                todaysGoalsActiveInTime.append(agoal)
+            }
+            // array of timegoals
+            // are all of them met, if so return true
+        }
+        return todaysGoalsActiveInTime
+    }
+    
+    
+    fileprivate func isThisWaterMeetingGoal(time: Date) -> Bool {
+        var myReturnValue: Bool = false
+        
+        let componentsWaterIntake = Calendar.current.dateComponents([.hour,.minute], from: time)
+        let hourWaterIntake = componentsWaterIntake.hour
+        let minuteWaterIntake = componentsWaterIntake.minute
+        
+        let goalsAITime = self.getTodaysGoalsInTime().sorted(by: {$0.endDate < $1.endDate})  // active goals in time
+        logger.info("goalAITime is \(goalsAITime)")
+        if goalsAITime.count < getTodaysWater().count + 1 {
+            // adding one as this water is yet to be added
+            logger.info( "Intake greater than goals!!!")
+            myReturnValue = true
+        }
+        
+        return myReturnValue
+    }
+    
     fileprivate func isGoalMet() -> Bool {
-        return getTodaysWater().count >= getTodaysGoals().count
+        // get the time
+        // get the number of liquid drunk by this time
+        // get the number of liquid goals by this time
+        // if the number of liquid drunk is greater than the goals and each goal was met, return true, else false
+
+        let result = isThisWaterMeetingGoal(time: Date())
+        logger.info("result: isGoalMet is \(result)")
+        
+        return result
     }
     
     var body: some View {
         VStack {
+            Text("Enter liquid intake")
             HStack {
-                Text("Enter water intake")
-                Picker("Water Intake", selection: $waterIntake) {
-                    ForEach(1...3, id: \.self) {
-                        Text("\($0)")
+                Picker("Select Type", selection: $name) {
+                    ForEach(types, id: \.self) {
+                        Text($0)
                     }
                 }
-                .onChange(of: waterIntake) { newValue in
-                    logger.info("waterIntake changed to \(newValue)")
-                }
-                
+                TextField("Amount", value: $amount, formatter: NumberFormatter())
+                Text("oz")
                 Spacer()
-                
-                
                 Button("Add") {
-                    water.addWater(waterIntake, goalmet: isGoalMet())
+                    water.addLiquid(amount, goalmet: isGoalMet() , name: name)
                     dismiss()
                 }
             }

@@ -92,4 +92,8 @@ import OSLog
         }
     }
     
+    func checkWaterEntryMeetsGoal() -> Bool {
+        return false
+    }
+    
 }
