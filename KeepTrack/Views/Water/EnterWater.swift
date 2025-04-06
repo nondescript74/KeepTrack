@@ -41,7 +41,7 @@ struct EnterWater: View {
         let minuteNow = componentsNow.minute
         
         for agoal in todaysGoalsActive {
-            let componentsGoal = Calendar.current.dateComponents([.hour,.minute], from: agoal.startDate)
+            let componentsGoal = Calendar.current.dateComponents([.hour,.minute], from: agoal.endDate)
             let hourGoal = componentsGoal.hour
             let minuteGoal = componentsGoal.minute
             
@@ -53,6 +53,7 @@ struct EnterWater: View {
             // array of timegoals
             // are all of them met, if so return true
         }
+        logger.info("todaysGoalsActiveInTime is \(todaysGoalsActiveInTime)")
         return todaysGoalsActiveInTime
     }
     
@@ -65,9 +66,8 @@ struct EnterWater: View {
         let minuteWaterIntake = componentsWaterIntake.minute
         
         let goalsAITime = self.getTodaysGoalsInTime().sorted(by: {$0.endDate < $1.endDate})  // active goals in time
-        logger.info("goalAITime is \(goalsAITime)")
         if goalsAITime.count < getTodaysWater().count + 1 {
-            // adding one as this water is yet to be added
+            // adding one as this water is yet to be added into history
             logger.info( "Intake greater than goals!!!")
             myReturnValue = true
         }
@@ -79,7 +79,7 @@ struct EnterWater: View {
         // get the time
         // get the number of liquid drunk by this time
         // get the number of liquid goals by this time
-        // if the number of liquid drunk is greater than the goals and each goal was met, return true, else false
+        // if the number of liquid drunk so far plus this one is greater than the goals so far today, return true, else false
 
         let result = isThisWaterMeetingGoal(time: Date())
         logger.info("result: isGoalMet is \(result)")
