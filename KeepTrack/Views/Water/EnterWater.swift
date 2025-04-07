@@ -17,11 +17,10 @@ struct EnterWater: View {
     @State var name: String = "Water"
     @State var amount: Double = 14.0
     
-    let types: [String] = ["Water", "Smoothie", "Juice", "Milk", "Yoghurt"]
+    fileprivate let types: [String] = ["Water", "Smoothie", "Juice", "Milk", "Yoghurt"]
     
     fileprivate func getTodaysWater() -> [WaterEntry] {
         let todays = water.waterHistory.filter { Calendar.current.isDateInToday($0.date) }
-//            .filter { $0.units > 0 }
         logger.info("Todays water intake : \(todays)")
         return todays
     }
@@ -57,33 +56,17 @@ struct EnterWater: View {
         return todaysGoalsActiveInTime
     }
     
-    
-    fileprivate func isThisWaterMeetingGoal(time: Date) -> Bool {
-        var myReturnValue: Bool = false
-        
-        let componentsWaterIntake = Calendar.current.dateComponents([.hour,.minute], from: time)
-        let hourWaterIntake = componentsWaterIntake.hour
-        let minuteWaterIntake = componentsWaterIntake.minute
-        
-        let goalsAITime = self.getTodaysGoalsInTime().sorted(by: {$0.endDate < $1.endDate})  // active goals in time
-        if goalsAITime.count < getTodaysWater().count + 1 {
-            // adding one as this water is yet to be added into history
-            logger.info( "Intake greater than goals!!!")
-            myReturnValue = true
-        }
-        
-        return myReturnValue
-    }
-    
     fileprivate func isGoalMet() -> Bool {
         // get the time
         // get the number of liquid drunk by this time
         // get the number of liquid goals by this time
         // if the number of liquid drunk so far plus this one is greater than the goals so far today, return true, else false
-
-        let result = isThisWaterMeetingGoal(time: Date())
-        logger.info("result: isGoalMet is \(result)")
+        var result: Bool = false
         
+        let goalsAITime = self.getTodaysGoalsInTime().sorted(by: {$0.endDate < $1.endDate})  // active goals in time
+        result = goalsAITime.count <= getTodaysWater().count + 1
+            // adding one as this water is yet to be added into history
+        result ? logger.info("Intake greater than goals!!!") : logger.info("Intake less than goals")
         return result
     }
     
@@ -102,7 +85,7 @@ struct EnterWater: View {
                 Button("Add") {
                     water.addLiquid(amount, goalmet: isGoalMet() , name: name)
                     dismiss()
-                }
+                }.disabled(amount.isNaN || amount == 0)
             }
             .padding(.horizontal)
             .environment(water)
