@@ -11,6 +11,7 @@ import OSLog
 struct GoalFullView: View {
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "GoalFullView")
     @Environment(Goals.self) var goals
+    @Environment(\.dismiss) var dismiss
     fileprivate var goal:Goal
     @State private var name: String
     @State private var description: String
@@ -79,6 +80,7 @@ struct GoalFullView: View {
                 goals.removeGoalAtId(uuid: self.goal.id)
                 logger.info("Deleting goal with id \(self.goal.id)")
                 goals.addGoal(goal: Goal(id: self.goal.id, name: name, description: description, startDate: startDate, endDate: endDate, isActive: isActive, isCompleted: isCompleted))
+                dismiss()
             })
             .padding()
             .overlay(RoundedRectangle(cornerRadius: 5).stroke(style: StrokeStyle(lineWidth: 2)))

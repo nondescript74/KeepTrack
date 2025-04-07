@@ -109,7 +109,7 @@ struct AppDashboard: View {
                 }
                 .padding(.top)
                 VStack {
-                    NavigationLink(destination: EditMedGoals(items: $medGoals.medGoals)) {
+                    NavigationLink(destination: ShowNEditMedGoals(items: $medGoals.medGoals)) {
                         Image(systemName: "sportscourt.fill")
                             .symbolRenderingMode(.multicolor)
                             .frame(minHeight: 40)
