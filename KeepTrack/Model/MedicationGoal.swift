@@ -13,4 +13,8 @@ struct MedicationGoal: Codable, Identifiable {
     var dosage: Int = 1
     var frequency: String
     var time: Date = Date()
+    var startDate: Date?
+    var endDate: Date?
+    var isActive: Bool?
+    var isCompleted: Bool?
 }

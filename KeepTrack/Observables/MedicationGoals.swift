@@ -57,6 +57,12 @@ import OSLog
         }
     }
     
+    func addMedGoalWithDates(id: UUID, name: String, dosage: Int, frequency: String, time: Date, startdate: Date, enddate: Date, isActive: Bool, isCompleted: Bool) {
+        medGoals.append(MedicationGoal(name: name, dosage: dosage, frequency: frequency, startDate: startdate, endDate: enddate, isActive: isActive, isCompleted: isCompleted))
+        logger.info ("Added new medGoal: \(self.medGoals)")
+        save()
+    }
+    
     func addMedGoal(id: UUID, name: String, dosage: Int, frequency: String, time: Date, goalmet: Bool) {
         medGoals.append(MedicationGoal(name: name, dosage: dosage, frequency: frequency))
         logger.info ("Added new medGoal: \(self.medGoals)")
