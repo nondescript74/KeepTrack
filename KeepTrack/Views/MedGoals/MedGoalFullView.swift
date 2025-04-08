@@ -65,13 +65,13 @@ struct MedGoalFullView: View {
                     TextField("Dosage", value: $dosage, format: .number)
                 }
                 HStack {
-                    Text("End Date")
-                    DatePicker("Select End Time", selection: $endDate.animation(.default), displayedComponents: .hourAndMinute)
+                    Text("Start Date")
+                    DatePicker("Select Start", selection: $startDate.animation(.default), displayedComponents: .hourAndMinute)
                 }
-                HStack {
-                    Text("Time")
-                    DatePicker("Select Time", selection: $time.animation(.default), displayedComponents: .hourAndMinute)
-                }
+//                HStack {
+//                    Text("Time")
+//                    DatePicker("Select Time", selection: $time.animation(.default), displayedComponents: .hourAndMinute)
+//                }
                 
                 HStack {
                     Text("End Date")
@@ -91,7 +91,7 @@ struct MedGoalFullView: View {
             Button("Change Goal", action: {
                 medgoals.removeMedGoalAtId(uuid: self.medgoal.id)
                 logger.info("Deleting medgoal with id \(self.medgoal.id)")
-                medgoals.addMedGoalWithDates(id: self.medgoal.id, name: name, dosage: dosage, frequency: frequency, time: time, startdate: startDate, enddate: endDate, isActive: isActive, isCompleted: isCompleted)
+                medgoals.addMedGoalWithDates(id: self.medgoal.id, name: name, dosage: dosage, frequency: frequency, time: startDate, startdate: startDate, enddate: endDate, isActive: isActive, isCompleted: isCompleted)
                 dismiss()
             })
             .padding()

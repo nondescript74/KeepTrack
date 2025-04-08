@@ -26,10 +26,15 @@ struct MovableMedGoalsList<Element: Identifiable, Content: View>: View {
         medgoals.medGoals.move(fromOffsets: source, toOffset: destination)
     }
     
+    fileprivate func delete(at offsets: IndexSet) {
+        medgoals.medGoals.remove(atOffsets: offsets)
+    }
+    
     var body: some View {
         List {
             ForEach($data, content: content)
                 .onMove(perform: move)
+                .onDelete(perform: delete)
         }
         .toolbar { EditButton() }
         .environment(medgoals)

@@ -26,7 +26,9 @@ struct ShowNEditMedGoals: View {
                         HStack {
                             Text(item.name.wrappedValue)
                                 .padding(.trailing)
-                            Text("\(String(describing: item.time.wrappedValue.formatted(date: .abbreviated, time: .shortened)))")
+                            Text(item.startDate.wrappedValue?.formatted(date: .abbreviated, time: .shortened) ?? item.time.wrappedValue.formatted(date: .abbreviated, time: .shortened))
+                                
+//                            Text("\(String(describing: item.time.wrappedValue.formatted(date: .abbreviated, time: .shortened)))")
                         }
                     }
                 }
