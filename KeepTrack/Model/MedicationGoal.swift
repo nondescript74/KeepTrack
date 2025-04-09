@@ -17,4 +17,19 @@ struct MedicationGoal: Codable, Identifiable {
     var endDate: Date?
     var isActive: Bool?
     var isCompleted: Bool?
+    var secondStartDate: Date?
+    var thirdStartDate: Date?
+}
+
+extension MedicationGoal: Equatable {
+    
+    static func == (lhs: MedicationGoal, rhs: MedicationGoal) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
+extension MedicationGoal: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }

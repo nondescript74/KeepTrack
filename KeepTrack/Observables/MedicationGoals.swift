@@ -32,41 +32,51 @@ import OSLog
         } else {
             // launched before
             let docDirUrl = urls.first!
-                // no older versions
-                let fileURL = docDirUrl.appendingPathComponent("medgoals.json")
-                logger.info( "fileURL for existing history \(fileURL)")
-                do {
-                    if fileMgr.fileExists(atPath: fileURL.path) {
-                        let temp = fileMgr.contents(atPath: fileURL.path)!
-                        if temp.count == 0 {
-                            medGoals = []
-                            logger.info("medgoals file is empty")
-                        } else {
-                            let tempContents: [MedicationGoal] = try JSONDecoder().decode([MedicationGoal].self, from: try Data(contentsOf: fileURL))
-                            medGoals = tempContents
-                            logger.info(" decoded medGoals: \(tempContents)")
-                        }
-                    } else {
-                        logger.error( "Couldn't find medgoals file")
+            // no older versions
+            let fileURL = docDirUrl.appendingPathComponent("medgoals.json")
+            logger.info( "fileURL for existing history \(fileURL)")
+            do {
+                if fileMgr.fileExists(atPath: fileURL.path) {
+                    let temp = fileMgr.contents(atPath: fileURL.path)!
+                    if temp.count == 0 {
                         medGoals = []
+                        logger.info("medgoals file is empty")
+                    } else {
+                        let tempContents: [MedicationGoal] = try JSONDecoder().decode([MedicationGoal].self, from: try Data(contentsOf: fileURL))
+                        medGoals = tempContents
+                        logger.info(" decoded medGoals: \(tempContents)")
                     }
-                } catch {
-                    logger.error( "Error reading directory \(error)")
-                    fatalError( "Couldn't read history")
+                } else {
+                    logger.error( "Couldn't find medgoals file")
+                    medGoals = []
                 }
+            } catch {
+                logger.error( "Error reading directory \(error)")
+                fatalError( "Couldn't read history")
+            }
         }
     }
     
-    func addMedGoalWithDates(id: UUID, name: String, dosage: Int, frequency: String, time: Date, startdate: Date, enddate: Date, isActive: Bool, isCompleted: Bool) {
-        medGoals.append(MedicationGoal(name: name, dosage: dosage, frequency: frequency, startDate: startdate, endDate: enddate, isActive: isActive, isCompleted: isCompleted))
-        logger.info ("Added new medGoal: \(self.medGoals)")
-        save()
-    }
-    
-    func addMedGoal(id: UUID, name: String, dosage: Int, frequency: String, time: Date, goalmet: Bool) {
-        medGoals.append(MedicationGoal(name: name, dosage: dosage, frequency: frequency))
-        logger.info ("Added new medGoal: \(self.medGoals)")
-        save()
+    func addMedGoalWithFrequency(id: UUID, name: String, dosage: Int, frequency: String, time: Date, startdate: Date, enddate: Date, isActive: Bool, isCompleted: Bool, secondStartDate: Date?, thirdStartDate: Date?) {
+        switch frequency {
+        case "Once daily".lowercased():
+            medGoals.append(MedicationGoal(id: id, name: name, dosage: dosage, frequency: frequency, time: time, startDate: startdate, endDate: enddate, isActive: isActive, isCompleted: isCompleted))
+            logger.log("Added medication goal \(name)")
+            
+            
+        case "Twice daily".lowercased():
+            medGoals.append(MedicationGoal(id: id, name: name, dosage: dosage, frequency: frequency, time: time, startDate: startdate, endDate: enddate, isActive: isActive, isCompleted: isCompleted, secondStartDate: secondStartDate))
+            logger.log("Added medication goal \(name)")
+
+        case "Three times daily".lowercased():
+            medGoals.append(MedicationGoal(id: id, name: name, dosage: dosage, frequency: frequency, time: time, startDate: startdate, endDate: enddate, isActive: isActive, isCompleted: isCompleted, secondStartDate: secondStartDate, thirdStartDate: thirdStartDate))
+            logger.log("Added medication goal \(name)")
+            
+            
+        default:
+            medGoals.append(MedicationGoal(id: id, name: name, dosage: dosage, frequency: frequency, time: time, startDate: startdate, endDate: enddate, isActive: isActive, isCompleted: isCompleted, secondStartDate: nil, thirdStartDate: nil))
+         
+        }
     }
     
     func removeMedGoalAtId(uuid: UUID) {
@@ -92,3 +102,4 @@ import OSLog
     }
     
 }
+

@@ -21,6 +21,8 @@ struct MedGoalFullView: View {
     @State private var endDate: Date
     @State private var isActive: Bool
     @State private var isCompleted: Bool
+    @State private var secondStartDate: Date
+    @State private var thirdStartDate: Date
     
     init(medgoal:MedicationGoal) {
         self.medgoal = medgoal
@@ -32,6 +34,8 @@ struct MedGoalFullView: View {
         self.endDate = medgoal.endDate ?? Date()
         self.isActive = medgoal.isActive ?? false
         self.isCompleted = medgoal.isCompleted ?? false
+        self.secondStartDate = medgoal.secondStartDate ?? Date()
+        self.thirdStartDate = medgoal.thirdStartDate ?? Date()
     }
     
     var body: some View {
@@ -41,20 +45,24 @@ struct MedGoalFullView: View {
                     .font(.subheadline)
                 Text(medgoal.dosage.description)
                     .font(.caption)
-                Text(medgoal.frequency)
-                    .font(.caption)
-                Text(medgoal.time.formatted(date: .abbreviated, time: .shortened))
-                Text((medgoal.startDate != nil) ? startDate.formatted(date: .abbreviated, time: .shortened) : "")
-                Text(medgoal.endDate != nil ? endDate.formatted(date: .abbreviated, time: .shortened) : "")
+                
+                
                 Text(medgoal.isActive ?? false ? "Active" : "Inactive")
                 Text(medgoal.isCompleted ?? false ? "Completed" : "Incomplete")
+                Text((frequency.lowercased().contains("twice") ? "Take twice a day" : frequency.lowercased().contains("three") ? "Take three times a day" : "Take once a day"))
+                HStack {
+                    Text((medgoal.startDate != nil) ? startDate.formatted(date: .omitted, time: .shortened) : "No start?")
+                    Text((medgoal.secondStartDate != nil) ? secondStartDate.formatted(date: .omitted, time: .shortened) : "")
+                    Text((medgoal.thirdStartDate != nil) ? thirdStartDate.formatted(date: .omitted, time: .shortened) : "")
+                }
             }
             .padding(.bottom)
             
             Spacer()
             
             VStack {
-                Text("Edit this medgoal")
+                Text("Edit this Medication Goal")
+                    .font(.title)
                     .foregroundStyle(Color.red)
                 HStack {
                     Text("Name")
@@ -65,18 +73,26 @@ struct MedGoalFullView: View {
                     TextField("Dosage", value: $dosage, format: .number)
                 }
                 HStack {
-                    Text("Start Date")
-                    DatePicker("Select Start", selection: $startDate.animation(.default), displayedComponents: .hourAndMinute)
+                    DatePicker("Select Start time", selection: $startDate.animation(.default), displayedComponents: .hourAndMinute)
                 }
-//                HStack {
-//                    Text("Time")
-//                    DatePicker("Select Time", selection: $time.animation(.default), displayedComponents: .hourAndMinute)
-//                }
                 
                 HStack {
-                    Text("End Date")
-                    DatePicker("Select End Time", selection: $endDate.animation(.default), displayedComponents: .hourAndMinute)
+                    DatePicker("Select End date", selection: $endDate.animation(.default), displayedComponents: .date)
                 }
+                
+                if frequency.lowercased().contains("twice") || frequency.lowercased().contains("three") {
+                    HStack {
+                        DatePicker("Second Start", selection: $secondStartDate.animation(.default), displayedComponents: .hourAndMinute)
+                    }
+        
+                }
+                
+                if frequency.lowercased().contains("three") {
+                    HStack {
+                        DatePicker("Third start", selection: $thirdStartDate.animation(.default), displayedComponents: .hourAndMinute)
+                    }
+                }
+                
                 HStack {
                     Text("Is Active")
                     Toggle("Is Active", isOn: $isActive)
@@ -86,12 +102,15 @@ struct MedGoalFullView: View {
                     Text("Is Completed")
                     Toggle("Is Completed", isOn: $isCompleted)
                 }
+                
+                
             }
             
             Button("Change Goal", action: {
-                medgoals.removeMedGoalAtId(uuid: self.medgoal.id)
                 logger.info("Deleting medgoal with id \(self.medgoal.id)")
-                medgoals.addMedGoalWithDates(id: self.medgoal.id, name: name, dosage: dosage, frequency: frequency, time: startDate, startdate: startDate, enddate: endDate, isActive: isActive, isCompleted: isCompleted)
+                medgoals.removeMedGoalAtId(uuid: self.medgoal.id)
+                logger.info("Adding new medgoal with id \(self.medgoal.id)")
+                medgoals.addMedGoalWithFrequency(id: self.medgoal.id, name: self.name, dosage: self.dosage, frequency: self.frequency, time: self.time, startdate: self.startDate, enddate: self.endDate, isActive: self.isActive, isCompleted: self.isCompleted, secondStartDate: self.secondStartDate, thirdStartDate: self.thirdStartDate)
                 dismiss()
             })
             .padding()
@@ -100,13 +119,13 @@ struct MedGoalFullView: View {
         }
         .environment(medgoals)
     }
-    /*
-     (goal: Goal(id: self.goal.id, name: name, description: description, startDate: startDate, endDate: endDate, isActive: isActive, isCompleted: isCompleted))
-     */
 
 }
 
 #Preview {
-    MedGoalFullView(medgoal: MedicationGoal(name: "Test Medication Goal", dosage: 1, frequency: "daily", startDate: Date(), endDate: Date().addingTimeInterval(60 * 60 * 24 * 7), isActive: true, isCompleted: false))
+    
+    let medGoalA = MedicationGoal(name: "Metformin Goal", dosage: 500, frequency: "Twice daily", startDate: Date(), endDate: Date().addingTimeInterval(60 * 60 * 24 * 7), isActive: true, isCompleted: false, secondStartDate: Date().addingTimeInterval(60 * 60 * 10))
+    let medGoalB = MedicationGoal(name: "Acetomenophen Goal", dosage: 500, frequency: "three times daily", startDate: Date(), endDate: Date().addingTimeInterval(60 * 60 * 24 * 7), isActive: true, isCompleted: false, secondStartDate: Date().addingTimeInterval(60 * 60 * 6), thirdStartDate: Date().addingTimeInterval(60 * 60 * 12))
+    MedGoalFullView(medgoal: medGoalB)
         .environment(MedGoals())
 }
