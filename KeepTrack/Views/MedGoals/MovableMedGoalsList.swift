@@ -27,7 +27,10 @@ struct MovableMedGoalsList<Element: Identifiable, Content: View>: View {
     }
     
     fileprivate func delete(at offsets: IndexSet) {
-        medgoals.medGoals.remove(atOffsets: offsets)
+        for idx in offsets {
+            medgoals.medGoals[idx].isActive = false
+            medgoals.removeMedGoalAtId(uuid: data[idx].id as! UUID)
+        }
     }
     
     var body: some View {

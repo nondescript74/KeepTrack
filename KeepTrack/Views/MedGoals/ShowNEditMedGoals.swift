@@ -43,8 +43,8 @@ struct ShowNEditMedGoals: View {
 #Preview {
     @Previewable @State var items: [MedicationGoal] = [
         MedicationGoal(name: "Test Medication Goal", dosage: 1, frequency: "daily", startDate: Date(), endDate: Date().addingTimeInterval(60 * 60 * 24 * 7), isActive: true, isCompleted: false),
-        MedicationGoal(name: "Metformin Goal", dosage: 1, frequency: "twice daily", startDate: Date(), endDate: Date().addingTimeInterval(60 * 60 * 24 * 7), isActive: true, isCompleted: false),
-        MedicationGoal(name: "Latanoprost Goal", dosage: 1, frequency: "evening daily", startDate: Date(), endDate: Date().addingTimeInterval(60 * 60 * 24 * 7), isActive: true, isCompleted: false)
+        MedicationGoal(name: "Metformin Goal", dosage: 1, frequency: "Twice daily", startDate: Date(), endDate: Date().addingTimeInterval(60 * 60 * 24 * 7), isActive: true, isCompleted: false),
+        MedicationGoal(name: "Latanoprost Goal", dosage: 1, frequency: "three times daily", startDate: Date(), endDate: Date().addingTimeInterval(60 * 60 * 24 * 7), isActive: true, isCompleted: false)
         
     ]
     ShowNEditMedGoals(items: $items)
