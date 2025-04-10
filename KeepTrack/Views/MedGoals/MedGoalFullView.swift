@@ -71,7 +71,7 @@ struct MedGoalFullView: View {
             VStack {
                 Text("Edit this Medication Goal")
                     .font(.title)
-                    .foregroundStyle(Color.red)
+                    .foregroundStyle(Color.black)
                 HStack {
                     Text("Name")
                     TextField("Name", text: $name)
@@ -108,7 +108,7 @@ struct MedGoalFullView: View {
                 HStack {
                     Text("Is Completed")
                     Toggle("Is Completed", isOn: $isCompleted)
-                }                
+                }
             }
             
             Button("Change Goal", action: {
