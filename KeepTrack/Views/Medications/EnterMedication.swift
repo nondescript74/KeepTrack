@@ -25,7 +25,7 @@ struct EnterMedication: View {
     
     fileprivate func getTodaysMedicationGoals() -> [MedicationGoal] {
         let todaysGoals = medGoals.medGoals.filter { $0.isActive ?? false}
-        logger.info("Today's active goals: \(todaysGoals)")
+        logger.info("Today's active med goals: \(todaysGoals)")
         return todaysGoals
     }
     
@@ -55,10 +55,12 @@ struct EnterMedication: View {
     }
     
     fileprivate func isMedicationGoalMet() -> Bool {
-        // get the time
-        // get the number of liquid drunk by this time
-        // get the number of liquid goals by this time
-        // if the number of liquid drunk so far plus this one is greater than the goals so far today, return true, else false
+         
+        // get the medications taken by this time
+        // get the medication goals, if any, by this time
+        // for each medication, if its being taken before the goal(there may be several), then its a medication taken as goal met.
+        // another way of looking at this is if the number of instances of that med type + 1 is equal to or greater than the goal instances, then it is goal met
+        
         var result: Bool = false
         
         let goalsAITime = self.getTodaysMedicationGoalsInTime().sorted(by: {$0.endDate ?? Date() < $1.endDate ?? Date()})  // active goals in time
@@ -70,8 +72,9 @@ struct EnterMedication: View {
     
     var body: some View {
         VStack {
-            Text("Enter medication")
+            
             HStack {
+                Text("Enter medication")
                 Picker("Select Type", selection: $medicationName) {
                     ForEach(types, id: \.self) {
                         Text($0)
@@ -79,21 +82,21 @@ struct EnterMedication: View {
                 }
 
                 Button("Add") {
-//                    if !medicationName.isEmpty {
                         logger.info("Adding medication \(medicationName)")
                         medicationStore.addMedicationWithNameAndGoalmet(name: medicationName, goalmet: isMedicationGoalMet())
                         dismiss()
-//                    }
                 }.disabled(medicationName.isEmpty)
             }
             .padding(.horizontal)
-            .environment(medicationStore)
             Spacer()
         }
+        .environment(medicationStore)
+        .environment(medGoals)
     }
 }
 
 #Preview {
     EnterMedication()
         .environment(MedicationStore())
+        .environment(MedGoals())
 }
