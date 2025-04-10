@@ -63,7 +63,7 @@ struct EnterMedication: View {
         
         var result: Bool = false
         
-        let goalsAITime = self.getTodaysMedicationGoalsInTime().sorted(by: {$0.endDate ?? Date() < $1.endDate ?? Date()})  // active goals in time
+        let goalsAITime = self.getTodaysMedicationGoalsInTime().sorted(by: {$0.startDate ?? Date() < $1.startDate ?? Date()})  // active goals in time
         result = goalsAITime.count <= getTodaysMeds().count + 1
             // adding one as this med is yet to be added into history
         result ? logger.info("Meds intake greater than goals!!!") : logger.info("Meds intake less than goals")
