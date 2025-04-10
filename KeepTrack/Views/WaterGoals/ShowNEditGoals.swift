@@ -19,7 +19,7 @@ struct ShowNEditGoals: View {
     var body: some View {
         NavigationView {
             VStack {
-                MovableGoalsList($items) { item in
+                MovableCommonList($items, type: "water") { item in
                     NavigationLink {
                         GoalFullView(goal: item.wrappedValue)
                     } label: {

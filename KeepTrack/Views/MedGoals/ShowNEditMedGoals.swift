@@ -19,7 +19,7 @@ struct ShowNEditMedGoals: View {
     var body: some View {
         NavigationView {
             VStack {
-                MovableMedGoalsList($items) { item in
+                MovableCommonList($items, type: "meds") { item in
                     NavigationLink {
                         MedGoalFullView(medgoal: item.wrappedValue)
                     } label: {
