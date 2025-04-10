@@ -37,14 +37,14 @@ struct EnterMedTimeGoal: View {
                 }
             }.pickerStyle(SegmentedPickerStyle())
             
-            if selectedFrequency == "Once daily" {
+            if selectedFrequency.lowercased().contains("once daily") {
                 DatePicker("Start Time", selection: $selectedStartTime.animation(.default), displayedComponents: .hourAndMinute)
-            } else if selectedFrequency == "Twice daily" {
+            } else if selectedFrequency.lowercased().contains("twice") {
                 VStack(alignment: .leading) {
                     DatePicker("Start Time 1", selection: $selectedStartTime.animation(.default), displayedComponents: .hourAndMinute)
                     DatePicker("Start Time 2", selection: $selectedSecondStartTime.animation(.default), displayedComponents: .hourAndMinute)
                 }
-            } else if selectedFrequency == "Three times daily" {
+            } else if selectedFrequency.lowercased().contains("three") {
                 VStack(alignment: .leading) {
                     DatePicker("Start Time 1", selection: $selectedStartTime.animation(.default), displayedComponents: .hourAndMinute)
                     DatePicker("Start Time 2", selection: $selectedSecondStartTime.animation(.default), displayedComponents: .hourAndMinute)
@@ -62,11 +62,16 @@ struct EnterMedTimeGoal: View {
                 if self.medicationName.isEmpty {
                     return
                 }
+                logger.info("adding a medgoal")
                 logger.info("second start time: \(selectedSecondStartTime)")
                 logger.info("third start time: \(selectedThirdStartTime)")
+                
                 medGoals.addMedGoalWithFrequency(id: UUID(), name: self.medicationName, dosage: 1, frequency: selectedFrequency, time: selectedStartTime, startdate: selectedStartTime, enddate: selectedStartTime.addingTimeInterval(60*60), isActive: true, isCompleted: false, secondStartDate: selectedSecondStartTime, thirdStartDate: selectedThirdStartTime)
                 
                 self.medicationName = ""
+                self.selectedStartTime = Date()
+                self.selectedSecondStartTime = Date()
+                self.selectedThirdStartTime = Date()
 
                 
             }), label: ({

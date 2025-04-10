@@ -57,8 +57,8 @@ import OSLog
         }
     }
     
-    func addMedGoalWithFrequency(id: UUID, name: String, dosage: Int, frequency: String, time: Date, startdate: Date, enddate: Date, isActive: Bool, isCompleted: Bool, secondStartDate: Date?, thirdStartDate: Date?) {
-        switch frequency {
+    func addMedGoalWithFrequency(id: UUID, name: String, dosage: Int, frequency: String, time: Date, startdate: Date, enddate: Date, isActive: Bool, isCompleted: Bool, secondStartDate: Date, thirdStartDate: Date) {
+        switch frequency.lowercased() {
         case "Once daily".lowercased():
             medGoals.append(MedicationGoal(id: id, name: name, dosage: dosage, frequency: frequency, time: time, startDate: startdate, endDate: enddate, isActive: isActive, isCompleted: isCompleted))
             logger.log("Added medication goal \(name)")
@@ -74,9 +74,11 @@ import OSLog
             
             
         default:
-            medGoals.append(MedicationGoal(id: id, name: name, dosage: dosage, frequency: frequency, time: time, startDate: startdate, endDate: enddate, isActive: isActive, isCompleted: isCompleted, secondStartDate: nil, thirdStartDate: nil))
+            medGoals.append(MedicationGoal(id: id, name: name, dosage: dosage, frequency: frequency, time: time, startDate: startdate, endDate: enddate, isActive: isActive, isCompleted: isCompleted, secondStartDate: secondStartDate, thirdStartDate: thirdStartDate))
+            logger.log( "Added medication goal \(name)")
          
         }
+        save()
     }
     
     func removeMedGoalAtId(uuid: UUID) {
