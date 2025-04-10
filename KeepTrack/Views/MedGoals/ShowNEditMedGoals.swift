@@ -25,10 +25,14 @@ struct ShowNEditMedGoals: View {
                     } label: {
                         HStack {
                             Text(item.name.wrappedValue)
-                                .padding(.trailing)
-                            Text(item.startDate.wrappedValue?.formatted(date: .abbreviated, time: .shortened) ?? item.time.wrappedValue.formatted(date: .abbreviated, time: .shortened))
+                                .font(.subheadline)
                                 
-//                            Text("\(String(describing: item.time.wrappedValue.formatted(date: .abbreviated, time: .shortened)))")
+                            Text(item.startDate.wrappedValue?.formatted(date: .omitted, time: .shortened) ?? item.time.wrappedValue.formatted(date: .abbreviated, time: .shortened))
+                                .font(.caption)
+                                
+                            Text(item.frequency.wrappedValue)
+                                .font(.caption)
+                                
                         }
                     }
                 }
@@ -42,9 +46,9 @@ struct ShowNEditMedGoals: View {
 
 #Preview {
     @Previewable @State var items: [MedicationGoal] = [
-        MedicationGoal(name: "Test Medication Goal", dosage: 1, frequency: "daily", startDate: Date(), endDate: Date().addingTimeInterval(60 * 60 * 24 * 7), isActive: true, isCompleted: false),
-        MedicationGoal(name: "Metformin Goal", dosage: 1, frequency: "Twice daily", startDate: Date(), endDate: Date().addingTimeInterval(60 * 60 * 24 * 7), isActive: true, isCompleted: false),
-        MedicationGoal(name: "Latanoprost Goal", dosage: 1, frequency: "three times daily", startDate: Date(), endDate: Date().addingTimeInterval(60 * 60 * 24 * 7), isActive: true, isCompleted: false)
+        MedicationGoal(name: "Losartan", dosage: 25, frequency: "Once daily", startDate: Date(), endDate: Date().addingTimeInterval(60 * 60 * 24 * 7), isActive: true, isCompleted: false),
+        MedicationGoal(name: "Metformin", dosage: 1, frequency: "Twice daily", startDate: Date(), endDate: Date().addingTimeInterval(60 * 60 * 24 * 7), isActive: true, isCompleted: false, secondStartDate: Date().addingTimeInterval(60 * 60 * 12)),
+        MedicationGoal(name: "Latanoprost Goal", dosage: 1, frequency: "Three times daily", startDate: Date(), endDate: Date().addingTimeInterval(60 * 60 * 24 * 7), isActive: true, isCompleted: false, secondStartDate: Date().addingTimeInterval(60 * 60 * 6), thirdStartDate: Date().addingTimeInterval(60 * 60 * 12))
         
     ]
     ShowNEditMedGoals(items: $items)
