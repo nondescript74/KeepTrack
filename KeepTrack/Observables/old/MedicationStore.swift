@@ -82,19 +82,12 @@ import OSLog
         save()
     }
     
-//    func addMedication() {
-//        medicationHistory.append(MedicationEntry(id: UUID(), date: Date()))
-//        logger.info("Added medication")
-//        save()
-//    }
-    
     func removeMedicationAtId(uuid: UUID) {
         medicationHistory.removeAll { $0.id == uuid }
         logger.info("Removed medication entry with id \(uuid)")
         save()
         
     }
-    
 }
 
 
