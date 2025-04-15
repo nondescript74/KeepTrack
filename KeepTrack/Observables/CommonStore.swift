@@ -73,7 +73,7 @@ import OSLog
     
     func removeEntryAtId(uuid: UUID) {
         history.removeAll { $0.id == uuid }
-        logger.info("Removed medication entry with id \(uuid)")
+        logger.info("Removed entry with id \(uuid)")
         save()
         
     }

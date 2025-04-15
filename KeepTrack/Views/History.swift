@@ -1,35 +1,33 @@
 //
-//  MedHistory.swift
+//  History.swift
 //  KeepTrack
 //
-//  Created by Zahirudeen Premji on 3/23/25.
+//  Created by Zahirudeen Premji on 4/14/25.
 //
 
 import SwiftUI
 import OSLog
 
-struct MedHistory: View {
-    let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "MedHistory")
-    @Environment(MedicationStore.self) private var medicationStore
-    @Environment(MedGoals.self) private var medGoals
+struct History: View {
+    let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "History")
+    @Environment(CommonStore.self) private var store
+    @Environment(CommonGoals.self) private var goals
     
     let rowLayout = Array(repeating: GridItem(.flexible(minimum: 10)), count: 3)
-
     
-    private func getToday() -> [MedicationEntry] {
-        let todays = medicationStore.medicationHistory.filter { Calendar.current.isDateInToday($0.date) }
+    private func getToday() -> [CommonEntry] {
+        let todays = store.history.filter { Calendar.current.isDateInToday($0.date) }
         return  todays
     }
     
-    private func getYesterday() -> [MedicationEntry] {
-        let yesterdays = medicationStore.medicationHistory.filter { Calendar.current.isDateInYesterday($0.date) }
+    private func getYesterday() -> [CommonEntry] {
+        let yesterdays = store.history.filter { Calendar.current.isDateInYesterday($0.date) }
         return  yesterdays
     }
     var body: some View {
         VStack {
-            Text("Meds")
+            Text("History")
                 .font(.headline)
-        
 
             List {
                 Section(header: Text("Today")) {
@@ -37,14 +35,14 @@ struct MedHistory: View {
 
                         VStack(alignment: .leading) {
                             if getToday().isEmpty {
-                                Text("No meds taken")
+                                Text("Nothing taken today")
                                     .foregroundColor(.gray)
                             } else {
                                 LazyHGrid(rows: rowLayout) {
                                     ForEach(getToday(), id: \.self.date) { entry in
                                         HStack {
                                             Text(entry.date, style: .time)
-                                            Text(entry.name ?? "no name")
+                                            Text(entry.name)
                                         }
                                         .font(.caption)
                                     }
@@ -52,12 +50,12 @@ struct MedHistory: View {
                             }
                         }
                         Spacer()
-                        MedsDisplay()
+                        CommonDisplay()
 
                     }
                     .background(Color.green.opacity(0.1))
-                    Text("Took " + getToday().count.description + " - medications")
-                        .foregroundStyle(medicationStore.medicationHistory.count >= medGoals.medGoals.count ? Color.green : Color.red)
+                    Text("Took " + getToday().count.description)
+                        .foregroundStyle(store.history.count >= goals.goals.count ? Color.green : Color.red)
                 }
                 
                 Section(header: Text("Yesterday")) {
@@ -65,13 +63,14 @@ struct MedHistory: View {
                 }
             }
         }
-        .environment(medicationStore)
-        .environment(medGoals)
+        .environment(store)
+        .environment(goals)
     }
 }
 
 #Preview {
-    MedHistory()
-        .environment(MedicationStore())
-        .environment(MedGoals())
+    History()
+        .environment(CommonStore())
+        .environment(CommonGoals())
 }
+
