@@ -8,10 +8,10 @@
 import Foundation
 
 struct CommonEntry: Codable, Identifiable {
-    var id: UUID = UUID()
-    var date: Date = Date()
-    var units: String = "fluid ounces"
-    var amount: Double = 14.0
-    var name: String = "Water"
-    var goalMet: Bool = false 
+    var id: UUID
+    var date: Date
+    var units: String
+    var amount: Double
+    var name: String
+    var goalMet: Bool
 }

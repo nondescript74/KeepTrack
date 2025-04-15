@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct CommonGoal: Codable {
-    var id: UUID = UUID()
+struct CommonGoal: Codable, Identifiable {
+    var id: UUID 
     var name: String
     var description: String
     var dates: [Date] = [Date()]

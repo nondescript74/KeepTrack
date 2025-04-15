@@ -1,17 +1,18 @@
 //
-//  MovableList.swift
+//  MovableHistoryList.swift
 //  KeepTrack
 //
-//  Created by Zahirudeen Premji on 4/10/25.
+//  Created by Zahirudeen Premji on 4/14/25.
 //
 
 import SwiftUI
 import OSLog
 
-struct MovableList<Element: Identifiable, Content: View>: View {
-    let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "MovableList")
+
+struct MovableHistoryList<Element: Identifiable, Content: View>: View{
+    let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "MovableHistoryList")
     
-    @Environment(CommonGoals.self) var goals
+    @Environment(CommonStore.self) var store
     
     @Binding var data: [Element]
     
@@ -23,13 +24,12 @@ struct MovableList<Element: Identifiable, Content: View>: View {
     }
     
     fileprivate func move(from source: IndexSet, to destination: Int) {
-        goals.goals.move(fromOffsets: source, toOffset: destination)
+        store.history.move(fromOffsets: source, toOffset: destination)
     }
     
     fileprivate func delete(at offsets: IndexSet) {
         for idx in offsets {
-            goals.goals[idx].isActive = false
-            goals.removeGoalAtId(uuid: data[idx].id as! UUID)
+            store.removeEntryAtId(uuid: data[idx].id as! UUID)
         }
     }
     
@@ -40,6 +40,6 @@ struct MovableList<Element: Identifiable, Content: View>: View {
                 .onDelete(perform: delete)
         }
         .toolbar { EditButton() }
-        .environment(goals)
+        .environment(store)
     }
 }
