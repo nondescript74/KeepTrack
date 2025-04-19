@@ -18,7 +18,8 @@ struct GoalFullView: View {
     
     @State fileprivate var name: String
     @State fileprivate var descrip: String
-    @State fileprivate var dosage: Int
+    @State fileprivate var dosage: Double
+    @State fileprivate var unitsz: String
     @State fileprivate var frequency: String
     @State fileprivate var dates: [Date]
     @State fileprivate var isActive: Bool
@@ -28,6 +29,7 @@ struct GoalFullView: View {
         self.goal = goal
         self.name = goal.name
         self.dosage = goal.dosage
+        self.unitsz = goal.units ?? "pills"
         self.frequency = goal.frequency
         self.isActive = goal.isActive
         self.isCompleted = goal.isCompleted
@@ -40,7 +42,10 @@ struct GoalFullView: View {
             Section(header: Text("Goal Details").font(.headline)) {
                 Text(goal.name)
                     .font(.subheadline)
-                Text(goal.dosage.description)
+                HStack {
+                    Text(goal.dosage.description)
+                    Text(goal.units ?? "no units")
+                }
                     .font(.caption)
                 Text(goal.isActive ? "Active" : "Inactive")
                 Text(goal.isCompleted ? "Completed" : "Incomplete")
@@ -48,9 +53,7 @@ struct GoalFullView: View {
                 
             }
             .padding(.bottom)
-//            
-//            Spacer()
-//            
+
             VStack {
                 Text("Edit this Medication Goal")
                     .font(.title)
@@ -60,9 +63,21 @@ struct GoalFullView: View {
                     TextField("Name", text: $name)
                 }
                 HStack {
-                    Text("Dosage")
-                    TextField("Dosage", value: $dosage, format: .number)
+                    Text("Dosage: ")
+                    Picker(amounts.description, selection: $dosage) {
+                        ForEach(amounts, id: \.self) {
+                            Text($0.description)
+                        }
+                    }
+                    .padding(.trailing)
+                    Text("Units: ")
+                    Picker(units.description, selection: $unitsz) {
+                        ForEach(units, id: \.self) {
+                            Text($0.description)
+                        }
+                    }
                 }
+                .padding(.horizontal)
                 
                 if frequency.lowercased().contains("once daily") {
                     VStack(alignment: .leading) {
@@ -109,7 +124,7 @@ struct GoalFullView: View {
             Button("Change Goal", action: {
                 logger.info("Deleting goal with id \(self.goal.id)")
                 goals.removeGoalAtId(uuid: self.goal.id)
-                goals.addGoal(goal: CommonGoal(id: UUID(), name: self.name, description: self.descrip, dates: self.dates, isActive: self.isActive, isCompleted: self.isCompleted, dosage: self.dosage, frequency: self.frequency))
+                goals.addGoal(goal: CommonGoal(id: UUID(), name: self.name, description: self.descrip, dates: self.dates, isActive: self.isActive, isCompleted: self.isCompleted, dosage: self.dosage, units: self.unitsz, frequency: self.frequency))
                 logger.info("added new goal")
                 dismiss()
             })

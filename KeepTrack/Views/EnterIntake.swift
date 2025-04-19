@@ -14,10 +14,10 @@ struct EnterIntake: View {
     @Environment(CommonGoals.self) var goals
     @Environment(\.dismiss) var dismiss
     
-    @State var name: String = ""
-    @State var amount: Double = 0
-    @State var frequency: String = "Once daily"
-    @State var unit: String = ""
+    @State var name: String = types.sorted(by: {$0 < $1})[6]
+    @State var amount: Double = amounts.sorted(by: {$0 < $1})[12]
+    @State var frequency: String = frequencies.sorted(by: {$0 < $1})[1]
+    @State var unit: String = units.sorted(by: {$0 < $1})[1]
     
     
     private func getToday() -> [CommonEntry] {
@@ -81,7 +81,7 @@ struct EnterIntake: View {
             HStack {
                 Text("item")
                 Picker("Select Type", selection: $name) {
-                    ForEach(types, id: \.self) {
+                    ForEach(types.sorted(by: {$0 < $1}), id: \.self) {
                         Text($0)
                     }
                 }
@@ -89,7 +89,7 @@ struct EnterIntake: View {
             HStack {
                 Text("amount")
                 Picker("Select amount", selection: $amount) {
-                    ForEach(amounts, id: \.self) {
+                    ForEach(amounts.sorted(by: {$0 < $1}), id: \.self) {
                         Text($0.description)
                     }
                 }
@@ -97,16 +97,7 @@ struct EnterIntake: View {
             HStack {
                 Text("Units")
                 Picker("Select unit", selection: $unit) {
-                    ForEach(units, id: \.self) {
-                        Text($0)
-                            .font(.subheadline)
-                    }
-                }
-            }
-            HStack {
-                Text("Freq")
-                Picker("Select frequency", selection: $frequency) {
-                    ForEach(frequencies, id: \.self) {
+                    ForEach(units.sorted(by: {$0 < $1}), id: \.self) {
                         Text($0)
                             .font(.subheadline)
                     }

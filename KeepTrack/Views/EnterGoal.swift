@@ -14,12 +14,12 @@ struct EnterGoal: View {
     @Environment(CommonGoals.self) var goals
     @Environment(\.dismiss) var dismiss
     
-    @State private var name: String = ""
-    @State private var selectedFrequency: String = "Once daily"
+    @State private var name: String = types.sorted(by: <)[0]
+    @State private var selectedFrequency: String = frequencies.sorted(by: <)[0]
     @State private var description: String = "Enter description"
     @State private var dates: [Date] = [Date().addingTimeInterval(60 * 60 * 2), Date().addingTimeInterval(60 * 60 * 4), Date().addingTimeInterval(60 * 60 * 6), Date().addingTimeInterval(60 * 60 * 8), Date().addingTimeInterval(60 * 60 * 10), Date().addingTimeInterval(60 * 60 * 12)]
-    @State private var dosage: Int = 14
-    @State private var unit: String = "fluid ounces"
+    @State private var dosage: Double = amounts.sorted(by: <)[0]
+    @State private var unit: String = units.sorted(by: <)[0]
     
     fileprivate let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -52,7 +52,12 @@ struct EnterGoal: View {
             
             HStack {
                 Text("Dosage: ")
-                TextField("Dosage", value: $dosage, formatter: NumberFormatter())
+                Picker("Select dosage", selection: $dosage) {
+                    ForEach(amounts.sorted(by: {$0 < $1}), id: \.self) {
+                        Text($0.description)
+                    }
+                }
+                Spacer()
                 Picker(units.description, selection: $unit) {
                     ForEach(units, id: \.self) {
                         Text($0)
@@ -60,6 +65,7 @@ struct EnterGoal: View {
                 }
             }
             .padding(.horizontal)
+             
             
             if selectedFrequency.lowercased().contains("once daily") {
                 VStack(alignment: .leading) {
@@ -106,14 +112,13 @@ struct EnterGoal: View {
                 logger.info("second start time: \(dates[1])")
                 logger.info("third start time: \(dates[2])")
                 
-                goals.addGoal(goal: CommonGoal(id: UUID(), name: self.name, description: self.description, dates: dates, isActive: true, isCompleted: true, dosage: self.dosage, frequency: self.selectedFrequency))
+                goals.addGoal(goal: CommonGoal(id: UUID(), name: self.name, description: self.description, dates: dates, isActive: true, isCompleted: true, dosage: self.dosage, units: self.unit, frequency: self.selectedFrequency))
                 
-                self.name = ""
-                self.description = ""
+                self.name = types.sorted(by: <)[0]
+                self.description = "no description"
                 self.dates = Array(repeating: Date(), count: 3)
-                self.dosage = 0
-                self.selectedFrequency = "Once Daily"
-
+                self.dosage = amounts.sorted(by: <)[0]
+                self.selectedFrequency = frequencies.sorted(by: <)[0]
                 
             }), label: ({
                 Image(systemName: "plus.arrow.trianglehead.clockwise")
