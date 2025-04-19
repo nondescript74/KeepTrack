@@ -14,6 +14,7 @@ struct CommonGoal: Codable, Identifiable {
     var dates: [Date] = [Date()]
     var isActive: Bool = true
     var isCompleted: Bool = false
-    var dosage: Int = 1
+    var dosage: Double = 14
+    var units: String? = "pills"
     var frequency: String = "daily"
 }
