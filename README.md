@@ -1,10 +1,11 @@
 ## About KeepTrack
 
-An application that keeps track of water  and medication intake throughtout the day
+An application that keeps track of different kinds of intake such as water, medication and other things you take throughtout the day
 
-It also tracks intake against goals setup throughout the day to ensure water and medications are taken on time.
-
+It also tracks your intake against goals you may wish to setup.  Goals can be such things as "once daily", "six times a day" for example.
+When you enter something you take - 
 > [!TIP]
 > Try this out! Ask Siri "Siri, keeptrack add water" or "Siri, show water"
-
-Uses the new @Observation and @MainActor
+- it tracks it against any goals you may have set.
+- 
+Uses the new Swift @Observable, @Environment and @MainActor (instead of @ObservableObject, @Published, @EnvironmentObject)
