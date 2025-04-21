@@ -16,14 +16,14 @@ import OSLog
     let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
     
     init() {
-        let fileMgr = FileManager.default
-        let urls = fileMgr.urls(for: .documentDirectory, in: .userDomainMask)
+//        let fileMgr = FileManager.default
+//        let urls = fileMgr.urls(for: .documentDirectory, in: .userDomainMask)
         if let docDirUrl = urls.first {
             let fileURL = docDirUrl.appendingPathComponent("goalsstore.json")
-            if fileMgr.fileExists(atPath: fileURL.path) {
+            if FileManager.default.fileExists(atPath: fileURL.path) {
                 logger.info( "fileURL for existing history \(fileURL)")
                 do {
-                    let temp = fileMgr.contents(atPath: fileURL.path)!
+                    let temp = FileManager.default.contents(atPath: fileURL.path) ?? Data()
                     if temp.count == 0 {
                         goals = []
                         logger.info("goalsstore.json file is empty")
@@ -36,7 +36,7 @@ import OSLog
                     fatalError( "Couldn't read goals")
                 }
             } else {
-                fileMgr.createFile(atPath: docDirUrl.path().appending("goalsstore.json"), contents: nil)
+                FileManager.default.createFile(atPath: docDirUrl.path().appending("goalsstore.json"), contents: nil)
                 logger.info( "Created file goalsstore.json")
                 goals = []
             }

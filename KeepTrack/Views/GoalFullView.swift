@@ -17,10 +17,6 @@ struct GoalFullView: View {
     var goal:CommonGoal
     
     @State fileprivate var name: String
-    @State fileprivate var descrip: String
-    @State fileprivate var dosage: Double
-    @State fileprivate var unitsz: String
-    @State fileprivate var frequency: String
     @State fileprivate var dates: [Date]
     @State fileprivate var isActive: Bool
     @State fileprivate var isCompleted: Bool
@@ -28,32 +24,44 @@ struct GoalFullView: View {
     init(goal:CommonGoal) {
         self.goal = goal
         self.name = goal.name
-        self.dosage = goal.dosage
-        self.unitsz = goal.units ?? "pills"
-        self.frequency = goal.frequency
         self.isActive = goal.isActive
         self.isCompleted = goal.isCompleted
         self.dates = goal.dates
-        self.descrip = goal.description
     }
-
+    
+    fileprivate func getMatchingDesription() -> String {
+        return matchingDescriptionDictionary[name] ?? "no description"
+    }
+    
+    fileprivate func getMatchingUnits() -> String {
+        return matchingUnitsDictionary[name] ?? "no units"
+    }
+    
+    fileprivate func getMatchingAmounts() -> Double {
+        return matchingAmountDictionary[name] ?? 0.0
+    }
+    
+    fileprivate func getMatchingFrequency() -> String {
+        return matchingFrequencyDictionary[name] ?? "no frequency"
+    }
+    
     var body: some View {
         VStack {
-            Section(header: Text("Goal Details").font(.headline)) {
-                Text(goal.name)
-                    .font(.subheadline)
-                HStack {
-                    Text(goal.dosage.description)
-                    Text(goal.units ?? "no units")
-                }
-                    .font(.caption)
-                Text(goal.isActive ? "Active" : "Inactive")
-                Text(goal.isCompleted ? "Completed" : "Incomplete")
-                Text((frequency.lowercased().contains("twice") ? "Take twice a day" : frequency.lowercased().contains("three") ? "Take three times a day" : frequency.lowercased().contains("six") ? "Take six times a day" : "Take once a day"))
-                
+            
+            Text(goal.name)
+                .font(.subheadline)
+            HStack {
+                Text(getMatchingAmounts().description)
+                Text(getMatchingUnits())
+                Text(getMatchingFrequency())
             }
-            .padding(.bottom)
-
+            
+            Text(goal.isActive ? "Active" : "Inactive")
+            Text(goal.isCompleted ? "Completed" : "Incomplete")
+            
+            
+                .padding(.bottom)
+            
             VStack {
                 Text("Edit this Medication Goal")
                     .font(.title)
@@ -64,58 +72,17 @@ struct GoalFullView: View {
                 }
                 HStack {
                     Text("Dosage: ")
-                    Picker(amounts.description, selection: $dosage) {
-                        ForEach(amounts, id: \.self) {
-                            Text($0.description)
-                        }
-                    }
-                    .padding(.trailing)
+                    Text(getMatchingAmounts().description)
+                    
                     Text("Units: ")
-                    Picker(units.description, selection: $unitsz) {
-                        ForEach(units, id: \.self) {
-                            Text($0.description)
-                        }
-                    }
+                    Text(getMatchingUnits())
                 }
                 .padding(.horizontal)
-                
-                if frequency.lowercased().contains("once daily") {
-                    VStack(alignment: .leading) {
-                        DatePicker("Start Time", selection: $dates[0].animation(.default), displayedComponents: .hourAndMinute)
-                    }
-                    .padding(.horizontal)
-                } else if frequency.lowercased().contains("twice") {
-                    VStack(alignment: .leading) {
-                        DatePicker("Start Time 1", selection: $dates[0].animation(.default), displayedComponents: .hourAndMinute)
-                        DatePicker("Start Time 2", selection: $dates[1].animation(.default), displayedComponents: .hourAndMinute)
-                    }
-                    .padding(.horizontal)
-                } else if frequency.lowercased().contains("three") {
-                    VStack(alignment: .leading) {
-                        DatePicker("Start Time 1", selection: $dates[0].animation(.default), displayedComponents: .hourAndMinute)
-                        DatePicker("Start Time 2", selection: $dates[1].animation(.default), displayedComponents: .hourAndMinute)
-                        DatePicker("Start Time 3", selection: $dates[2].animation(.default), displayedComponents: .hourAndMinute)
-                    }
-                    .padding(.horizontal)
-                } else if frequency.lowercased().contains("six") {
-                    VStack(alignment: .leading) {
-                        DatePicker("Start Time 1", selection: $dates[0].animation(.default), displayedComponents: .hourAndMinute)
-                        DatePicker("Start Time 2", selection: $dates[1].animation(.default), displayedComponents: .hourAndMinute)
-                        DatePicker("Start Time 3", selection: $dates[2].animation(.default), displayedComponents: .hourAndMinute)
-                        DatePicker("Start Time 4", selection: $dates[3].animation(.default), displayedComponents: .hourAndMinute)
-                        DatePicker("Start Time 5", selection: $dates[4].animation(.default), displayedComponents: .hourAndMinute)
-                        DatePicker("Start Time 6", selection: $dates[5].animation(.default), displayedComponents: .hourAndMinute)
-                        
-                    }
-                    .padding(.horizontal)
-                }
                 
                 HStack {
                     Text("Is Active")
                     Toggle("Is Active", isOn: $isActive)
-                }
-                
-                HStack {
+                    Spacer()
                     Text("Is Completed")
                     Toggle("Is Completed", isOn: $isCompleted)
                 }
@@ -124,7 +91,10 @@ struct GoalFullView: View {
             Button("Change Goal", action: {
                 logger.info("Deleting goal with id \(self.goal.id)")
                 goals.removeGoalAtId(uuid: self.goal.id)
-                goals.addGoal(goal: CommonGoal(id: UUID(), name: self.name, description: self.descrip, dates: self.dates, isActive: self.isActive, isCompleted: self.isCompleted, dosage: self.dosage, units: self.unitsz, frequency: self.frequency))
+                
+                let goal = CommonGoal(id: UUID(), name: self.name, description: getMatchingDesription(), dates: self.dates, isActive: self.isActive, isCompleted: self.isCompleted, dosage: getMatchingAmounts(), units: getMatchingUnits(), frequency: getMatchingFrequency())
+                
+                goals.addGoal(goal: goal)
                 logger.info("added new goal")
                 dismiss()
             })
@@ -136,7 +106,8 @@ struct GoalFullView: View {
 }
 
 #Preview {
-    GoalFullView(goal: CommonGoal(id: UUID(), name: "Test Goal", description: "Test Description", dates: [Date()], isActive: true, isCompleted: false, dosage: 1, frequency: "once daily"))
+    let goal = CommonGoal(id: UUID(), name: "water", description: matchingDescriptionDictionary["water"] ?? "no description", dates: [Date(), Date().addingTimeInterval(60 * 60 * 2)], isActive: true, isCompleted: false, dosage: matchingAmountDictionary["water"] ?? 0.0, units: matchingUnitsDictionary["water"] ?? "drops", frequency: matchingFrequencyDictionary["water"] ?? "once a day")
+    GoalFullView(goal: goal)
         .environment(CommonGoals())
 }
 

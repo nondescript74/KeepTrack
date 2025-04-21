@@ -19,10 +19,10 @@ struct KeepTrackShortcuts: AppShortcutsProvider {
             systemImageName: "wineglass"
         )
         AppShortcut(
-            intent: ShowTodaysWater(),
+            intent: ShowTodaysWaterIntent(),
             phrases: [
                 "\(.applicationName) show water",
-                "\(.applicationName) show today water",
+                "\(.applicationName) todays water",
                 "\(.applicationName) check water"
             ],
             shortTitle: "show water",

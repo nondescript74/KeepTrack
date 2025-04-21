@@ -1,5 +1,5 @@
 //
-//  ShowTodaysWater.swift
+//  ShowTodaysWaterIntent.swift
 //  KeepTrack
 //
 //  Created by Zahirudeen Premji on 3/24/25.
@@ -7,7 +7,7 @@
 
 import AppIntents
 
-struct ShowTodaysWater: AppIntent {
+struct ShowTodaysWaterIntent: AppIntent {
     static let title: LocalizedStringResource = "Show Todays Water"
     
     func perform() async throws -> some IntentResult & ProvidesDialog {

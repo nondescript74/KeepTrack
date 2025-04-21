@@ -44,7 +44,6 @@ struct History: View {
                                             Text(entry.date, style: .time)
                                             Text(entry.name)
                                         }
-                                        .font(.caption)
                                     }
                                 }
                             }

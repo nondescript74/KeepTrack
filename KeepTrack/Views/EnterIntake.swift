@@ -15,9 +15,7 @@ struct EnterIntake: View {
     @Environment(\.dismiss) var dismiss
     
     @State var name: String = types.sorted(by: {$0 < $1})[6]
-    @State var amount: Double = amounts.sorted(by: {$0 < $1})[12]
     @State var frequency: String = frequencies.sorted(by: {$0 < $1})[1]
-    @State var unit: String = units.sorted(by: {$0 < $1})[1]
     
     
     private func getToday() -> [CommonEntry] {
@@ -45,9 +43,9 @@ struct EnterIntake: View {
             let hourGoal = componentsGoal.hour
             let minuteGoal = componentsGoal.minute
             
-            if (hourGoal! < hourNow!) {
+            if (hourGoal ?? 1 < hourNow ?? 1) {
                 todaysGoalsActiveInTime.append(agoal)
-            } else if (hourGoal! == hourNow!) && (minuteGoal! <= minuteNow!) {
+            } else if (hourGoal ?? 1 == hourNow ?? 1) && (minuteGoal ?? 1 <= minuteNow  ?? 1) {
                 todaysGoalsActiveInTime.append(agoal)
             }
             // array of timegoals
@@ -73,6 +71,14 @@ struct EnterIntake: View {
         return result
     }
     
+    fileprivate func getMatchingUnit() -> String {
+        return matchingUnitsDictionary.first(where: {$0.key == name})?.value ?? ""
+    }
+    
+    fileprivate func getMatchingAmount() -> Double {
+        return matchingAmountDictionary.first(where: {$0.key == name})?.value ?? 0
+    }
+    
     var body: some View {
         VStack {
             Text("Enter intake details")
@@ -88,25 +94,19 @@ struct EnterIntake: View {
             }
             HStack {
                 Text("amount")
-                Picker("Select amount", selection: $amount) {
-                    ForEach(amounts.sorted(by: {$0 < $1}), id: \.self) {
-                        Text($0.description)
-                    }
-                }
+                Text(getMatchingAmount().formatted())
+                Text(getMatchingUnit())
             }
-            HStack {
-                Text("Units")
-                Picker("Select unit", selection: $unit) {
-                    ForEach(units.sorted(by: {$0 < $1}), id: \.self) {
-                        Text($0)
-                            .font(.subheadline)
-                    }
-                }
-            }
+            .padding(.bottom)
             Button("Add") {
-                logger.info("Adding intake  \(name)")
-                store.addEntry(entry: CommonEntry(id: UUID(), date: Date(), units: unit, amount: amount, name: name, goalMet: isGoalMet())
-                )
+                
+                let entry = CommonEntry(id: UUID(), date: Date(), units: getMatchingUnit(), amount: getMatchingAmount(), name: name, goalMet: isGoalMet())
+                
+                store.addEntry(entry: entry)
+                
+                logger.info("Added intake  \(name) \(getMatchingAmount()) units \(getMatchingUnit())")
+                 
+                
                 dismiss()
             }.disabled(name.isEmpty)
             Spacer()
