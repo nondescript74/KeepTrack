@@ -18,6 +18,8 @@ struct AppDashboard: View {
     var body: some View {
         NavigationStack {
             History()
+            
+            CommonDisplay()
                 
             LazyVGrid(columns: columnLayout, alignment: .center) {
                 VStack {
@@ -29,7 +31,7 @@ struct AppDashboard: View {
                     .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50))
                     Text("Enter intake")
                         .foregroundColor(.blue)
-                        .font(.caption)
+                        .font(.callout)
                 }
                 .padding(.top)
 
@@ -42,7 +44,7 @@ struct AppDashboard: View {
                     .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50))
                     Text("Enter Goal")
                         .foregroundColor(.blue)
-                        .font(.caption)
+                        .font(.callout)
                 }
 
                 .padding(.top)
@@ -53,9 +55,9 @@ struct AppDashboard: View {
                             .frame(minHeight: 50)
                     }
                     .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50))
-                    Text("Edit History")
+                    Text("Edit Intake")
                         .foregroundColor(.red)
-                        .font(.caption)
+                        .font(.callout)
                 }
                 .padding(.top)
                 VStack {
@@ -67,11 +69,10 @@ struct AppDashboard: View {
                     .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50))
                     Text("Edit Goals")
                         .foregroundColor(.red)
-                        .font(.caption)
+                        .font(.callout)
                 }
                 .padding(.top)
             }
-            .overlay(Rectangle().stroke(style: StrokeStyle(lineWidth: 2)))
             .padding(.horizontal)
             .background(Color.gray.opacity(0.2))
             

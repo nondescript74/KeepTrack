@@ -15,50 +15,81 @@ struct History: View {
     
     let rowLayout = Array(repeating: GridItem(.flexible(minimum: 10)), count: 3)
     
-    private func getToday() -> [CommonEntry] {
-        let todays = store.history.filter { Calendar.current.isDateInToday($0.date) }
-        return  todays
+    fileprivate func getToday() -> [CommonEntry] {
+        return store.history.filter { Calendar.current.isDateInToday($0.date) }
     }
     
-    private func getYesterday() -> [CommonEntry] {
-        let yesterdays = store.history.filter { Calendar.current.isDateInYesterday($0.date) }
-        return  yesterdays
+    fileprivate func getYesterday() -> [CommonEntry] {
+        return store.history.filter { Calendar.current.isDateInYesterday($0.date) }
     }
+    
+    fileprivate func sortTodayByName(name: String) -> [CommonEntry] {
+        return getToday().filter { $0.name.lowercased() == name.lowercased() }.sorted { $0.date < $1.date }
+    }
+    
+    fileprivate func sortYesterdayByName(name: String) -> [CommonEntry] {
+        return getYesterday().filter { $0.name.lowercased() == name.lowercased() }.sorted { $0.date < $1.date }
+    }
+    
     var body: some View {
         VStack {
-            Text("History")
+            Text("Intake History")
                 .font(.headline)
-
+            
             List {
                 Section(header: Text("Today")) {
-                    HStack {
-
-                        VStack(alignment: .leading) {
-                            if getToday().isEmpty {
-                                Text("Nothing taken today")
-                                    .foregroundColor(.gray)
-                            } else {
-                                LazyHGrid(rows: rowLayout) {
-                                    ForEach(getToday(), id: \.self.date) { entry in
+                    VStack(alignment: .leading) {
+                        if getToday().isEmpty {
+                            Text("Nothing taken today")
+                                .foregroundColor(.gray)
+                        } else {
+                            ForEach(types, id: \.self) { type in
+                                if sortTodayByName(name: type).isEmpty {
+                                    Text("no \(type) taken")
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                } else {
+                                    ScrollView(.horizontal) {
                                         HStack {
-                                            Text(entry.date, style: .time)
-                                            Text(entry.name)
+                                            ForEach(sortTodayByName(name: type)) { entry in
+                                                HStack {
+                                                    Text(entry.date, style: .time)
+                                                    Text(entry.name)
+                                                }
+                                                .font(.caption2)
+                                                .foregroundStyle(entry.goalMet ? .green : .red)
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
-                        Spacer()
-                        CommonDisplay()
-
                     }
-                    .background(Color.green.opacity(0.1))
-                    Text("Took " + getToday().count.description)
-                        .foregroundStyle(store.history.count >= goals.goals.count ? Color.green : Color.red)
                 }
                 
                 Section(header: Text("Yesterday")) {
-                    Text("Total " + getYesterday().count.description)
+                    VStack(alignment: .leading) {
+                        if getYesterday().isEmpty {
+                            Text("Nothing taken yesterday")
+                                .foregroundColor(.red)
+                        } else {
+                            ForEach(types, id: \.self) { type in
+                                if sortYesterdayByName(name: type).isEmpty {
+                                    Text("no \(type) taken")
+                                } else {
+                                    HStack {
+                                        ForEach(sortTodayByName(name: type)) { entry in
+                                            HStack {
+                                                Text(entry.name)
+                                                Text(sortTodayByName(name: type).count.description)
+                                            }
+                                            .font(.caption)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
