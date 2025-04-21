@@ -42,53 +42,74 @@ struct EnterGoal: View {
     
     
     var body: some View {
-        VStack {
-            Text("Enter Goal Details").font(.headline)
-            
-            HStack {
-                Text("Select intake: ")
-                Spacer()
-                Picker("Select intake", selection: $name) {
-                    ForEach(types, id: \.self) {
-                        Text($0)
+        
+        Section{
+            VStack {
+                Text("Enter Goal Details").font(.headline)
+                
+                HStack {
+                    Text("Select intake: ")
+                    Spacer()
+                    Picker("Select intake", selection: $name) {
+                        ForEach(types, id: \.self) {
+                            Text($0)
+                        }
                     }
+                }.padding(.horizontal)
+                
+                HStack {
+                    Text(getMatchingDesription())
+                        .foregroundStyle(.purple)
                 }
-            }.padding(.horizontal)
-            
-            HStack {
-                Text(getMatchingDesription())
-            }
-            .padding(.horizontal)
-            
-            HStack {
-                Text("Dosage: ")
-                Text(getMatchingAmounts().description)
-                Spacer()
-                Text(getMatchingUnits())
-            }
-            .padding(.horizontal)
-            
-            Button(action: ({
-                if self.name.isEmpty {
-                    return
+                .padding([.trailing, .bottom])
+                
+                HStack {
+                    Text("Dosage: ")
+                    Text(getMatchingAmounts().description)
+                    Text(getMatchingUnits())
+                    Text(getMatchingFrequency())
                 }
+                .padding(.horizontal)
+                .foregroundStyle(.blue)
                 
-                let goal = CommonGoal(id: UUID(), name: name, description: getMatchingDesription(), dates: dates, isActive: true, isCompleted: false, dosage: getMatchingAmounts(), units: getMatchingUnits(), frequency: getMatchingFrequency() )
-                
-                goals.addGoal(goal: goal)
-                
-                self.name = types.sorted(by: <)[0]
-                self.dates = [Date()]
-                logger.info("added a goal")
-                
-            }), label: ({
-                Image(systemName: "plus.arrow.trianglehead.clockwise")
-                    .padding(10)
-                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(style: StrokeStyle(lineWidth: 2)))
-            }))
-            .disabled(name.isEmpty)
+                Button(action: ({
+                    if self.name.isEmpty {
+                        return
+                    }
+                    
+                    let goal = CommonGoal(id: UUID(), name: name, description: getMatchingDesription(), dates: dates, isActive: true, isCompleted: false, dosage: getMatchingAmounts(), units: getMatchingUnits(), frequency: getMatchingFrequency() )
+                    
+                    goals.addGoal(goal: goal)
+                    
+                    self.name = types.sorted(by: <)[0]
+                    self.dates = [Date()]
+                    logger.info("added a goal")
+                    
+                }), label: ({
+                    Image(systemName: "plus.arrow.trianglehead.clockwise")
+                        .padding(10)
+                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(style: StrokeStyle(lineWidth: 2)))
+                }))
+                .padding(.top)
+                .disabled(name.isEmpty)
+            }
+            .padding(.bottom)
         }
-        Spacer()
+        
+        Divider()
+        
+        Section {
+            VStack {
+                Text("Current goals are :")
+                    .padding()
+                ForEach(goals.goals, id: \.id) { goal in
+                    Text(goal.name)
+                        .foregroundStyle(.purple)
+                        .padding(.bottom, 5)
+                }
+            }
+            Spacer()
+        }
     }
 }
 

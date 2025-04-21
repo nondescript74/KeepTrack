@@ -16,8 +16,6 @@ import OSLog
     let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
     
     init() {
-//        let fileMgr = FileManager.default
-//        let urls = fileMgr.urls(for: .documentDirectory, in: .userDomainMask)
         if let docDirUrl = urls.first {
             let fileURL = docDirUrl.appendingPathComponent("goalsstore.json")
             if FileManager.default.fileExists(atPath: fileURL.path) {
