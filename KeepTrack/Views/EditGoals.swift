@@ -37,22 +37,10 @@ struct EditGoals: View {
 
 #Preview {
     @Previewable @State var items: [CommonGoal] =
-    [CommonGoal(id: UUID(), name: "Test Goal A", description: "test A", dates: [Date()], dosage: 1, units: "pills", frequency: "daily"),
-     CommonGoal(id: UUID(), name: "Test Goal B", description: "test B", dates: [Date(), Date().addingTimeInterval(60 * 60 * 12)], dosage: 500, units: "mg", frequency: "twice daily")]
+    [CommonGoal(id: UUID(), name: "Test Goal A", description: "test A", dates: [Date()], isActive: true, isCompleted: false, dosage: 1, units: "pills", frequency: "daily"),
+     CommonGoal(id: UUID(), name: "Test Goal B", description: "test B", dates: [Date(), Date().addingTimeInterval(60 * 60 * 12)], isActive: true, isCompleted: false, dosage: 500, units: "mg", frequency: "twice daily")]
     
     EditGoals(items: $items)
         .environment(CommonGoals())
 }
 
-/*
- var id: UUID
- var name: String
- var description: String
- var dates: [Date] = [Date()]
- var isActive: Bool = true
- var isCompleted: Bool = false
- var dosage: Int = 1
- var units: String = "pills"
- var frequency: String = "daily"
-}
- */

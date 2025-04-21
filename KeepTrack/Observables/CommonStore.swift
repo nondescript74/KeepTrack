@@ -17,15 +17,15 @@ import OSLog
     let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
     
     init() {
-        let fileMgr = FileManager.default
-        let urls = fileMgr.urls(for: .documentDirectory, in: .userDomainMask)
+//        let fileMgr = FileManager.default
+//        let urls = fileMgr.urls(for: .documentDirectory, in: .userDomainMask)
         if let docDirUrl = urls.first {
             let fileURL = docDirUrl.appendingPathComponent("entrystore.json")
-            if fileMgr.fileExists(atPath: fileURL.path) {
+            if FileManager.default.fileExists(atPath: fileURL.path) {
                 logger.info( "fileURL for existing history \(fileURL)")
                 
                 do {
-                    let temp = fileMgr.contents(atPath: fileURL.path)!
+                    let temp = FileManager.default.contents(atPath: fileURL.path)!
                     if temp.count == 0 {
                         history = []
                         logger.info("history is empty")
@@ -40,7 +40,7 @@ import OSLog
                     
                 
             } else {
-                fileMgr.createFile(atPath: docDirUrl.path().appending("entrystore.json"), contents: nil)
+                FileManager.default.createFile(atPath: docDirUrl.path().appending("entrystore.json"), contents: nil)
                 logger.info( "Created file entrystore.json")
                 history = []
             }
@@ -50,7 +50,6 @@ import OSLog
     }
     
     fileprivate func save() {
-        
         let fileURL = URL(fileURLWithPath: urls[0].appendingPathComponent("entrystore.json").path)
         logger.info( "fileURL for existing history \(fileURL.lastPathComponent)")
         
