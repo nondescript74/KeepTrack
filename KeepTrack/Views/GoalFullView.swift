@@ -48,6 +48,10 @@ struct GoalFullView: View {
     var body: some View {
         VStack {
             
+            Text("Edit this Goal")
+                .font(.title)
+                .foregroundStyle(Color.black)
+            
             Text(goal.name)
                 .font(.subheadline)
             HStack {
@@ -63,29 +67,29 @@ struct GoalFullView: View {
                 .padding(.bottom)
             
             VStack {
-                Text("Edit this Medication Goal")
-                    .font(.title)
-                    .foregroundStyle(Color.black)
+                
                 HStack {
                     Text("Name")
                     TextField("Name", text: $name)
                 }
+                .padding(.horizontal)
+                
                 HStack {
                     Text("Dosage: ")
                     Text(getMatchingAmounts().description)
-                    
+                    Spacer()
                     Text("Units: ")
                     Text(getMatchingUnits())
                 }
                 .padding(.horizontal)
                 
                 HStack {
-                    Text("Is Active")
+                 
                     Toggle("Is Active", isOn: $isActive)
                     Spacer()
-                    Text("Is Completed")
                     Toggle("Is Completed", isOn: $isCompleted)
                 }
+                .padding([.horizontal, .bottom])
             }
             
             Button("Change Goal", action: {
