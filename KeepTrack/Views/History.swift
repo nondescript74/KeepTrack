@@ -16,19 +16,27 @@ struct History: View {
     let rowLayout = Array(repeating: GridItem(.flexible(minimum: 10)), count: 3)
     
     fileprivate func getToday() -> [CommonEntry] {
-        return store.history.filter { Calendar.current.isDateInToday($0.date) }
+        let myReturn = store.history.filter { Calendar.current.isDateInToday($0.date) }
+        logger.info("\(myReturn)")
+        return myReturn
     }
     
     fileprivate func getYesterday() -> [CommonEntry] {
-        return store.history.filter { Calendar.current.isDateInYesterday($0.date) }
+        let myReturn = store.history.filter { Calendar.current.isDateInYesterday($0.date) }
+        logger.info("\(myReturn)")
+        return myReturn
     }
     
     fileprivate func sortTodayByName(name: String) -> [CommonEntry] {
-        return getToday().filter { $0.name.lowercased() == name.lowercased() }.sorted { $0.date < $1.date }
+        let myReturn = getToday().filter { $0.name.lowercased() == name.lowercased() }.sorted { $0.date < $1.date }
+        logger.info("\(myReturn)")
+        return myReturn
     }
     
     fileprivate func sortYesterdayByName(name: String) -> [CommonEntry] {
-        return getYesterday().filter { $0.name.lowercased() == name.lowercased() }.sorted { $0.date < $1.date }
+        let myReturn = getYesterday().filter { $0.name.lowercased() == name.lowercased() }.sorted { $0.date < $1.date }
+        logger.info("\(myReturn)")
+        return myReturn
     }
     
     var body: some View {
@@ -78,10 +86,10 @@ struct History: View {
                                     Text("no \(type) taken")
                                 } else {
                                     HStack {
-                                        ForEach(sortTodayByName(name: type)) { entry in
+                                        ForEach(sortYesterdayByName(name: type)) { entry in
                                             HStack {
                                                 Text(entry.name)
-                                                Text(sortTodayByName(name: type).count.description)
+                                                Text(sortYesterdayByName(name: type).count.description)
                                             }
                                             .font(.caption)
                                         }
