@@ -15,7 +15,7 @@ struct EnterIntake: View {
     @Environment(\.dismiss) var dismiss
     
     @State var name: String = types.sorted(by: {$0 < $1})[6]
-    @State var frequency: String = frequencies.sorted(by: {$0 < $1})[1]
+//    @State var frequency: String = frequencies.sorted(by: {$0 < $1})[1]
     
     
     private func getTodaysIntakeForName() -> [CommonEntry] {
@@ -99,7 +99,7 @@ struct EnterIntake: View {
         } else {
             result = false
             let goal = goalsForName[0]
-            var dateForGoal = goal.dates[0]
+            let dateForGoal = goal.dates[0]
             var dateComponentsGoal = Calendar.current.dateComponents([.hour,.minute], from: dateForGoal)
             // previous intake may have met goals already and is not empty
             let todaysIntakeByNameSorted = getTodaysIntakeForName().sorted { $0.date < $1.date }  // these are all today so no danger of different day
@@ -114,7 +114,8 @@ struct EnterIntake: View {
                     result = false
                 }
             case 2, 3, 4, 5:
-                break
+                // example metformin is twice daily
+                return true
                 
             case 6:
                 // water

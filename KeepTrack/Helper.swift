@@ -12,7 +12,7 @@ let types = ["Rosuvastatin", "Metformin", "Losartan", "Latanoprost", "Water", "S
 
 let units: [String] = ["mg", "fluid ounces", "cups", "g", "ozs", "ml", "liters", "pills", "drops"]
 
-let frequencies: [String] = ["Once daily", "Twice daily", "Three times daily", "Six times daily", "Once a week", "twice a week", "three times a week"]
+//let frequencies: [String] = ["Once daily", "Twice daily", "Three times daily", "Six times daily", "Once a week", "twice a week", "three times a week"]
 
 let matchingUnitsDictionary: Dictionary<String, String> = ["Rosuvastatin": "mg", "Metformin": "mg", "Losartan": "mg", "Latanoprost": "drops", "Water": "fluid ounces", "Smoothie": "fluid ounces", "Protein": "g"]
 
