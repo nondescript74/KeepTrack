@@ -19,6 +19,10 @@ struct AppDashboard: View {
         NavigationStack {
             History()
             
+            HStack {
+                Text("\(String(describing: Bundle.main.infoDictionary?["CFBundleShortVersionString"]) + String(describing: Bundle.main.infoDictionary?["CFBundleVersion"])))")
+            }
+            
             CommonDisplay()
                 
             LazyVGrid(columns: columnLayout, alignment: .center) {

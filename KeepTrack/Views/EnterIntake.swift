@@ -18,7 +18,7 @@ struct EnterIntake: View {
     @State var frequency: String = frequencies.sorted(by: {$0 < $1})[1]
     
     
-    private func getToday() -> [CommonEntry] {
+    private func getTodaysIntakeForName() -> [CommonEntry] {
         let todays = store.history.filter { Calendar.current.isDateInToday($0.date) }
         return  todays
     }
@@ -28,6 +28,18 @@ struct EnterIntake: View {
         let todaysGoals = goals.goals.filter { $0.isActive}
         logger.info("Today's active med goals: \(todaysGoals)")
         return todaysGoals
+    }
+    
+    fileprivate func getTodaysGoalsByName() -> [CommonGoal] {
+        let todaysGoalsActive = getTodaysGoals()
+        var todaysGoalsActiveByName: [CommonGoal] = []
+        for agoal in todaysGoalsActive {
+            if agoal.name == name {
+                todaysGoalsActiveByName.append(agoal)
+            }
+        }
+        logger.info( "Today's active goals for \(name) : \(todaysGoalsActiveByName)")
+        return todaysGoalsActiveByName.sorted(by: {$0.dates[0] < $1.dates[0]})
     }
     
     fileprivate func getTodaysGoalsInTime() -> [CommonGoal] {
@@ -63,11 +75,56 @@ struct EnterIntake: View {
         // another way of looking at this is if the number of instances of that intake type + 1 is equal to or greater than the goal instances, then it is goal met
         
         var result: Bool = false
+        let goalsForName = getTodaysGoalsByName()
+        let todaysIntakeByName = getTodaysIntakeForName()
+        if goalsForName.isEmpty { return true }
+        if goalsForName.count > 1 { logger.warning("More than one goal for \(name), using first one") }
+        if todaysIntakeByName.isEmpty {
+            let goal = goalsForName[0]
+            let dateForGoal = goal.dates[0]
+            let dateComponentsGoal = Calendar.current.dateComponents([.hour,.minute], from: dateForGoal)
+            
+            let currentDateTime = Date()
+            let componentsNow = Calendar.current.dateComponents([.hour,.minute], from: currentDateTime)
+            let hourNow = componentsNow.hour
+            let minuteNow = componentsNow.minute
+            
+            if (hourNow ?? 1 < dateComponentsGoal.hour ?? 1) {
+                result = true
+            } else if (hourNow ?? 1 == dateComponentsGoal.hour ?? 1 && minuteNow ?? 0 < dateComponentsGoal.minute ?? 0) {
+                result = true
+            } else {
+                result = false
+            }
+        } else {
+            result = false
+            let goal = goalsForName[0]
+            var dateForGoal = goal.dates[0]
+            var dateComponentsGoal = Calendar.current.dateComponents([.hour,.minute], from: dateForGoal)
+            // previous intake may have met goals already and is not empty
+            let todaysIntakeByNameSorted = getTodaysIntakeForName().sorted { $0.date < $1.date }  // these are all today so no danger of different day
+            switch goalsForName[0].dates.count {
+            case 0:
+                result = true
+            case 1:
+                let todaysDateComponents = Calendar.current.dateComponents([.hour,.minute], from: todaysIntakeByNameSorted[0].date)
+                if todaysDateComponents.hour ?? 0 <= dateComponentsGoal.hour ?? 0 {
+                    result = true
+                } else {
+                    result = false
+                }
+            case 2, 3, 4, 5:
+                break
+                
+            case 6:
+                // water
+                break
+                
+            default:
+                break
+            }
+        }
         
-        let goalsAITime = self.getTodaysGoalsInTime()  // active goals in time
-        result = goalsAITime.count <= getTodaysGoals().count + 1
-        // adding one as this is yet to be added into history
-        result ? logger.info("Intake greater than goals!!!") : logger.info("Intake less than goals")
         return result
     }
     
@@ -105,7 +162,7 @@ struct EnterIntake: View {
                 store.addEntry(entry: entry)
                 
                 logger.info("Added intake  \(name) \(getMatchingAmount()) units \(getMatchingUnit())")
-                 
+                
                 
                 dismiss()
             }.disabled(name.isEmpty)
