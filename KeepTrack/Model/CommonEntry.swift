@@ -7,11 +7,15 @@
 
 import Foundation
 
-struct CommonEntry: Codable, Identifiable {
+struct CommonEntry: Codable, Identifiable, Hashable {
     var id: UUID
     var date: Date
     var units: String
     var amount: Double
     var name: String
     var goalMet: Bool
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
+    }
 }

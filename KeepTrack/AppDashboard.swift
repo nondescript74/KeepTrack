@@ -19,11 +19,7 @@ struct AppDashboard: View {
         NavigationStack {
             History()
             
-            HStack {
-                Text("\(String(describing: Bundle.main.infoDictionary?["CFBundleShortVersionString"]) + String(describing: Bundle.main.infoDictionary?["CFBundleVersion"])))")
-            }
-            
-            CommonDisplay()
+            GoalDisplayByName()
                 
             LazyVGrid(columns: columnLayout, alignment: .center) {
                 VStack {
@@ -77,8 +73,13 @@ struct AppDashboard: View {
                 }
                 .padding(.top)
             }
-            .padding(.horizontal)
+            .padding([.horizontal, .bottom])
             .background(Color.gray.opacity(0.2))
+            
+            HStack {
+                Text("\(String(describing: Bundle.main.infoDictionary?["CFBundleShortVersionString"]) + String(describing: Bundle.main.infoDictionary?["CFBundleVersion"])))")
+            }
+            .font(.footnote)
             
         }
         .environment(goals)

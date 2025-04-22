@@ -17,27 +17,28 @@ struct History: View {
     
     fileprivate func getToday() -> [CommonEntry] {
         let myReturn = store.history.filter { Calendar.current.isDateInToday($0.date) }
-        logger.info("\(myReturn)")
+        logger.info("gT\(myReturn)")
         return myReturn
     }
     
     fileprivate func getYesterday() -> [CommonEntry] {
         let myReturn = store.history.filter { Calendar.current.isDateInYesterday($0.date) }
-        logger.info("\(myReturn)")
+        logger.info("gY \(myReturn)")
         return myReturn
     }
     
     fileprivate func sortTodayByName(name: String) -> [CommonEntry] {
-        let myReturn = getToday().filter { $0.name.lowercased() == name.lowercased() }.sorted { $0.date < $1.date }
-        logger.info("\(myReturn)")
+        let myReturn  = getToday().filter { $0.name.lowercased() == name.lowercased() }.sorted { $0.date < $1.date }
+        logger.info("sTBN \(myReturn)")
         return myReturn
     }
     
     fileprivate func sortYesterdayByName(name: String) -> [CommonEntry] {
-        let myReturn = getYesterday().filter { $0.name.lowercased() == name.lowercased() }.sorted { $0.date < $1.date }
-        logger.info("\(myReturn)")
+        let myReturn = getYesterday().filter { $0.name.lowercased() == name.lowercased() }.sorted { $0.date < $1.date }.uniqued()
+        logger.info("sYBN \(myReturn)")
         return myReturn
     }
+    
     
     var body: some View {
         VStack {
@@ -53,7 +54,7 @@ struct History: View {
                         } else {
                             ForEach(types, id: \.self) { type in
                                 if sortTodayByName(name: type).isEmpty {
-                                    Text("no \(type) taken")
+                                    Text("No \(type) ")
                                         .font(.caption)
                                         .foregroundStyle(.secondary)
                                 } else {
@@ -83,15 +84,24 @@ struct History: View {
                         } else {
                             ForEach(types, id: \.self) { type in
                                 if sortYesterdayByName(name: type).isEmpty {
-                                    Text("no \(type) taken")
+                                    Text("No \(type) ")
+                                        .font(.caption)
+                                        .foregroundStyle(.red)
                                 } else {
-                                    HStack {
-                                        ForEach(sortYesterdayByName(name: type)) { entry in
-                                            HStack {
-                                                Text(entry.name)
-                                                Text(sortYesterdayByName(name: type).count.description)
+                                    ScrollView(.horizontal) {
+                                        HStack {
+                                            ForEach(sortYesterdayByName(name: type)) { entry in
+                                                HStack {
+                                                    Text(entry.name)
+                                                    HStack {
+                                                        Text(Calendar.current.dateComponents([.hour], from: entry.date as Date).hour?.description ?? "")
+                                                        Text(":")
+                                                        Text(Calendar.current.dateComponents([.minute], from: entry.date as Date).minute?.description ?? "")
+                                                    }
+                                                    .foregroundStyle(.green)
+                                                }
+                                                .font(.caption)
                                             }
-                                            .font(.caption)
                                         }
                                     }
                                 }

@@ -14,15 +14,8 @@ struct EnterGoal: View {
     @Environment(CommonGoals.self) var goals
     @Environment(\.dismiss) var dismiss
     
-    @State private var name: String = types.sorted(by: <)[0]
-    @State private var dates: [Date] = [Date().addingTimeInterval(60 * 60 * 2), Date().addingTimeInterval(60 * 60 * 4), Date().addingTimeInterval(60 * 60 * 6), Date().addingTimeInterval(60 * 60 * 8), Date().addingTimeInterval(60 * 60 * 10), Date().addingTimeInterval(60 * 60 * 12)]
-
-    
-    fileprivate let dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "h:mm a"
-        return formatter
-    }()
+    @State fileprivate var name: String = types.sorted(by: <)[0]
+    @State fileprivate var startDate: Date = Date()
     
     fileprivate func getMatchingDesription() -> String {
          return matchingDescriptionDictionary[name] ?? "no description"
@@ -72,17 +65,38 @@ struct EnterGoal: View {
                 .padding(.horizontal)
                 .foregroundStyle(.blue)
                 
+                HStack {
+                    DatePicker(
+                            "Start Date",
+                            selection: $startDate,
+                            displayedComponents: [.hourAndMinute]
+                        )
+                }
+                .padding(.horizontal)
+                
                 Button(action: ({
                     if self.name.isEmpty {
                         return
                     }
                     
-                    let goal = CommonGoal(id: UUID(), name: name, description: getMatchingDesription(), dates: dates, isActive: true, isCompleted: false, dosage: getMatchingAmounts(), units: getMatchingUnits(), frequency: getMatchingFrequency() )
-                    
-                    goals.addGoal(goal: goal)
-                    
+                    if goals.goals.contains(where: { $0.name == self.name }) {
+                        
+                        let remain = goals.goals.filter( { $0.name == self.name } )
+                        if remain.count == 0 {
+                            fatalError( "Too many goals with same name: \(self.name)" )
+                        }
+                        var newDates = remain[0].dates
+                        newDates.append(startDate)
+                        let goal = CommonGoal(id: remain[0].id, name: name, description: getMatchingDesription(), dates: newDates, isActive: true, isCompleted: false, dosage: getMatchingAmounts(), units: getMatchingUnits(), frequency: getMatchingFrequency() )
+                        goals.removeGoalAtId(uuid: remain[0].id)
+                        goals.addGoal(goal: goal)
+                    } else {
+                        let goal = CommonGoal(id: UUID(), name: name, description: getMatchingDesription(), dates: [startDate], isActive: true, isCompleted: false, dosage: getMatchingAmounts(), units: getMatchingUnits(), frequency: getMatchingFrequency() )
+                        
+                        goals.addGoal(goal: goal)
+                    }
+
                     self.name = types.sorted(by: <)[0]
-                    self.dates = [Date()]
                     logger.info("added a goal")
                     
                 }), label: ({
