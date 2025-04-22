@@ -45,9 +45,14 @@ struct GoalFullView: View {
         return matchingFrequencyDictionary[name] ?? "no frequency"
     }
     
+    fileprivate func getFormattedDate(_ date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:MM a"
+        return dateFormatter.string(from: date)
+    }
+    
     var body: some View {
         VStack {
-            
             Text("Edit this Goal")
                 .font(.title)
                 .foregroundStyle(Color.black)
@@ -62,12 +67,9 @@ struct GoalFullView: View {
             
             Text(goal.isActive ? "Active" : "Inactive")
             Text(goal.isCompleted ? "Completed" : "Incomplete")
-            
-            
                 .padding(.bottom)
             
             VStack {
-                
                 HStack {
                     Text("Name")
                     TextField("Name", text: $name)
@@ -84,7 +86,15 @@ struct GoalFullView: View {
                 .padding(.horizontal)
                 
                 HStack {
-                 
+                    Text("Times")
+                    Spacer()
+                    ForEach(goal.dates, id: \.self) { adate in
+                        adate.description.isEmpty ? Text("No dates set") : Text(getFormattedDate(adate))
+                    }
+                }
+                .padding(.horizontal)
+                
+                HStack {
                     Toggle("Is Active", isOn: $isActive)
                     Spacer()
                     Toggle("Is Completed", isOn: $isCompleted)
@@ -104,6 +114,7 @@ struct GoalFullView: View {
             })
             .padding()
             .overlay(RoundedRectangle(cornerRadius: 5).stroke(style: StrokeStyle(lineWidth: 2)))
+            Spacer()
         }
         .environment(goals)
     }
