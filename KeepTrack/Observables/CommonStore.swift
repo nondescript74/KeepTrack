@@ -75,4 +75,8 @@ import OSLog
         
     }
     
+   func getTodaysIntake() -> [CommonEntry] {
+        let todays = history.filter { Calendar.autoupdatingCurrent.isDateInToday($0.date) }
+        return  todays
+    }
 }
