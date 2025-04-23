@@ -69,4 +69,41 @@ import OSLog
             fatalError( "Couldn't save goals file")
         }
     }
+    
+    func getTodaysGoals() -> [CommonGoal] {
+        let todays = goals.filter({$0.isActive == true }).sorted { $0.name < $1.name }
+        return todays
+        
+        // let todays = goals.filter({$0.isActive == true && $0.dates.contains(where: { Calendar.current.isDateInToday($0) })})
+     }
+    
+    func getTodaysGoalsForName(namez: String) -> [CommonGoal] {
+        let todays = getTodaysGoals().filter({$0.dates.contains(where: { Calendar.current.isDateInToday($0) })}).filter({$0.name.lowercased().contains(namez.lowercased())})
+        return todays
+    }
+    
+    func getTodaysGoalsInTime(namex: String) -> [CommonGoal] {
+        let todaysGoalsActive = getTodaysGoalsForName(namez: namex)
+        var todaysGoalsActiveInTime: [CommonGoal] = []
+        let currentDateTime = Date()
+        let componentsNow = Calendar.current.dateComponents([.hour,.minute], from: currentDateTime)
+        let hourNow = componentsNow.hour
+        let minuteNow = componentsNow.minute
+        
+        for agoal in todaysGoalsActive {
+            let componentsGoal = Calendar.current.dateComponents([.hour,.minute], from: agoal.dates.sorted(by: <)[0])  // ?? only using earliest goal
+            let hourGoal = componentsGoal.hour
+            let minuteGoal = componentsGoal.minute
+            
+            if (hourGoal ?? 0 < hourNow ?? 0) {
+                todaysGoalsActiveInTime.append(agoal)
+            } else if (hourGoal ?? 0 == hourNow ?? 0) && (minuteGoal ?? 0 <= minuteNow  ?? 0) {
+                todaysGoalsActiveInTime.append(agoal)
+            }
+            // array of timegoals
+            // are all of them met, if so return true
+        }
+        logger.info("getTodaysGoalsActiveInTime is \(todaysGoalsActiveInTime)")
+        return todaysGoalsActiveInTime
+    }
 }
