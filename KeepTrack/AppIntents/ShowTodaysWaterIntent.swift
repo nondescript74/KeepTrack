@@ -6,13 +6,17 @@
 //
 
 import AppIntents
+import OSLog
 
 struct ShowTodaysWaterIntent: AppIntent {
+    let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "ShowTodaysWaterIntent")
     static let title: LocalizedStringResource = "Show Todays Water"
     
     func perform() async throws -> some IntentResult & ProvidesDialog {
-        let result = await KeepTrack.CommonStore().history.filter { $0.date == Date.now }.filter { $0.name.lowercased().contains("water")}
-        return .result(dialog: "Okay, you consumed \(result.count) 14 oz glasses of water today.")
+        let resultW = await KeepTrack.CommonStore().history.filter {
+            compareDateComponents($0.date)
+        }.filter { $0.name.lowercased().contains("water")}
+        logger.info("water consumed is \(resultW))")
+        return .result(dialog: "Okay, you consumed \(resultW.count)  glasses of water today.")
     }
-    
 }

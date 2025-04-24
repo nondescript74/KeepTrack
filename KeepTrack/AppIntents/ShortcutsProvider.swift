@@ -16,7 +16,25 @@ struct KeepTrackShortcuts: AppShortcutsProvider {
                 "\(.applicationName) drank water"
             ],
             shortTitle: "Add water",
+            systemImageName: "waterbottle.fill"
+        )
+        AppShortcut(
+            intent: AddSakeIntent(),
+            phrases: [
+                "\(.applicationName) add sake",
+                "\(.applicationName) drank sake"
+            ],
+            shortTitle: "Add sake",
             systemImageName: "wineglass"
+        )
+        AppShortcut(
+            intent: AddMorningMedsIntent(),
+            phrases: [
+                "\(.applicationName) add morning meds",
+                "\(.applicationName) took morning meds"
+            ],
+            shortTitle: "Add morning meds",
+            systemImageName: "pills.fill"
         )
         AppShortcut(
             intent: ShowTodaysWaterIntent(),
@@ -26,7 +44,25 @@ struct KeepTrackShortcuts: AppShortcutsProvider {
                 "\(.applicationName) check water"
             ],
             shortTitle: "show water",
-            systemImageName: "wineglass"
+            systemImageName: "bottle.fill"
+        )
+        AppShortcut(
+            intent: ShowTodaysSakeIntent(),
+            phrases: [
+                "\(.applicationName) show sake",
+                "\(.applicationName) todays sake",
+            ],
+            shortTitle: "show sake",
+            systemImageName: "wineglass.fill"
+        )
+        AppShortcut(
+            intent: ShowMorningMedsIntent(),
+            phrases: [
+                "\(.applicationName) show morning meds",
+                "\(.applicationName) morning meds",
+            ],
+            shortTitle: "show morning meds",
+            systemImageName: "pills.fill"
         )
     }
 }
