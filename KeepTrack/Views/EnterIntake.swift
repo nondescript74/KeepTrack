@@ -14,7 +14,7 @@ struct EnterIntake: View {
     @Environment(CommonGoals.self) var goals
     @Environment(\.dismiss) var dismiss
     
-    @State var name: String = types.sorted(by: {$0 < $1})[6]
+    @State var name: String = (types.sorted(by: {$0 < $1}).last ?? types.sorted(by: {$0 < $1})[0])
     
     fileprivate func isGoalMet() -> Bool {
         
