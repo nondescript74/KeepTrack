@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import OSLog
 
 let types = ["Rosuvastatin", "Metformin", "Losartan", "Latanoprost", "Water", "Smoothie", "Protein", "Sake"]
 
@@ -27,4 +28,11 @@ public extension Array where Element: Hashable {
         var seen = Set<Element>()
         return filter { seen.insert($0).inserted }
     }
+}
+
+func compareDateComponents(_ date1: Date) -> Bool {
+    // date 2 should be the reference
+    let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "Helper")
+    logger.info("date1: \(date1)" )
+    return Calendar.autoupdatingCurrent.isDateInToday(date1)
 }

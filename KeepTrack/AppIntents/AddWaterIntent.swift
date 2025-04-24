@@ -16,10 +16,9 @@ struct AddWaterIntent: AppIntent {
     func perform() async throws -> some IntentResult & ProvidesDialog & ShowsSnippetView {
         let commonEntry: CommonEntry = CommonEntry(id: UUID(), date: Date(), units: "fluid ounces", amount: 14, name: "Water", goalMet: false)
         await KeepTrack.CommonStore().addEntry(entry: commonEntry)
-        let todays = await KeepTrack.CommonStore().history.filter { $0.date == Date.now }.filter { $0.name.lowercased().contains("water")}.count
         let snippetView: some View = VStack {
             Text("Intake added")
-            Text("You have consumed \(todays) 14 ounce glasses of water so far")
+            Text("You added a 14 ounce glasses of water")
         }
         return .result(dialog: "Okay 14 ounces of water added",
                        view: snippetView)

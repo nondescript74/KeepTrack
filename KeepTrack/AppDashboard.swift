@@ -31,7 +31,7 @@ struct AppDashboard: View {
                     .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50))
                     Text("Enter intake")
                         .foregroundColor(.blue)
-                        .font(.callout)
+                        .font(.caption)
                 }
                 .padding(.top)
 
@@ -44,7 +44,7 @@ struct AppDashboard: View {
                     .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50))
                     Text("Enter Goal")
                         .foregroundColor(.blue)
-                        .font(.callout)
+                        .font(.caption)
                 }
 
                 .padding(.top)
@@ -57,7 +57,7 @@ struct AppDashboard: View {
                     .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50))
                     Text("Edit Intake")
                         .foregroundColor(.red)
-                        .font(.callout)
+                        .font(.caption)
                 }
                 .padding(.top)
                 VStack {
@@ -69,7 +69,7 @@ struct AppDashboard: View {
                     .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50))
                     Text("Edit Goals")
                         .foregroundColor(.red)
-                        .font(.callout)
+                        .font(.caption)
                 }
                 .padding(.top)
             }
@@ -77,7 +77,8 @@ struct AppDashboard: View {
             .background(Color.gray.opacity(0.2))
             
             HStack {
-                Text("\(String(describing: Bundle.main.infoDictionary?["CFBundleShortVersionString"]) + String(describing: Bundle.main.infoDictionary?["CFBundleVersion"])))")
+                Text(Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String)
+                Text(Bundle.main.infoDictionary!["CFBundleVersion"] as! String)
             }
             .font(.footnote)
             
