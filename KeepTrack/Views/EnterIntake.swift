@@ -16,43 +16,6 @@ struct EnterIntake: View {
     
     @State var name: String = (types.sorted(by: {$0 < $1}).last ?? types.sorted(by: {$0 < $1})[0])
     
-    fileprivate func isGoalMet() -> Bool {
-        
-        // get the goals, if any, by this time
-        // for each intake, if its being taken before the goal(there may be several), then its a intake taken as goal met.
-        // another way of looking at this is if the number of instances of that intake type + 1 is equal to or greater than the goal instances, then it is goal met
-        
-        var result: Bool = false
-        let goalsForName = goals.getTodaysGoalsForName(namez: name)
-        
-        if goalsForName.isEmpty { return true }
-        
-        let currentDateTime = Date()
-        let componentsNow = Calendar.current.dateComponents([.hour,.minute], from: currentDateTime)
-        let hourNow = componentsNow.hour
-        let minuteNow = componentsNow.minute
-        
-        if goalsForName.count > 1 { logger.warning("More than one goal for \(name), using first one") }
-        if store.getTodaysIntake().count + 1 > goalsForName.count {
-            // counting this one as one
-            return true
-        } else if store.getTodaysIntake().count + 1 == goalsForName.count {
-            let lastGoal = goalsForName.sorted(by: {$0.dates[0] < $1.dates[0]}).last
-            let componentsLastGoal = Calendar.current.dateComponents([.hour,.minute], from: lastGoal!.dates[0])
-            
-            if hourNow! <= componentsLastGoal.hour! && minuteNow! <= componentsLastGoal.minute! {
-                result = true
-            } else if hourNow! <= componentsLastGoal.hour! && minuteNow! < componentsLastGoal.minute! {
-                result = true
-            } else {
-                result = false
-            }
-        } else {
-            result = false
-        }
-        return result
-    }
-    
     fileprivate func getMatchingUnit() -> String {
         return matchingUnitsDictionary.first(where: {$0.key == name})?.value ?? ""
     }
@@ -82,7 +45,14 @@ struct EnterIntake: View {
             .padding(.bottom)
             Button("Add") {
                 
-                let entry = CommonEntry(id: UUID(), date: Date(), units: getMatchingUnit(), amount: getMatchingAmount(), name: name, goalMet: isGoalMet())
+                let isGMet = goals.goals.isEmpty ? true : goals.goals.first(where: {$0.name == name}) == nil ? true : isGoalMet(goal: goals.goals.first(where: {$0.name == name})!)
+                
+                let goalToUseAvailable = goals.goals.isEmpty ? false : goals.goals.first(where: {$0.name == name}) == nil ? false : true
+                
+                logger.info("using goal \(goalToUseAvailable)")
+                logger.info("isGMet \(isGMet)")
+                
+                let entry = CommonEntry(id: UUID(), date: Date(), units: getMatchingUnit(), amount: getMatchingAmount(), name: name, goalMet: isGMet)
                 
                 store.addEntry(entry: entry)
                 

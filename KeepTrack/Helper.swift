@@ -11,6 +11,8 @@ import OSLog
 
 let types = ["Rosuvastatin", "Metformin", "Losartan", "Latanoprost", "Water", "Smoothie", "Protein", "Sake"]
 
+let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "Helper")
+
 let units: [String] = ["mg", "fluid ounces", "cups", "g", "ozs", "ml", "liters", "pills", "drops", "fluid ounces"]
 
 let matchingUnitsDictionary: Dictionary<String, String> = ["Rosuvastatin": "mg", "Metformin": "mg", "Losartan": "mg", "Latanoprost": "drops", "Water": "fluid ounces", "Smoothie": "fluid ounces", "Protein": "g", "sake": "fluid ounces"]
@@ -32,7 +34,48 @@ public extension Array where Element: Hashable {
 
 func compareDateComponents(_ date1: Date) -> Bool {
     // date 2 should be the reference
-    let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "Helper")
     logger.info("date1: \(date1)" )
     return Calendar.autoupdatingCurrent.isDateInToday(date1)
+}
+
+//func isGoalMet(goal: CommonGoal) -> Bool {
+//    
+//    var calendar = Calendar.current
+//    calendar.timeZone =  .current
+//    
+//    print(calendar.timeZone)
+//    
+//    let currentDateTime = Date.now
+//    print(currentDateTime)
+//    let componentsNow = calendar.dateComponents([.hour,.minute], from: currentDateTime)
+//    let hourNow = componentsNow.hour
+//    let minuteNow = componentsNow.minute
+//    
+//    let componentsLastGoal = calendar.dateComponents([.hour,.minute], from: goal.dates.sorted(by: {$0 < $1})[0])
+//    
+//    if hourNow! <= componentsLastGoal.hour! && minuteNow! <= componentsLastGoal.minute! {
+//        return true
+//    } else if hourNow! <= componentsLastGoal.hour! && minuteNow! < componentsLastGoal.minute! {
+//        return true
+//    } else {
+//        return false
+//    }
+//}
+
+
+func isGoalMet(goal: CommonGoal) -> Bool {
+    
+    var calendar = Calendar.current
+    calendar.timeZone =  .current
+    
+    print(calendar.timeZone)
+    
+    let currentDateTime = Date.now
+    print(currentDateTime)
+    
+    // check using only hour
+    let resultAfterOnlyHour = Calendar.autoupdatingCurrent.dateComponents(in: .current, from: currentDateTime).hour! <=
+    Calendar.autoupdatingCurrent.dateComponents(in: .current, from: goal.dates.sorted(by: {$0 < $1})[0]).hour!
+    logger.info("is hour met: \(resultAfterOnlyHour)")
+    return resultAfterOnlyHour
 }
