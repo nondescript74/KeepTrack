@@ -15,11 +15,14 @@ struct GoalDisplayByName: View {
     
     fileprivate var startDegrees: Double = 270
     fileprivate var colors: [Color] = [.orange, .yellow, .blue, .indigo, .purple, .pink, .cyan]
+    fileprivate var myGoals:[CommonGoal] {
+        return goals.goals.sorted { $0.name < $1.name }
+    }
     var body: some View {
         VStack {
             Text("Goals by Name")
-            ForEach(goals.goals.indices, id: \.self) { index in
-                let goal = goals.goals[index]
+            ForEach(myGoals.indices, id: \.self) { index in
+                let goal = myGoals[index]
                 HStack(alignment: .center) {
                     Text(goal.name)
                         .foregroundColor(colors[index % colors.count])

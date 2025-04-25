@@ -16,17 +16,17 @@ struct ShowMorningMedsIntent: AppIntent {
     
     func perform() async throws -> some IntentResult & ProvidesDialog {
         let resultM = await KeepTrack.CommonStore().history.filter {
-            compareDateComponents($0.date)
+            (Calendar.current.isDateInToday($0.date))
         }.filter { $0.name.lowercased().contains("metformin")}
         logger.info("resultM is \(resultM))")
         
         let resultR = await KeepTrack.CommonStore().history.filter {
-            compareDateComponents($0.date)
+            (Calendar.current.isDateInToday($0.date))
         }.filter { $0.name.lowercased().contains("rosuvastatin")}
         logger.info("resultR is (\(resultR))")
         
         let resultL = await KeepTrack.CommonStore().history.filter {
-            compareDateComponents($0.date)
+            (Calendar.current.isDateInToday($0.date))
         }.filter { $0.name.lowercased().contains("losartan")}
         logger.info("resultL is (\(resultL))")
         
