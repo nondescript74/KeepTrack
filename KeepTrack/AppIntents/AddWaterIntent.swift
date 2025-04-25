@@ -14,7 +14,7 @@ struct AddWaterIntent: AppIntent {
     static var description: LocalizedStringResource? = "This adds a 14 oz glass of water"
     
     func perform() async throws -> some IntentResult & ProvidesDialog & ShowsSnippetView {
-        let commonEntry: CommonEntry = CommonEntry(id: UUID(), date: Date(), units: "fluid ounces", amount: 14, name: "Water", goalMet: false)
+        let commonEntry: CommonEntry = CommonEntry(id: UUID(), date: Date(), units: "fluid ounces", amount: 14, name: "Water", goalMet: true)
         await KeepTrack.CommonStore().addEntry(entry: commonEntry)
         let snippetView: some View = VStack {
             Text("Intake added")

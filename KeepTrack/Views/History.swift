@@ -17,25 +17,25 @@ struct History: View {
     
     fileprivate func getToday() -> [CommonEntry] {
         let myReturn = store.history.filter { Calendar.current.isDateInToday($0.date) }
-        logger.info("gT\(myReturn)")
+        logger.info("gT\(myReturn.count)")
         return myReturn
     }
     
     fileprivate func getYesterday() -> [CommonEntry] {
         let myReturn = store.history.filter { Calendar.current.isDateInYesterday($0.date) }
-        logger.info("gY \(myReturn)")
+        logger.info("gY \(myReturn.count)")
         return myReturn
     }
     
     fileprivate func sortTodayByName(name: String) -> [CommonEntry] {
         let myReturn  = getToday().filter { $0.name.lowercased() == name.lowercased() }.sorted { $0.date < $1.date }
-        logger.info("sTBN \(myReturn)")
+        logger.info("sTBN \(myReturn.count)")
         return myReturn
     }
     
     fileprivate func sortYesterdayByName(name: String) -> [CommonEntry] {
         let myReturn = getYesterday().filter { $0.name.lowercased() == name.lowercased() }.sorted { $0.date < $1.date }.uniqued()
-        logger.info("sYBN \(myReturn)")
+        logger.info("sYBN \(myReturn.count)")
         return myReturn
     }
     
