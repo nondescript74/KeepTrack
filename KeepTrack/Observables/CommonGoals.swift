@@ -60,7 +60,7 @@ import OSLog
         logger.info( "fileURL for existing history \(fileURL.lastPathComponent)")
         
         do {
-            let data = try JSONEncoder().encode(goals)
+            let data = try JSONEncoder().encode(goals.sorted(by: ({$0.name < $1.name})))
             try data.write(to: fileURL)
             logger.info( "Saved goalsstore json data to file")
             self.goals = try JSONDecoder().decode([CommonGoal].self, from: data)
@@ -71,7 +71,7 @@ import OSLog
     }
     
     func getTodaysGoals() -> [CommonGoal] {
-        let todays = goals.filter({$0.isActive == true }).sorted { $0.name < $1.name }
+        let todays = goals.filter({$0.isActive == true }).sorted(by: ({$0.name < $1.name}))
         return todays
         
         // let todays = goals.filter({$0.isActive == true && $0.dates.contains(where: { Calendar.current.isDateInToday($0) })})

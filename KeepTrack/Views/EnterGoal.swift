@@ -82,7 +82,7 @@ struct EnterGoal: View {
                     if goals.goals.contains(where: { $0.name == self.name }) {
                         
                         let remain = goals.goals.filter( { $0.name == self.name } )
-                        if remain.count == 0 {
+                        if remain.count > 1 {
                             fatalError( "Too many goals with same name: \(self.name)" )
                         }
                         var newDates = remain[0].dates
@@ -91,7 +91,19 @@ struct EnterGoal: View {
                         goals.removeGoalAtId(uuid: remain[0].id)
                         goals.addGoal(goal: goal)
                     } else {
-                        let goal = CommonGoal(id: UUID(), name: name, description: getMatchingDesription(), dates: [startDate], isActive: true, isCompleted: false, dosage: getMatchingAmounts(), units: getMatchingUnits(), frequency: getMatchingFrequency() )
+                        var datesArray: [Date] = [startDate]
+                        if name.lowercased( ).contains( "water" ) {
+                            datesArray.append( Calendar.current.date(byAdding: .hour, value: 2, to: startDate)! )
+                            datesArray.append( Calendar.current.date(byAdding: .hour, value: 4, to: startDate)! )
+                            datesArray.append( Calendar.current.date(byAdding: .hour, value: 6, to: startDate)! )
+                            datesArray.append( Calendar.current.date(byAdding: .hour, value: 8, to: startDate)! )
+                            datesArray.append( Calendar.current.date(byAdding: .hour, value: 10, to: startDate)! )
+                        }
+                        if name.lowercased( ).contains( "metformin" ) {
+                            datesArray.append( Calendar.current.date(byAdding: .hour, value: 8, to: startDate)! )
+                        }
+
+                        let goal = CommonGoal(id: UUID(), name: name, description: getMatchingDesription(), dates: datesArray, isActive: true, isCompleted: false, dosage: getMatchingAmounts(), units: getMatchingUnits(), frequency: getMatchingFrequency() )
                         
                         goals.addGoal(goal: goal)
                     }

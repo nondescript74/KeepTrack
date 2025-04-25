@@ -14,7 +14,7 @@ struct ShowTodaysSakeIntent: AppIntent {
     
     func perform() async throws -> some IntentResult & ProvidesDialog {
         let resultS = await KeepTrack.CommonStore().history.filter {
-            compareDateComponents($0.date)
+            (Calendar.current.isDateInToday($0.date))
         }.filter { $0.name.lowercased().contains("sake")}
         logger.info("sake consumed is \(resultS))")
         return .result(dialog: "Okay, you consumed \(resultS.count)  glasses of sake today.")

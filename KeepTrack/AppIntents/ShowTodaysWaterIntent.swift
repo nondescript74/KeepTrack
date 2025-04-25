@@ -14,7 +14,7 @@ struct ShowTodaysWaterIntent: AppIntent {
     
     func perform() async throws -> some IntentResult & ProvidesDialog {
         let resultW = await KeepTrack.CommonStore().history.filter {
-            compareDateComponents($0.date)
+            (Calendar.current.isDateInToday($0.date))
         }.filter { $0.name.lowercased().contains("water")}
         logger.info("water consumed is \(resultW))")
         return .result(dialog: "Okay, you consumed \(resultW.count)  glasses of water today.")
