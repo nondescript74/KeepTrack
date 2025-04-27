@@ -76,7 +76,7 @@ import SwiftUI
         healthStore = HKHealthStore()
         logger.info( "Initialized HealthStore")
         
-        healthStore.requestAuthorization(toShare: [HKObjectType.quantityType(forIdentifier: .heartRate)!], read: Set([HKObjectType.quantityType(forIdentifier: .heartRate)!])) { (success, error) in
+        healthStore.requestAuthorization(toShare: [HKObjectType.quantityType(forIdentifier: .dietaryWater)!], read: Set([HKObjectType.quantityType(forIdentifier: .dietaryWater)!])) { (success, error) in
             print("Request Authorization -- Success: ", success, " Error: ", error ?? "nil")
             // Handle authorization errors here.
             if !success {

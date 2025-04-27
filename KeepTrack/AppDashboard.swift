@@ -17,6 +17,13 @@ struct AppDashboard: View {
     
     var body: some View {
         NavigationStack {
+            HStack {
+                Text(Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String)
+                Text(Bundle.main.infoDictionary!["CFBundleVersion"] as! String)
+            }
+            .padding(.horizontal)
+            .font(.footnote)
+
             History()
             
             GoalDisplayByName()
@@ -75,12 +82,6 @@ struct AppDashboard: View {
             }
             .padding([.horizontal, .bottom])
             .background(Color.gray.opacity(0.2))
-            
-            HStack {
-                Text(Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String)
-                Text(Bundle.main.infoDictionary!["CFBundleVersion"] as! String)
-            }
-            .font(.footnote)
             
         }
         .environment(goals)
