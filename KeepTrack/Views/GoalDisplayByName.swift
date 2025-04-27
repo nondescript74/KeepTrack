@@ -21,32 +21,38 @@ struct GoalDisplayByName: View {
     var body: some View {
         VStack {
             Text("Goals by Name")
-            ForEach(myGoals.indices, id: \.self) { index in
-                let goal = myGoals[index]
-                HStack(alignment: .center) {
-                    Text(goal.name)
-                        .foregroundColor(colors[index % colors.count])
-                        .font(.footnote)
-                        .padding(.horizontal)
-                    
-                    ScrollView(.horizontal) {
-                        HStack(alignment: .center) {
-                            ForEach(goal.dates, id: \.self) { date in
-                                HStack {
-                                    Calendar.autoupdatingCurrent.dateComponents([.hour], from: date).hour.map { Text("\($0):") } ?? Text("")
-                                    Calendar.autoupdatingCurrent.dateComponents([.minute], from: date).minute.map { Text("\($0)") } ?? Text("")
+            
+            if myGoals.isEmpty {
+                Text("No goals yet!")
+                    .foregroundColor(.secondary)
+            } else {
+                ForEach(myGoals.indices, id: \.self) { index in
+                    let goal = myGoals[index]
+                    HStack(alignment: .center) {
+                        Text(goal.name)
+                            .foregroundColor(colors[index % colors.count])
+                            .font(.footnote)
+                            .padding(.horizontal)
+                        
+                        ScrollView(.horizontal) {
+                            HStack(alignment: .center) {
+                                ForEach(goal.dates, id: \.self) { date in
+                                    HStack {
+                                        Calendar.autoupdatingCurrent.dateComponents([.hour], from: date).hour.map { Text("\($0):") } ?? Text("")
+                                        Calendar.autoupdatingCurrent.dateComponents([.minute], from: date).minute.map { Text("\($0)") } ?? Text("")
+                                    }
+                                    .padding(.trailing, 5)
+                                    .font(.footnote)
+                                    .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray, lineWidth: 0.5))
+                                    .background(content: {
+                                        Color.orange.opacity(0.1)
+                                    })
                                 }
-                                .padding(.trailing, 5)
-                                .font(.footnote)
-                                .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray, lineWidth: 0.5))
-                                .background(content: {
-                                    Color.orange.opacity(0.1)
-                                })
                             }
+                            
                         }
-
+                        
                     }
-                    
                 }
             }
         }
