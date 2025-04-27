@@ -17,28 +17,39 @@ struct History: View {
     
     fileprivate func getToday() -> [CommonEntry] {
         let myReturn = store.history.filter { Calendar.current.isDateInToday($0.date) }
-        logger.info("gT\(myReturn.count)")
+//        logger.info("gT\(myReturn.count)")
         return myReturn
     }
     
     fileprivate func getYesterday() -> [CommonEntry] {
         let myReturn = store.history.filter { Calendar.current.isDateInYesterday($0.date) }
-        logger.info("gY \(myReturn.count)")
+//        logger.info("gY \(myReturn.count)")
         return myReturn
     }
     
     fileprivate func sortTodayByName(name: String) -> [CommonEntry] {
         let myReturn  = getToday().filter { $0.name.lowercased() == name.lowercased() }.sorted { $0.date < $1.date }
-        logger.info("sTBN \(myReturn.count)")
+//        logger.info("sTBN \(myReturn.count)")
         return myReturn
     }
     
     fileprivate func sortYesterdayByName(name: String) -> [CommonEntry] {
         let myReturn = getYesterday().filter { $0.name.lowercased() == name.lowercased() }.sorted { $0.date < $1.date }.uniqued()
-        logger.info("sYBN \(myReturn.count)")
+//        logger.info("sYBN \(myReturn.count)")
         return myReturn
     }
     
+    fileprivate func getUniqueYesterdayByNameCount(name: String) -> Int {
+        let myReturn: Int = sortYesterdayByName(name: name).count
+        logger.info("gYUBNC: \(myReturn)")
+        return myReturn
+    }
+    
+    fileprivate func getYesterdaysGoalsByNameCount(name: String) -> Int {
+        let myReturn: Int = goals.goals.filter { $0.name.lowercased() == name.lowercased() }.count
+        logger.info("gYGBNC: \(myReturn)")
+        return myReturn
+    }
     
     var body: some View {
         VStack {
@@ -88,22 +99,29 @@ struct History: View {
                                         .font(.caption)
                                         .foregroundStyle(.red)
                                 } else {
-                                    ScrollView(.horizontal) {
-                                        HStack {
-                                            ForEach(sortYesterdayByName(name: type)) { entry in
-                                                HStack {
-                                                    Text(entry.name)
-                                                    HStack {
-                                                        Text(Calendar.current.dateComponents([.hour], from: entry.date as Date).hour?.description ?? "")
-                                                        Text(":")
-                                                        Text(Calendar.current.dateComponents([.minute], from: entry.date as Date).minute?.description ?? "")
-                                                    }
-                                                    .foregroundStyle(.green)
-                                                }
-                                                .font(.caption)
-                                            }
-                                        }
+                                    HStack {
+                                        Text("\(type): ")
+                                        Text(getUniqueYesterdayByNameCount(name: type).description)
                                     }
+                                    .font(.caption)
+                                    .foregroundStyle(getYesterdaysGoalsByNameCount(name: type) <= getUniqueYesterdayByNameCount(name: type) ? .green : .red)
+//                                    ScrollView(.horizontal) {
+//                                        HStack {
+//                                            ForEach(sortYesterdayByName(name: type)) { entry in
+//                                                HStack {
+//                                                    Text(entry.name)
+//                                                    Text(sortYesterdayByName(name: type).count.description)
+//                                                    HStack {
+//                                                        Text(Calendar.current.dateComponents([.hour], from: entry.date as Date).hour?.description ?? "")
+//                                                        Text(":")
+//                                                        Text(Calendar.current.dateComponents([.minute], from: entry.date as Date).minute?.description ?? "")
+//                                                    }
+//                                                    .foregroundStyle(.green)
+//                                                }
+//                                                .font(.caption)
+//                                            }
+//                                        }
+//                                    }
                                 }
                             }
                         }

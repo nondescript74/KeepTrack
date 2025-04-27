@@ -6,19 +6,42 @@
 //
 
 import Foundation
+import HealthKit
 import OSLog
+import SwiftUI
 
 @MainActor
 @Observable final class CommonStore {
     
     fileprivate let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "CommonStore")
     var history: [CommonEntry]
-    
+        
     let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+    var healthStore: HKHealthStore
+    
+    let waterType: HKQuantityType = HKQuantityType.quantityType(forIdentifier: .dietaryWater)!
+    
+    let sampleTypes = Set([HKObjectType.quantityType(forIdentifier: .dietaryWater)!,
+                           HKSeriesType.heartbeat(),
+                           HKQuantityType.quantityType(forIdentifier: .heartRateVariabilitySDNN)!,
+                           HKObjectType.quantityType(forIdentifier: .heartRate)!
+    ])
+    
+    func heartRateDetailsString(quantity: HKQuantity, dateInterval: DateInterval) -> String {
+        let BPM = HKUnit(from: "count/min")
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .none
+        dateFormatter.timeStyle = .medium
+        dateFormatter.locale = Locale(identifier: "en_US")
+        
+        return "\(dateFormatter.string(from: dateInterval.start)) \(Int(quantity.doubleValue(for: BPM))) BPM"
+    }
     
     init() {
         if let docDirUrl = urls.first {
             let fileURL = docDirUrl.appendingPathComponent("entrystore.json")
+            
+            
             if FileManager.default.fileExists(atPath: fileURL.path) {
                 logger.info( "fileURL for existing history \(fileURL)")
                 
@@ -45,10 +68,28 @@ import OSLog
         } else {
             fatalError( "Failed to resolve document directory")
         }
+        
+        guard HKHealthStore.isHealthDataAvailable() else {
+            fatalError("This app requires a device that supports HealthKit")
+        }
+        
+        healthStore = HKHealthStore()
+        logger.info( "Initialized HealthStore")
+        
+        healthStore.requestAuthorization(toShare: [HKObjectType.quantityType(forIdentifier: .heartRate)!], read: Set([HKObjectType.quantityType(forIdentifier: .heartRate)!])) { (success, error) in
+            print("Request Authorization -- Success: ", success, " Error: ", error ?? "nil")
+            // Handle authorization errors here.
+            if !success {
+                self.logger.info( "Request Authorization failed")
+                fatalError( "Request Authorization failed")
+            }
+            self.logger.info( "authorization granted: \(success)")
+            
+        }
     }
     
     fileprivate func save() {
-        let fileURL = URL(fileURLWithPath: urls[0].appendingPathComponent("entrystore.json").path)
+        let fileURL = URL(fileURLWithPath: FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("entrystore.json").path)
         logger.info( "fileURL for existing history \(fileURL.lastPathComponent)")
         
         do {

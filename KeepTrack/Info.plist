@@ -5,8 +5,8 @@
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>NSHealthShareUsageDescription</key>
-	<string>We may use your entered health records with Apple Health</string>
+	<string>We may use your entered health records with KeepTrack</string>
 	<key>NSHealthClinicalHealthRecordsShareUsageDescription</key>
-	<string>We can use your entereed health information to show it within this app and Apple Health</string>
+	<string>We can use your entered information to show it within KeepTrack and Apple Health</string>
 </dict>
 </plist>
