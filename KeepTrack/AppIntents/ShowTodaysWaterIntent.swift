@@ -13,6 +13,7 @@ struct ShowTodaysWaterIntent: AppIntent {
     static let title: LocalizedStringResource = "Show Todays Water"
     
     func perform() async throws -> some IntentResult & ProvidesDialog {
+         
         let resultW = await KeepTrack.CommonStore().history.filter {
             (Calendar.current.isDateInToday($0.date))
         }.filter { $0.name.lowercased().contains("water")}
