@@ -19,7 +19,10 @@ struct EditHistory: View {
         NavigationView {
             VStack {
                 MovableHistoryList($items) { item in
-                    Text("\(item.date.wrappedValue.formatted(date: .abbreviated, time: .standard))")
+                    HStack {
+                        Text("\(item.date.wrappedValue.formatted(date: .abbreviated, time: .standard))")
+                        Text("\(item.name.wrappedValue)")
+                    }
                 }
             }
             .navigationTitle(Text("Edit History"))
