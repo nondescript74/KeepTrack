@@ -35,16 +35,24 @@ public extension Array where Element: Hashable {
 
 func isGoalMet(goal: CommonGoal) -> Bool {
     
-    var calendar = Calendar.current
+    if goal.dates.isEmpty {
+        return true
+    }
+    var calendar = Calendar.autoupdatingCurrent
     calendar.timeZone =  .current
-    
-    print(calendar.timeZone)
-    
     let currentDateTime = Date.now
-    print(currentDateTime)
+    let dateComponentsNow = calendar.dateComponents([.hour, .minute, .second], from: currentDateTime)
     
-    let resultAfterOnlyHour = Calendar.autoupdatingCurrent.dateComponents(in: .current, from: currentDateTime).hour! <=
-    Calendar.autoupdatingCurrent.dateComponents(in: .current, from: goal.dates.sorted(by: {$0 < $1}).compactMap({$0 as Date})[0]).hour!
-    logger.info("is hour met: \(resultAfterOnlyHour)")
-    return resultAfterOnlyHour
+    let remainingGoalDates: [Date] = goal.dates.compactMap({$0 as Date}).filter({calendar.dateComponents([.hour, .minute, .second], from: $0).hour! >= dateComponentsNow.hour! || calendar.dateComponents([.hour, .minute, .second], from: $0).hour! == dateComponentsNow.hour! && (calendar.dateComponents([.hour, .minute, .second], from: $0).minute! >= dateComponentsNow.minute!)})
+    
+    if remainingGoalDates.count == 0 {
+        return false
+    }
+    let firstRemaingGoalDate: Date = remainingGoalDates.first!
+    let dateComponentsFirst: DateComponents = calendar.dateComponents([.hour, .minute, .second], from: firstRemaingGoalDate)
+    
+    let result = dateComponentsNow.hour! < dateComponentsFirst.hour! ? true : dateComponentsNow.hour! == dateComponentsFirst.hour! && dateComponentsNow.minute! <= dateComponentsFirst.minute!
+    
+    logger.info("isGoalMet result: \(result)")
+    return result
 }
