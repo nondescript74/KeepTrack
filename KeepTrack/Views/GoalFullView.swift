@@ -105,8 +105,9 @@ struct GoalFullView: View {
             Button("Change Goal", action: {
                 logger.info("Deleting goal with id \(self.goal.id)")
                 goals.removeGoalAtId(uuid: self.goal.id)
+                let savedUUID = self.goal.id
                 
-                let goal = CommonGoal(id: UUID(), name: self.name, description: getMatchingDesription(), dates: self.dates, isActive: self.isActive, isCompleted: self.isCompleted, dosage: getMatchingAmounts(), units: getMatchingUnits(), frequency: getMatchingFrequency())
+                let goal = CommonGoal(id: savedUUID, name: self.name, description: getMatchingDesription(), dates: self.dates, isActive: self.isActive, isCompleted: self.isCompleted, dosage: getMatchingAmounts(), units: getMatchingUnits(), frequency: getMatchingFrequency())
                 
                 goals.addGoal(goal: goal)
                 logger.info("added new goal")

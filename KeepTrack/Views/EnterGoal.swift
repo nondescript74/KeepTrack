@@ -88,8 +88,9 @@ struct EnterGoal: View {
                         var newDates = remain[0].dates
                         newDates.append(startDate)
                         let goal = CommonGoal(id: remain[0].id, name: name, description: getMatchingDesription(), dates: newDates, isActive: true, isCompleted: false, dosage: getMatchingAmounts(), units: getMatchingUnits(), frequency: getMatchingFrequency() )
-                        goals.removeGoalAtId(uuid: remain[0].id)
+                         
                         goals.addGoal(goal: goal)
+                        
                     } else {
                         var datesArray: [Date] = [startDate]
                         if name.lowercased( ).contains( "water" ) {
