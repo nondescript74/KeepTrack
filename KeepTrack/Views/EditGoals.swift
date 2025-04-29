@@ -24,7 +24,7 @@ struct EditGoals: View {
                     NavigationLink {
                         GoalFullView(goal: item.wrappedValue)
                     } label: {
-                        Text("\(item.name.wrappedValue)  \(item.dates[0].wrappedValue.formatted(date: .abbreviated, time: .standard))")
+                        Text("\(item.name.wrappedValue)")
                     }
                 }
             }
@@ -37,8 +37,8 @@ struct EditGoals: View {
 
 #Preview {
     @Previewable @State var items: [CommonGoal] =
-    [CommonGoal(id: UUID(), name: "Test Goal A", description: "test A", dates: [Date()], isActive: true, isCompleted: false, dosage: 1, units: "pills", frequency: "daily"),
-     CommonGoal(id: UUID(), name: "Test Goal B", description: "test B", dates: [Date(), Date().addingTimeInterval(60 * 60 * 12)], isActive: true, isCompleted: false, dosage: 500, units: "mg", frequency: "twice daily")]
+    [CommonGoal(id: UUID(), name: "Losartan", description: matchingDescriptionDictionary["Losartan"] ?? "BP Medication", dates: [Date()], isActive: true, isCompleted: false, dosage: matchingAmountDictionary["Losartan"] ?? 25.0, units: matchingUnitsDictionary["Losartan"] ?? "mg", frequency: matchingFrequencyDictionary["Losartan"] ?? "once daily"),
+     CommonGoal(id: UUID(), name: "Metformin", description: matchingDescriptionDictionary["Metformin"] ?? "no description", dates: [Date(), Date().addingTimeInterval(60 * 60 * 2)], isActive: true, isCompleted: false, dosage: matchingAmountDictionary["Metformin"] ?? 0.0, units: matchingUnitsDictionary["Metformin"] ?? "fluid ounces", frequency: matchingFrequencyDictionary["Metformin"] ?? "twice a day")]
     
     EditGoals(items: $items)
         .environment(CommonGoals())
