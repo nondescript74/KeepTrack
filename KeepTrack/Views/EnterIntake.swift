@@ -45,6 +45,7 @@ struct EnterIntake: View {
             .padding(.bottom)
             Button("Add") {
                 let goalToUse = goals.getTodaysGoalForName(namez: self.name)
+                // single goal
                 
                 if goalToUse == nil {
                     let entry = CommonEntry(id: UUID(), date: Date(), units: getMatchingUnit(), amount: getMatchingAmount(), name: name, goalMet: true)
@@ -53,10 +54,11 @@ struct EnterIntake: View {
                     
                     logger.info("Added intake  \(name) no goals for name")
                 } else {
-                    let result = isGoalMet(goal: goalToUse!)
-                    let entry = CommonEntry(id: UUID(), date: Date(), units: getMatchingUnit(), amount: getMatchingAmount(), name: name, goalMet: result)
+                    let result = isGoalMet(goal: goalToUse!, previous: store.getTodaysIntake().filter({$0.name == self.name}).count)
+                    logger.info("todays intake \(result)")
+                    let entry = CommonEntry(id: UUID(), date: Date(), units: getMatchingUnit(), amount: getMatchingAmount(), name: self.name, goalMet: result)
                     store.addEntry(entry: entry)
-                    logger.info(" goal met \(result)) added intake \(name) \(getMatchingAmount()) units \(getMatchingUnit())")
+                    logger.info("added intake \(name)")
                 }
                 dismiss()
             }.disabled(name.isEmpty)

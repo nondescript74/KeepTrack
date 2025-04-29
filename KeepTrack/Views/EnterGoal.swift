@@ -16,6 +16,13 @@ struct EnterGoal: View {
     
     @State fileprivate var name: String = types.sorted(by: <)[0]
     @State fileprivate var startDate: Date = Date()
+    #if os(iOS)
+    @State fileprivate var stateFul: Bool = true
+    #endif
+    #if os(macOS) || os(iPadOS)
+    @State fileprivate var stateFul: Bool = false
+    #endif
+    
     
     fileprivate func getMatchingDesription() -> String {
          return matchingDescriptionDictionary[name] ?? "no description"
@@ -92,19 +99,21 @@ struct EnterGoal: View {
                         goals.addGoal(goal: goal)
                         
                     } else {
-                        var datesArray: [Date] = [startDate]
-                        if name.lowercased( ).contains( "water" ) {
-                            datesArray.append( Calendar.current.date(byAdding: .hour, value: 2, to: startDate)! )
-                            datesArray.append( Calendar.current.date(byAdding: .hour, value: 4, to: startDate)! )
-                            datesArray.append( Calendar.current.date(byAdding: .hour, value: 6, to: startDate)! )
-                            datesArray.append( Calendar.current.date(byAdding: .hour, value: 8, to: startDate)! )
-                            datesArray.append( Calendar.current.date(byAdding: .hour, value: 10, to: startDate)! )
-                        }
-                        if name.lowercased( ).contains( "metformin" ) {
-                            datesArray.append( Calendar.current.date(byAdding: .hour, value: 8, to: startDate)! )
-                        }
+                        let dateArrayForGoal: [Date] = matchingDateArray(name: self.name, startDate: startDate)
+//
+//                        var datesArray: [Date] = [startDate]
+//                        if name.lowercased( ).contains( "water" ) {
+//                            datesArray.append( Calendar.current.date(byAdding: .hour, value: 2, to: startDate)! )
+//                            datesArray.append( Calendar.current.date(byAdding: .hour, value: 4, to: startDate)! )
+//                            datesArray.append( Calendar.current.date(byAdding: .hour, value: 6, to: startDate)! )
+//                            datesArray.append( Calendar.current.date(byAdding: .hour, value: 8, to: startDate)! )
+//                            datesArray.append( Calendar.current.date(byAdding: .hour, value: 10, to: startDate)! )
+//                        }
+//                        if name.lowercased( ).contains( "metformin" ) {
+//                            datesArray.append( Calendar.current.date(byAdding: .hour, value: 8, to: startDate)! )
+//                        }
 
-                        let goal = CommonGoal(id: UUID(), name: name, description: getMatchingDesription(), dates: datesArray, isActive: true, isCompleted: false, dosage: getMatchingAmounts(), units: getMatchingUnits(), frequency: getMatchingFrequency() )
+                        let goal = CommonGoal(id: UUID(), name: self.name, description: getMatchingDesription(), dates: dateArrayForGoal, isActive: true, isCompleted: false, dosage: getMatchingAmounts(), units: getMatchingUnits(), frequency: getMatchingFrequency() )
                         
                         goals.addGoal(goal: goal)
                     }
@@ -128,13 +137,20 @@ struct EnterGoal: View {
         Section {
             VStack {
                 Text("Current goals are :")
+                    .font(.headline)
                     .padding()
                 ForEach(goals.goals, id: \.id) { goal in
                     Text(goal.name)
-                        .foregroundStyle(.purple)
+                        .foregroundStyle(stateFul ? .green : .orange)
                         .padding(.bottom, 5)
+                    #if macos || ipadOS
+                        .onHover(perform: { imOver in
+                            stateFul = imOver
+                        })
+                    #endif
                 }
             }
+            .defaultHoverEffect(.automatic)
             Spacer()
         }
     }

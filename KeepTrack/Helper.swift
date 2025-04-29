@@ -15,7 +15,7 @@ let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", cate
 
 let units: [String] = ["mg", "fluid ounces", "cups", "g", "ozs", "ml", "liters", "pills", "drops", "fluid ounces", "mg", "IU"]
 
-let matchingUnitsDictionary: Dictionary<String, String> = ["Rosuvastatin": "mg", "Metformin": "mg", "Losartan": "mg", "Latanoprost": "drops", "Water": "fluid ounces", "Smoothie": "fluid ounces", "Protein": "g", "sake": "fluid ounces", "Magnesium Glycinate": "mg", "Vitamin D3": "IU"]
+let matchingUnitsDictionary: Dictionary<String, String> = ["Rosuvastatin": "mg", "Metformin": "mg", "Losartan": "mg", "Latanoprost": "drops", "Water": "fluid ounces", "Smoothie": "fluid ounces", "Protein": "g", "Sake": "fluid ounces", "Magnesium Glycinate": "mg", "Vitamin D3": "IU"]
 
 
 let matchingAmountDictionary: Dictionary<String, Double> = ["Rosuvastatin": 20.0, "Metformin": 500.0, "Losartan": 25.0, "Latanoprost": 1.0, "Water": 14, "Smoothie": 14, "Protein": 14, "Sake": 3.5, "Magnesium Glycinate": 200.0, "Vitamin D3": 500.0]
@@ -32,10 +32,10 @@ public extension Array where Element: Hashable {
     }
 }
 
-
-func isGoalMet(goal: CommonGoal) -> Bool {
-    
+func isGoalMet(goal: CommonGoal, previous: Int) -> Bool {
+    // previous is the count of previous intake
     if goal.dates.isEmpty {
+        logger.info("empty: isGoalMet result is true")
         return true
     }
     var calendar = Calendar.autoupdatingCurrent
@@ -43,16 +43,56 @@ func isGoalMet(goal: CommonGoal) -> Bool {
     let currentDateTime = Date.now
     let dateComponentsNow = calendar.dateComponents([.hour, .minute, .second], from: currentDateTime)
     
+    let previousGoalDates: [Date] = goal.dates.compactMap({$0 as Date}).filter({calendar.dateComponents([.hour, .minute, .second], from: $0).hour! < dateComponentsNow.hour! || calendar.dateComponents([.hour, .minute, .second], from: $0).hour! == dateComponentsNow.hour! && (calendar.dateComponents([.hour, .minute, .second], from: $0).minute! < dateComponentsNow.minute!)})
+    
     let remainingGoalDates: [Date] = goal.dates.compactMap({$0 as Date}).filter({calendar.dateComponents([.hour, .minute, .second], from: $0).hour! >= dateComponentsNow.hour! || calendar.dateComponents([.hour, .minute, .second], from: $0).hour! == dateComponentsNow.hour! && (calendar.dateComponents([.hour, .minute, .second], from: $0).minute! >= dateComponentsNow.minute!)})
     
-    if remainingGoalDates.count == 0 {
-        return false
+    if remainingGoalDates.isEmpty {
+        logger.info("no remaining dates: isGoalMet result is true")
+        return true
     }
+    
     let firstRemaingGoalDate: Date = remainingGoalDates.first!
     let dateComponentsFirst: DateComponents = calendar.dateComponents([.hour, .minute, .second], from: firstRemaingGoalDate)
     
-    let result = dateComponentsNow.hour! < dateComponentsFirst.hour! ? true : dateComponentsNow.hour! == dateComponentsFirst.hour! && dateComponentsNow.minute! <= dateComponentsFirst.minute!
+    if previousGoalDates.isEmpty && previous > 0   {
+        // no previous dates and already have intake greater than 0, so this one is also met
+        logger.info("no previous dates and already have intake greater than 0, so this one is also met: isGoalMet result is true")
+        return true
+    }
     
-    logger.info("isGoalMet result: \(result)")
-    return result
+    if !previousGoalDates.isEmpty && previous + 1 > previousGoalDates.count {
+        logger.info( "previous intake and this one is greater than previousGoalDates.count: isGoalMet result is true" )
+        return true
+    }
+    
+    if !previousGoalDates.isEmpty && previous + 1 < previousGoalDates.count {
+        logger.info( "previous intake and this one is less than previousGoalDates.count: isGoalMet result is false" )
+        return false
+    }
+    
+    var myResult: Bool = false
+    
+    if previousGoalDates.count == previous {
+        // all previous goals == number of intake so check this one
+        myResult = dateComponentsNow.hour! < dateComponentsFirst.hour! ? true : dateComponentsNow.hour! == dateComponentsFirst.hour! && dateComponentsNow.minute! <= dateComponentsFirst.minute!
+        logger.info("all previous goals == number of intake so check this one: isGoalMet result is \(myResult)")
+    }
+    return myResult
+}
+
+
+func matchingDateArray(name: String, startDate: Date) -> [Date] {
+    var datesArray: [Date] = [startDate]
+    if name.lowercased( ).contains( "water" ) {
+        datesArray.append( Calendar.current.date(byAdding: .hour, value: 2, to: startDate)! )
+        datesArray.append( Calendar.current.date(byAdding: .hour, value: 4, to: startDate)! )
+        datesArray.append( Calendar.current.date(byAdding: .hour, value: 6, to: startDate)! )
+        datesArray.append( Calendar.current.date(byAdding: .hour, value: 8, to: startDate)! )
+        datesArray.append( Calendar.current.date(byAdding: .hour, value: 10, to: startDate)! )
+    }
+    if name.lowercased( ).contains( "metformin" ) {
+        datesArray.append( Calendar.current.date(byAdding: .hour, value: 8, to: startDate)! )
+    }
+    return datesArray
 }

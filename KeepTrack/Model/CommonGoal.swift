@@ -25,19 +25,4 @@ struct CommonGoal: Codable, Identifiable, Hashable {
     }
 }
 
-struct CommonGoal2: Codable, Identifiable, Hashable {
-    var id: UUID
-    var intakeType: IntakeType
-    var dates: [Date]
-    var isActive: Bool
-    var isCompleted: Bool
-
-    
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-        hasher.combine(intakeType)
-        hasher.combine(isActive)
-        hasher.combine(isCompleted)
-    }
-}
 
