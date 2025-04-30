@@ -34,50 +34,62 @@ public extension Array where Element: Hashable {
 
 func isGoalMet(goal: CommonGoal, previous: Int) -> Bool {
     // previous is the count of previous intake
-    if goal.dates.isEmpty {
-        logger.info("empty: isGoalMet result is true")
-        return true
-    }
     var calendar = Calendar.autoupdatingCurrent
     calendar.timeZone =  .current
-    let currentDateTime = Date.now
-    let dateComponentsNow = calendar.dateComponents([.hour, .minute, .second], from: currentDateTime)
+
+    let goalDates: [Date] = goal.dates.compactMap({$0 as Date})
+
+    let hourNow: Int = calendar.dateComponents([.hour, .minute, .second], from: Date.now).hour!
+    let minuteNow: Int = calendar.dateComponents([.hour, .minute, .second], from: Date.now).minute!
+
+
+    let previousGoalDates: [Date] = goalDates.filter({
+        calendar.dateComponents([.hour, .minute, .second], from: $0).hour! < hourNow
+        ||
+        calendar.dateComponents([.hour, .minute, .second], from: $0).hour! == hourNow
+        &&
+        (calendar.dateComponents([.hour, .minute, .second], from: $0).minute! <= minuteNow)})
+
+    let remainingGoalDates: [Date] = goalDates.filter({
+        calendar.dateComponents([.hour, .minute, .second], from: $0).hour! > hourNow
+        ||
+        calendar.dateComponents([.hour, .minute, .second], from: $0).hour! == hourNow
+        &&
+        (calendar.dateComponents([.hour, .minute, .second], from: $0).minute! >= minuteNow)})
     
-    let previousGoalDates: [Date] = goal.dates.compactMap({$0 as Date}).filter({calendar.dateComponents([.hour, .minute, .second], from: $0).hour! < dateComponentsNow.hour! || calendar.dateComponents([.hour, .minute, .second], from: $0).hour! == dateComponentsNow.hour! && (calendar.dateComponents([.hour, .minute, .second], from: $0).minute! < dateComponentsNow.minute!)})
     
-    let remainingGoalDates: [Date] = goal.dates.compactMap({$0 as Date}).filter({calendar.dateComponents([.hour, .minute, .second], from: $0).hour! >= dateComponentsNow.hour! || calendar.dateComponents([.hour, .minute, .second], from: $0).hour! == dateComponentsNow.hour! && (calendar.dateComponents([.hour, .minute, .second], from: $0).minute! >= dateComponentsNow.minute!)})
-    
-    if remainingGoalDates.isEmpty {
-        logger.info("no remaining dates: isGoalMet result is true")
-        return true
-    }
-    
-    let firstRemaingGoalDate: Date = remainingGoalDates.first!
-    let dateComponentsFirst: DateComponents = calendar.dateComponents([.hour, .minute, .second], from: firstRemaingGoalDate)
-    
-    if previousGoalDates.isEmpty && previous > 0   {
-        // no previous dates and already have intake greater than 0, so this one is also met
-        logger.info("no previous dates and already have intake greater than 0, so this one is also met: isGoalMet result is true")
-        return true
-    }
-    
-    if !previousGoalDates.isEmpty && previous + 1 > previousGoalDates.count {
-        logger.info( "previous intake and this one is greater than previousGoalDates.count: isGoalMet result is true" )
-        return true
-    }
-    
-    if !previousGoalDates.isEmpty && previous + 1 < previousGoalDates.count {
-        logger.info( "previous intake and this one is less than previousGoalDates.count: isGoalMet result is false" )
-        return false
-    }
+    logger.info("goal name: \(goal.name)")
+    let remainingGoalDatesFirst: Date? = remainingGoalDates.first
+    logger.info("first remaining date: \(String(describing: remainingGoalDatesFirst))")
+
+    let previousIntake:Int = previous
+    logger.info( "previous intake: \(previousIntake)")
+
+    let previous_goals_equal_intake_plus_one: Bool = !previousGoalDates.isEmpty && previousGoalDates.count == previousIntake + 1
+    logger.info( "previous goals equal intake plus one: \(previous_goals_equal_intake_plus_one)")
     
     var myResult: Bool = false
+
+    let isGoalMet_no_goals_Stop: Bool = goalDates.isEmpty
+    logger.info( "no goals: \(isGoalMet_no_goals_Stop)")
+
+    let isGoalMet_no_more_goals_Stop: Bool = remainingGoalDates.isEmpty ? true : false
+    // if there are no more goals
+    logger.info( "no more goals: \(isGoalMet_no_more_goals_Stop)")
     
-    if previousGoalDates.count == previous {
-        // all previous goals == number of intake so check this one
-        myResult = dateComponentsNow.hour! < dateComponentsFirst.hour! ? true : dateComponentsNow.hour! == dateComponentsFirst.hour! && dateComponentsNow.minute! <= dateComponentsFirst.minute!
-        logger.info("all previous goals == number of intake so check this one: isGoalMet result is \(myResult)")
-    }
+    let isGoalMet_with_previous_intake_Stop: Bool = previousGoalDates.isEmpty && previousIntake > 0
+    // no previous dates and already have intake greater than 0, so this one is also met
+    logger.info( "with previous intake: \(isGoalMet_with_previous_intake_Stop)")
+
+    let isGoalMet_with_previous_intake_and_goals_Stop: Bool = !previousGoalDates.isEmpty && previousIntake + 1 > previousGoalDates.count
+    logger.info( "with previous intake and goals: \(isGoalMet_with_previous_intake_and_goals_Stop)")
+
+    let isGoalMet_with_first_remaining_Stop: Bool = previous_goals_equal_intake_plus_one && !remainingGoalDates.isEmpty && remainingGoalDatesFirst! >= Date.now
+    logger.info("with first remaining goal: \(isGoalMet_with_first_remaining_Stop)")
+    
+    myResult = isGoalMet_no_goals_Stop || isGoalMet_no_more_goals_Stop || isGoalMet_with_previous_intake_Stop || isGoalMet_with_previous_intake_and_goals_Stop || isGoalMet_with_first_remaining_Stop
+    logger.info("result: \(myResult)")
+
     return myResult
 }
 
