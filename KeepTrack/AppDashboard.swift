@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import OSLog
+import HealthKit
 
 struct AppDashboard: View {
     fileprivate let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "AppDashboard")
