@@ -105,7 +105,8 @@ import SwiftUI
     
     func addEntry(entry: CommonEntry) {
         history.append(entry)
-        logger.info("Added entry \(entry.name)")
+        addEntryToHK(entry: entry)
+        logger.info("Added entry to CommonStore \(entry.name)")
         save()
     }
     
@@ -119,5 +120,18 @@ import SwiftUI
    func getTodaysIntake() -> [CommonEntry] {
         let todays = history.filter { Calendar.autoupdatingCurrent.isDateInToday($0.date) }
         return  todays
+    }
+    
+    fileprivate func addEntryToHK(entry: CommonEntry) {
+        let quantityType = HKQuantityType.quantityType(forIdentifier: .dietaryWater)!
+        let quantity = HKQuantity(unit: .fluidOunceUS(), doubleValue: entry.amount)
+        let sample = HKQuantitySample(type: quantityType, quantity: quantity, start: Date(), end: Date())
+        healthStore.save(sample) { (_, error) in
+            if let error = error {
+                print("Error saving sample: \(error)")
+            } else {
+                self.logger.info( "Sample saved successfully to HealthStore!")
+            }
+        }
     }
 }

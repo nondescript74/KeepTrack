@@ -7,6 +7,7 @@
 
 import SwiftUI
 import OSLog
+import HealthKit
 
 struct History: View {
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "History")
@@ -21,6 +22,7 @@ struct History: View {
         return myReturn
     }
     
+    
     fileprivate func getYesterday() -> [CommonEntry] {
         let myReturn = store.history.filter { Calendar.current.isDateInYesterday($0.date) }
 //        logger.info("gY \(myReturn.count)")
@@ -32,6 +34,7 @@ struct History: View {
 //        logger.info("sTBN \(myReturn.count)")
         return myReturn
     }
+    
     
     fileprivate func sortYesterdayByName(name: String) -> [CommonEntry] {
         let myReturn = getYesterday().filter { $0.name.lowercased() == name.lowercased() }.sorted { $0.date < $1.date }.uniqued()
@@ -105,23 +108,7 @@ struct History: View {
                                     }
                                     .font(.caption)
                                     .foregroundStyle(getYesterdaysGoalsByNameCount(name: type) <= getUniqueYesterdayByNameCount(name: type) ? .green : .red)
-//                                    ScrollView(.horizontal) {
-//                                        HStack {
-//                                            ForEach(sortYesterdayByName(name: type)) { entry in
-//                                                HStack {
-//                                                    Text(entry.name)
-//                                                    Text(sortYesterdayByName(name: type).count.description)
-//                                                    HStack {
-//                                                        Text(Calendar.current.dateComponents([.hour], from: entry.date as Date).hour?.description ?? "")
-//                                                        Text(":")
-//                                                        Text(Calendar.current.dateComponents([.minute], from: entry.date as Date).minute?.description ?? "")
-//                                                    }
-//                                                    .foregroundStyle(.green)
-//                                                }
-//                                                .font(.caption)
-//                                            }
-//                                        }
-//                                    }
+
                                 }
                             }
                         }
