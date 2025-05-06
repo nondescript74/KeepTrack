@@ -14,6 +14,19 @@ struct EnterIntake: View {
     @Environment(CommonGoals.self) var goals
     @Environment(\.dismiss) var dismiss
     
+    let dateFormatter = DateFormatter()
+    
+    var dataTypeIdentifier: String
+    var dataValues: [HealthDataTypeValue] = []
+    
+    public var showGroupedTableViewTitle: Bool = false
+    
+    // MARK: Initializers
+    
+    init() {
+        self.dataTypeIdentifier = "Water"
+    }
+    
     @State var name: String = (types.sorted(by: {$0 < $1}).last ?? types.sorted(by: {$0 < $1})[0])
     
     fileprivate func getMatchingUnit() -> String {

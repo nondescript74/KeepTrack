@@ -21,21 +21,21 @@ import SwiftUI
     
     let waterType: HKQuantityType = HKQuantityType.quantityType(forIdentifier: .dietaryWater)!
     
-    let sampleTypes = Set([HKObjectType.quantityType(forIdentifier: .dietaryWater)!,
-                           HKSeriesType.heartbeat(),
-                           HKQuantityType.quantityType(forIdentifier: .heartRateVariabilitySDNN)!,
-                           HKObjectType.quantityType(forIdentifier: .heartRate)!
+    let sampleTypes = Set([HKObjectType.quantityType(forIdentifier: .dietaryWater)!
+//                           HKSeriesType.heartbeat(),
+//                           HKQuantityType.quantityType(forIdentifier: .heartRateVariabilitySDNN)!,
+//                           HKObjectType.quantityType(forIdentifier: .heartRate)!
     ])
-    
-    func heartRateDetailsString(quantity: HKQuantity, dateInterval: DateInterval) -> String {
-        let BPM = HKUnit(from: "count/min")
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .none
-        dateFormatter.timeStyle = .medium
-        dateFormatter.locale = Locale(identifier: "en_US")
-        
-        return "\(dateFormatter.string(from: dateInterval.start)) \(Int(quantity.doubleValue(for: BPM))) BPM"
-    }
+//    
+//    func heartRateDetailsString(quantity: HKQuantity, dateInterval: DateInterval) -> String {
+//        let BPM = HKUnit(from: "count/min")
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateStyle = .none
+//        dateFormatter.timeStyle = .medium
+//        dateFormatter.locale = Locale(identifier: "en_US")
+//        
+//        return "\(dateFormatter.string(from: dateInterval.start)) \(Int(quantity.doubleValue(for: BPM))) BPM"
+//    }
     
     init() {
         if let docDirUrl = urls.first {
@@ -105,7 +105,10 @@ import SwiftUI
     
     func addEntry(entry: CommonEntry) {
         history.append(entry)
-        addEntryToHK(entry: entry)
+        if entry.name == "Water" {
+            addEntryToHK(entry: entry)
+            logger.info( "Added entry to HK: \(entry.name)")
+        }
         logger.info("Added entry to CommonStore \(entry.name)")
         save()
     }
@@ -124,8 +127,11 @@ import SwiftUI
     
     fileprivate func addEntryToHK(entry: CommonEntry) {
         let quantityType = HKQuantityType.quantityType(forIdentifier: .dietaryWater)!
+        logger.info( "quantityType \(quantityType)")
         let quantity = HKQuantity(unit: .fluidOunceUS(), doubleValue: entry.amount)
+        logger.info( "quantity \(quantity)")
         let sample = HKQuantitySample(type: quantityType, quantity: quantity, start: Date(), end: Date())
+        logger.info( "sample \(sample)")
         healthStore.save(sample) { (_, error) in
             if let error = error {
                 print("Error saving sample: \(error)")

@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		F818E76D2DC4313700D32EF2 /* CareKit in Frameworks */ = {isa = PBXBuildFile; productRef = F818E76C2DC4313700D32EF2 /* CareKit */; };
+		F818E76F2DC4313700D32EF2 /* CareKitStore in Frameworks */ = {isa = PBXBuildFile; productRef = F818E76E2DC4313700D32EF2 /* CareKitStore */; };
+		F818E7712DC4313700D32EF2 /* CareKitUI in Frameworks */ = {isa = PBXBuildFile; productRef = F818E7702DC4313700D32EF2 /* CareKitUI */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		F897BF532D95EC1700F7225B /* Embed App Clips */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -54,6 +60,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F818E76F2DC4313700D32EF2 /* CareKitStore in Frameworks */,
+				F818E76D2DC4313700D32EF2 /* CareKit in Frameworks */,
+				F818E7712DC4313700D32EF2 /* CareKitUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,6 +107,9 @@
 			);
 			name = KeepTrack;
 			packageProductDependencies = (
+				F818E76C2DC4313700D32EF2 /* CareKit */,
+				F818E76E2DC4313700D32EF2 /* CareKitStore */,
+				F818E7702DC4313700D32EF2 /* CareKitUI */,
 			);
 			productName = KeepTrack;
 			productReference = F81C71D22D8A29280037FCCB /* KeepTrack.app */;
@@ -127,6 +139,9 @@
 			);
 			mainGroup = F81C71C92D8A29280037FCCB;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				F818E76B2DC4313700D32EF2 /* XCRemoteSwiftPackageReference "CareKit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F81C71D32D8A29280037FCCB /* Products */;
 			projectDirPath = "";
@@ -281,7 +296,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = KeepTrack/KeepTrack.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 74;
+				CURRENT_PROJECT_VERSION = 75;
 				DEVELOPMENT_TEAM = YKHW2TJ32G;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -327,7 +342,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = KeepTrack/KeepTrack.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 74;
+				CURRENT_PROJECT_VERSION = 75;
 				DEVELOPMENT_TEAM = YKHW2TJ32G;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -388,6 +403,35 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F818E76B2DC4313700D32EF2 /* XCRemoteSwiftPackageReference "CareKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/carekit-apple/CareKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F818E76C2DC4313700D32EF2 /* CareKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F818E76B2DC4313700D32EF2 /* XCRemoteSwiftPackageReference "CareKit" */;
+			productName = CareKit;
+		};
+		F818E76E2DC4313700D32EF2 /* CareKitStore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F818E76B2DC4313700D32EF2 /* XCRemoteSwiftPackageReference "CareKit" */;
+			productName = CareKitStore;
+		};
+		F818E7702DC4313700D32EF2 /* CareKitUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F818E76B2DC4313700D32EF2 /* XCRemoteSwiftPackageReference "CareKit" */;
+			productName = CareKitUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F81C71CA2D8A29280037FCCB /* Project object */;
 }
