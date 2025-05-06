@@ -114,6 +114,9 @@ struct History: View {
                         }
                     }
                 }
+                Button("Get HKHistory") {
+                    
+                }
             }
         }
         .environment(store)

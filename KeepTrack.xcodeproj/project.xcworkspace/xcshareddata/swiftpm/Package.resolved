@@ -1,0 +1,15 @@
+{
+  "originHash" : "4af2c0f5e7daf8e09b6bda707340db6a6a8ddc7168f0dac1687e0199acafb713",
+  "pins" : [
+    {
+      "identity" : "carekit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/carekit-apple/CareKit",
+      "state" : {
+        "revision" : "9d4233253faf39e5dcd52e6cb4a0498ac4ca4a1f",
+        "version" : "2.0.2"
+      }
+    }
+  ],
+  "version" : 3
+}
