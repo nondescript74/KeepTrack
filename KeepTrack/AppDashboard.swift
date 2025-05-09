@@ -27,6 +27,8 @@ struct AppDashboard: View {
 
             History()
             
+//            HistoryHK(dataTypeIdentifier: HKQuantityTypeIdentifier.dietaryWater.rawValue)
+            
             GoalDisplayByName()
                 
             LazyVGrid(columns: columnLayout, alignment: .center) {

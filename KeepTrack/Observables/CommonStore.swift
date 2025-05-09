@@ -13,47 +13,31 @@ import SwiftUI
 @MainActor
 @Observable final class CommonStore {
     
+    fileprivate let zBug: Bool = false
+    
     fileprivate let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "CommonStore")
     var history: [CommonEntry]
         
     let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-    var healthStore: HKHealthStore
     
-    let waterType: HKQuantityType = HKQuantityType.quantityType(forIdentifier: .dietaryWater)!
-    
-    let sampleTypes = Set([HKObjectType.quantityType(forIdentifier: .dietaryWater)!
-//                           HKSeriesType.heartbeat(),
-//                           HKQuantityType.quantityType(forIdentifier: .heartRateVariabilitySDNN)!,
-//                           HKObjectType.quantityType(forIdentifier: .heartRate)!
-    ])
-//    
-//    func heartRateDetailsString(quantity: HKQuantity, dateInterval: DateInterval) -> String {
-//        let BPM = HKUnit(from: "count/min")
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateStyle = .none
-//        dateFormatter.timeStyle = .medium
-//        dateFormatter.locale = Locale(identifier: "en_US")
-//        
-//        return "\(dateFormatter.string(from: dateInterval.start)) \(Int(quantity.doubleValue(for: BPM))) BPM"
-//    }
+    static let healthStore: HKHealthStore = HKHealthStore()
     
     init() {
         if let docDirUrl = urls.first {
             let fileURL = docDirUrl.appendingPathComponent("entrystore.json")
             
-            
             if FileManager.default.fileExists(atPath: fileURL.path) {
-                logger.info( "fileURL for existing history \(fileURL)")
+                if zBug { logger.info( "fileURL for existing history \(fileURL)") }
                 
                 do {
                     let temp = FileManager.default.contents(atPath: fileURL.path)!
                     if temp.count == 0 {
                         history = []
-                        logger.info("history is empty")
+                        if zBug { logger.info("history is empty") }
                     } else {
                         let tempContents: [CommonEntry] = try JSONDecoder().decode([CommonEntry].self, from: try Data(contentsOf: fileURL))
                         history = tempContents
-                        logger.info(" decoded history: \(tempContents)")
+                        if zBug { logger.info(" decoded history: \(tempContents)") }
                     }
                 } catch {
                     fatalError( "Couldn't read history")
@@ -62,7 +46,7 @@ import SwiftUI
                 
             } else {
                 FileManager.default.createFile(atPath: docDirUrl.path().appending("entrystore.json"), contents: nil)
-                logger.info( "Created file entrystore.json")
+                if zBug { logger.info( "Created file entrystore.json") }
                 history = []
             }
         } else {
@@ -73,24 +57,20 @@ import SwiftUI
             fatalError("This app requires a device that supports HealthKit")
         }
         
-        healthStore = HKHealthStore()
-        logger.info( "Initialized HealthStore")
-        
-        healthStore.requestAuthorization(toShare: [HKObjectType.quantityType(forIdentifier: .dietaryWater)!], read: Set([HKObjectType.quantityType(forIdentifier: .dietaryWater)!])) { (success, error) in
+        CommonStore.healthStore.requestAuthorization(toShare: [HKObjectType.quantityType(forIdentifier: .dietaryWater)!], read: Set([HKObjectType.quantityType(forIdentifier: .dietaryWater)!])) { (success, error) in
             print("Request Authorization -- Success: ", success, " Error: ", error ?? "nil")
             // Handle authorization errors here.
             if !success {
-                self.logger.info( "Request Authorization failed")
+                if self.zBug { self.logger.info( "Request Authorization failed") }
                 fatalError( "Request Authorization failed")
             }
-            self.logger.info( "authorization granted: \(success)")
-            
+            if self.zBug { self.logger.info( "authorization granted: \(success)") }
         }
     }
     
     fileprivate func save() {
         let fileURL = URL(fileURLWithPath: FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("entrystore.json").path)
-        logger.info( "fileURL for existing history \(fileURL.lastPathComponent)")
+        if zBug { logger.info( "fileURL for existing history \(fileURL.lastPathComponent)") }
         
         do {
             let data = try JSONEncoder().encode(history)
@@ -132,11 +112,12 @@ import SwiftUI
         logger.info( "quantity \(quantity)")
         let sample = HKQuantitySample(type: quantityType, quantity: quantity, start: Date(), end: Date())
         logger.info( "sample \(sample)")
-        healthStore.save(sample) { (_, error) in
+        CommonStore.healthStore.save(sample) { (response, error) in
             if let error = error {
                 print("Error saving sample: \(error)")
             } else {
                 self.logger.info( "Sample saved successfully to HealthStore!")
+                self.logger.info("healthstore response: \(response)")
             }
         }
     }

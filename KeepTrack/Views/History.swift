@@ -16,41 +16,43 @@ struct History: View {
     
     let rowLayout = Array(repeating: GridItem(.flexible(minimum: 10)), count: 3)
     
+    fileprivate var zBug: Bool = false
+    
     fileprivate func getToday() -> [CommonEntry] {
         let myReturn = store.history.filter { Calendar.current.isDateInToday($0.date) }
-//        logger.info("gT\(myReturn.count)")
+        if zBug {logger.info("gT\(myReturn.count)") }
         return myReturn
     }
     
     
     fileprivate func getYesterday() -> [CommonEntry] {
         let myReturn = store.history.filter { Calendar.current.isDateInYesterday($0.date) }
-//        logger.info("gY \(myReturn.count)")
+        if zBug {logger.info("gY \(myReturn.count)") }
         return myReturn
     }
     
     fileprivate func sortTodayByName(name: String) -> [CommonEntry] {
         let myReturn  = getToday().filter { $0.name.lowercased() == name.lowercased() }.sorted { $0.date < $1.date }
-//        logger.info("sTBN \(myReturn.count)")
+        if zBug {logger.info("sTBN \(myReturn.count)") }
         return myReturn
     }
     
     
     fileprivate func sortYesterdayByName(name: String) -> [CommonEntry] {
         let myReturn = getYesterday().filter { $0.name.lowercased() == name.lowercased() }.sorted { $0.date < $1.date }.uniqued()
-//        logger.info("sYBN \(myReturn.count)")
+        if zBug {logger.info("sYBN \(myReturn.count)") }
         return myReturn
     }
     
     fileprivate func getUniqueYesterdayByNameCount(name: String) -> Int {
         let myReturn: Int = sortYesterdayByName(name: name).count
-        logger.info("gYUBNC: \(myReturn)")
+        if zBug {logger.info("gYUBNC: \(myReturn)") }
         return myReturn
     }
     
     fileprivate func getYesterdaysGoalsByNameCount(name: String) -> Int {
         let myReturn: Int = goals.goals.filter { $0.name.lowercased() == name.lowercased() }.count
-        logger.info("gYGBNC: \(myReturn)")
+        if zBug {logger.info("gYGBNC: \(myReturn)") }
         return myReturn
     }
     

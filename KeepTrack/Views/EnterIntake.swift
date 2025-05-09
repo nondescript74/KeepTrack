@@ -56,6 +56,8 @@ struct EnterIntake: View {
                 Text(getMatchingUnit())
             }
             .padding(.bottom)
+            
+            
             Button("Add") {
                 let goalToUse = goals.getTodaysGoalForName(namez: self.name)
                 // single goal
@@ -74,7 +76,8 @@ struct EnterIntake: View {
                     logger.info("added intake \(name)")
                 }
                 dismiss()
-            }.disabled(name.isEmpty)
+            }
+            .disabled(name.isEmpty)
             Spacer()
             
         }
