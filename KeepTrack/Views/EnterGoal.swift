@@ -100,18 +100,6 @@ struct EnterGoal: View {
                         
                     } else {
                         let dateArrayForGoal: [Date] = matchingDateArray(name: self.name, startDate: startDate)
-//
-//                        var datesArray: [Date] = [startDate]
-//                        if name.lowercased( ).contains( "water" ) {
-//                            datesArray.append( Calendar.current.date(byAdding: .hour, value: 2, to: startDate)! )
-//                            datesArray.append( Calendar.current.date(byAdding: .hour, value: 4, to: startDate)! )
-//                            datesArray.append( Calendar.current.date(byAdding: .hour, value: 6, to: startDate)! )
-//                            datesArray.append( Calendar.current.date(byAdding: .hour, value: 8, to: startDate)! )
-//                            datesArray.append( Calendar.current.date(byAdding: .hour, value: 10, to: startDate)! )
-//                        }
-//                        if name.lowercased( ).contains( "metformin" ) {
-//                            datesArray.append( Calendar.current.date(byAdding: .hour, value: 8, to: startDate)! )
-//                        }
 
                         let goal = CommonGoal(id: UUID(), name: self.name, description: getMatchingDesription(), dates: dateArrayForGoal, isActive: true, isCompleted: false, dosage: getMatchingAmounts(), units: getMatchingUnits(), frequency: getMatchingFrequency() )
                         

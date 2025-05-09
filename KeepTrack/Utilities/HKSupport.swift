@@ -58,6 +58,8 @@ private func preferredUnit(for identifier: String, sampleType: HKSampleType? = n
         let quantityTypeIdentifier = HKQuantityTypeIdentifier(rawValue: identifier)
         
         switch quantityTypeIdentifier {
+        case .dietaryWater:
+            unit = .fluidOunceUS()
         case .stepCount:
             unit = .count()
         case .distanceWalkingRunning, .sixMinuteWalkTestDistance:
