@@ -10,7 +10,7 @@ import SwiftUI
 
 struct AddMorningMedsIntent: AppIntent {
     
-    static let title: LocalizedStringResource = "Add three meds"
+    static let title: LocalizedStringResource = "Add four meds"
     static var description: LocalizedStringResource? = "This adds metformin, losartan, and rosuvastatin"
         
     func perform() async throws -> some IntentResult & ProvidesDialog & ShowsSnippetView {
@@ -23,11 +23,14 @@ struct AddMorningMedsIntent: AppIntent {
         let commonEntryRosuvastatin: CommonEntry = CommonEntry(id: UUID(), date: Date(), units: matchingUnitsDictionary["Rosuvastatin"] ?? "mg", amount: matchingAmountDictionary["Rosuvastatin"] ?? 20, name: "Rosuvastatin", goalMet: false)
         await KeepTrack.CommonStore().addEntry(entry: commonEntryRosuvastatin)
         
+        let commonEntryAmlodipine: CommonEntry = CommonEntry(id: UUID(), date: Date(), units: matchingUnitsDictionary["Amlodipine"] ?? "mg", amount: matchingAmountDictionary["Amlodipine"] ?? 5, name: "Amlodipine", goalMet: false)
+        await KeepTrack.CommonStore().addEntry(entry: commonEntryAmlodipine)
+        
         let snippetView: some View = VStack {
-            Text("Metformin, Losartan, and Rosuvastatin added")
+            Text("Metformin, Losartan, Rosuvastatin, Amlodipine added")
             Text("You have consumed your morning meds")
         }
-        return .result(dialog: "Okay Metformin, Losartan, and Rosuvastatin added",
+        return .result(dialog: "Okay Metformin, Losartan, Rosuvastatin, Amlodipine added",
                        view: snippetView)
     }
 }
