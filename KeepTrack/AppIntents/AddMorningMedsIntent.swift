@@ -12,18 +12,36 @@ struct AddMorningMedsIntent: AppIntent {
     
     static let title: LocalizedStringResource = "Add four meds"
     static var description: LocalizedStringResource? = "This adds metformin, losartan, and rosuvastatin"
+    
+    
+    func getPreviousIntake(typeName: String) async -> Int {
+        let result = await KeepTrack.CommonStore().history.filter {
+            (Calendar.current.isDateInToday($0.date))
+        }.filter { $0.name.lowercased().contains(typeName.lowercased())}
+        return result.count
+    }
+    
+    func getGoal(typeName: String) async -> CommonGoal? {
+        let result = await KeepTrack.CommonGoals().getTodaysGoalForName(namez: typeName)
+        return result  // can be nil
+    }
+    
+    func localGoalMet(typeName: String) async -> Bool {
+        let result = await getGoal(typeName: "Metformin") != nil ? isGoalMet(goal: getGoal(typeName: "Metformin")!, previous: getPreviousIntake(typeName: "Metformin")) : true
+        return result
+    }
         
     func perform() async throws -> some IntentResult & ProvidesDialog & ShowsSnippetView {
-        let commonEntryMetformin: CommonEntry = CommonEntry(id: UUID(), date: Date(), units: matchingUnitsDictionary["Metformin"] ?? "mg", amount: matchingAmountDictionary["Metformin"] ?? 500, name: "Metformin", goalMet: false)
+        let commonEntryMetformin: CommonEntry = await CommonEntry(id: UUID(), date: Date(), units: matchingUnitsDictionary["Metformin"] ?? "mg", amount: matchingAmountDictionary["Metformin"] ?? 500, name: "Metformin", goalMet: localGoalMet(typeName: "Metformin"))
         await KeepTrack.CommonStore().addEntry(entry: commonEntryMetformin)
         
-        let commonEntryLosartan: CommonEntry = CommonEntry(id: UUID(), date: Date(), units: matchingUnitsDictionary["Losartan"] ?? "mg", amount: matchingAmountDictionary["Losartan"] ?? 25, name: "Losartan", goalMet: false)
+        let commonEntryLosartan: CommonEntry = await CommonEntry(id: UUID(), date: Date(), units: matchingUnitsDictionary["Losartan"] ?? "mg", amount: matchingAmountDictionary["Losartan"] ?? 25, name: "Losartan", goalMet: localGoalMet(typeName: "Losartan"))
         await KeepTrack.CommonStore().addEntry(entry: commonEntryLosartan)
         
-        let commonEntryRosuvastatin: CommonEntry = CommonEntry(id: UUID(), date: Date(), units: matchingUnitsDictionary["Rosuvastatin"] ?? "mg", amount: matchingAmountDictionary["Rosuvastatin"] ?? 20, name: "Rosuvastatin", goalMet: false)
+        let commonEntryRosuvastatin: CommonEntry = await CommonEntry(id: UUID(), date: Date(), units: matchingUnitsDictionary["Rosuvastatin"] ?? "mg", amount: matchingAmountDictionary["Rosuvastatin"] ?? 20, name: "Rosuvastatin", goalMet: localGoalMet(typeName: "Rosuvastatin"))
         await KeepTrack.CommonStore().addEntry(entry: commonEntryRosuvastatin)
         
-        let commonEntryAmlodipine: CommonEntry = CommonEntry(id: UUID(), date: Date(), units: matchingUnitsDictionary["Amlodipine"] ?? "mg", amount: matchingAmountDictionary["Amlodipine"] ?? 5, name: "Amlodipine", goalMet: false)
+        let commonEntryAmlodipine: CommonEntry = await CommonEntry(id: UUID(), date: Date(), units: matchingUnitsDictionary["Amlodipine"] ?? "mg", amount: matchingAmountDictionary["Amlodipine"] ?? 5, name: "Amlodipine", goalMet: localGoalMet(typeName: "Amlodipine"))
         await KeepTrack.CommonStore().addEntry(entry: commonEntryAmlodipine)
         
         let snippetView: some View = VStack {

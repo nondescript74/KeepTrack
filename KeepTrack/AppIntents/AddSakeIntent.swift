@@ -18,7 +18,7 @@ struct AddSakeIntent: AppIntent {
         await KeepTrack.CommonStore().addEntry(entry: commonEntry)
         let snippetView: some View = VStack {
             Text("Nihon-shu added")
-            Text("You have consumed a 3.5 ounce glasses of sake")
+            Text("You have consumed a 3.5 fluid ounce glass of sake")
         }
         return .result(dialog: "Okay one glass of sake added",
                        view: snippetView)
