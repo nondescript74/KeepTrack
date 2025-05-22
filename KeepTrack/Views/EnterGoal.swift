@@ -22,6 +22,9 @@ struct EnterGoal: View {
     #if os(macOS) || os(iPadOS)
     @State fileprivate var stateFul: Bool = false
     #endif
+    #if os(visionOS)
+    @State fileprivate var stateFul: Bool = false
+    #endif
     
     
     fileprivate func getMatchingDesription() -> String {
