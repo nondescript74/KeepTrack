@@ -25,12 +25,16 @@ struct EditGoals: View {
                         GoalFullView(goal: item.wrappedValue)
                     } label: {
                         Text("\(item.name.wrappedValue)")
+                            .font(.largeTitle)
                     }
                 }
             }
-            .navigationTitle(Text("Edit Goals"))
+            .navigationTitle(Text("Edit Goals").font(.largeTitle))
         }
         .environment(goals)
+        #if os(VisionOS)
+        .glassBackgroundEffect()
+        #endif
     }
     
 }

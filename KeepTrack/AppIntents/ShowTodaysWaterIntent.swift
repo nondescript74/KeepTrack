@@ -7,6 +7,8 @@
 
 import AppIntents
 import OSLog
+import HealthKit
+import SwiftUI
 
 struct ShowTodaysWaterIntent: AppIntent {
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "ShowTodaysWaterIntent")
@@ -17,7 +19,7 @@ struct ShowTodaysWaterIntent: AppIntent {
         let resultW = await KeepTrack.CommonStore().history.filter {
             (Calendar.current.isDateInToday($0.date))
         }.filter { $0.name.lowercased().contains("water")}
-        logger.info("water consumed is \(resultW))")
-        return .result(dialog: "Okay, you consumed \(resultW.count)  glasses of water today.")
+        logger.info("water consumed in app history is \(resultW))")
+        return .result(dialog: "Okay, App shows you consumed \(resultW.count)  glasses of water today.")
     }
 }

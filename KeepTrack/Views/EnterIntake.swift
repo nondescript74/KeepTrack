@@ -7,11 +7,13 @@
 
 import SwiftUI
 import OSLog
+import HealthKit
 
 struct EnterIntake: View {
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "EnterIntake")
     @Environment(CommonStore.self) var store
     @Environment(CommonGoals.self) var goals
+    @Environment(HealthKitManager.self) var healthKitManager
     @Environment(\.dismiss) var dismiss
     
     let dateFormatter = DateFormatter()
@@ -64,16 +66,26 @@ struct EnterIntake: View {
                 
                 if goalToUse == nil {
                     let entry = CommonEntry(id: UUID(), date: Date(), units: getMatchingUnit(), amount: getMatchingAmount(), name: name, goalMet: true)
-                    
                     store.addEntry(entry: entry)
-                    
-                    logger.info("Added intake  \(name) no goals for name")
+                    logger.info("CommonStore: Added intake  \(name) no goals for name")
+                    if name == "Water" {
+                        Task {
+                            await healthKitManager.addWaterSample(quantity:  HKQuantity(unit: HKUnit.fluidOunceUS(), doubleValue: getMatchingAmount()))
+                            logger.info("HealthKit: added water sample")
+                        }
+                    }
                 } else {
                     let result = isGoalMet(goal: goalToUse!, previous: store.getTodaysIntake().filter({$0.name == self.name}).count)
                     logger.info("todays intake \(result)")
                     let entry = CommonEntry(id: UUID(), date: Date(), units: getMatchingUnit(), amount: getMatchingAmount(), name: self.name, goalMet: result)
                     store.addEntry(entry: entry)
-                    logger.info("added intake \(name)")
+                    logger.info("CommonStore: added intake \(name)")
+                    if name == "Water" {
+                        Task {
+                            await healthKitManager.addWaterSample(quantity:  HKQuantity(unit: HKUnit.fluidOunceUS(), doubleValue: getMatchingAmount()))
+                            logger.info("HealthKit: added water sample")
+                        }
+                    }
                 }
                 dismiss()
             }
@@ -83,6 +95,7 @@ struct EnterIntake: View {
         }
         .environment(store)
         .environment(goals)
+        .environment(healthKitManager)
     }
 }
 
@@ -90,4 +103,5 @@ struct EnterIntake: View {
     EnterIntake()
         .environment(CommonStore())
         .environment(CommonGoals())
+        .environment(HealthKitManager())
 }
