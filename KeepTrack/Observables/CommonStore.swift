@@ -20,8 +20,6 @@ import SwiftUI
         
     let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
     
-    static let healthStore: HKHealthStore = HKHealthStore()
-    
     init() {
         if let docDirUrl = urls.first {
             let fileURL = docDirUrl.appendingPathComponent("entrystore.json")
@@ -52,20 +50,6 @@ import SwiftUI
         } else {
             fatalError( "Failed to resolve document directory")
         }
-        
-        guard HKHealthStore.isHealthDataAvailable() else {
-            fatalError("This app requires a device that supports HealthKit")
-        }
-        
-        CommonStore.healthStore.requestAuthorization(toShare: [HKObjectType.quantityType(forIdentifier: .dietaryWater)!], read: Set([HKObjectType.quantityType(forIdentifier: .dietaryWater)!])) { (success, error) in
-            print("Request Authorization -- Success: ", success, " Error: ", error ?? "nil")
-            // Handle authorization errors here.
-            if !success {
-                if self.zBug { self.logger.info( "Request Authorization failed") }
-                fatalError( "Request Authorization failed")
-            }
-            if self.zBug { self.logger.info( "authorization granted: \(success)") }
-        }
     }
     
     fileprivate func save() {
@@ -86,7 +70,7 @@ import SwiftUI
     func addEntry(entry: CommonEntry) {
         history.append(entry)
         if entry.name == "Water" {
-            addEntryToHK(entry: entry)
+//            addEntryToHK(entry: entry)
             logger.info( "Added entry to HK: \(entry.name)")
         }
         logger.info("Added entry to CommonStore \(entry.name)")
@@ -105,20 +89,12 @@ import SwiftUI
         return  todays
     }
     
-    fileprivate func addEntryToHK(entry: CommonEntry) {
-        let quantityType = HKQuantityType.quantityType(forIdentifier: .dietaryWater)!
-        logger.info( "quantityType \(quantityType)")
-        let quantity = HKQuantity(unit: .fluidOunceUS(), doubleValue: entry.amount)
-        logger.info( "quantity \(quantity)")
-        let sample = HKQuantitySample(type: quantityType, quantity: quantity, start: Date(), end: Date())
-        logger.info( "sample \(sample)")
-        CommonStore.healthStore.save(sample) { (response, error) in
-            if let error = error {
-                print("Error saving sample: \(error)")
-            } else {
-                self.logger.info( "Sample saved successfully to HealthStore!")
-                self.logger.info("healthstore response: \(response)")
-            }
-        }
-    }
+//    fileprivate func addEntryToHK(entry: CommonEntry) {
+//        let quantityType = HKQuantityType.quantityType(forIdentifier: .dietaryWater)!
+//        logger.info( "quantityType \(quantityType)")
+//        let quantity = HKQuantity(unit: .fluidOunceUS(), doubleValue: entry.amount)
+//        logger.info( "quantity \(quantity)")
+//        
+//        HealthKitManager.addWaterSample(quantity: quantity)
+//    }
 }

@@ -7,6 +7,7 @@
 
 import AppIntents
 import SwiftUI
+import HealthKit
 
 struct AddWaterIntent: AppIntent {
     
@@ -20,6 +21,10 @@ struct AddWaterIntent: AppIntent {
             Text("Intake added")
             Text("You added a 14 ounce glasses of water")
         }
+        let quantity: HKQuantity = HKQuantity(unit: .fluidOunceUS(), doubleValue: 14)
+        
+        await HealthKitManager().addWaterSample(quantity: quantity)
+        
         return .result(dialog: "Okay 14 ounces of water added",
                        view: snippetView)
     }

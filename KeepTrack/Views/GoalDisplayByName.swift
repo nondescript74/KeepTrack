@@ -18,34 +18,46 @@ struct GoalDisplayByName: View {
     fileprivate var myGoals:[CommonGoal] {
         return goals.goals.sorted { $0.name < $1.name }
     }
+    
+    let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .none
+        formatter.timeStyle = .short
+        return formatter
+    }()
+    
     var body: some View {
         VStack {
-            Text("Goals by Name")
+            Text("Intake Goals")
+                .font(.largeTitle)
+                .foregroundColor(.secondary)
             
             if myGoals.isEmpty {
                 Text("No goals yet!")
                     .foregroundColor(.secondary)
+                    .font(.headline)
             } else {
                 ForEach(myGoals.indices, id: \.self) { index in
                     let goal = myGoals[index]
                     HStack(alignment: .center) {
                         Text(goal.name)
                             .foregroundColor(colors[index % colors.count])
-                            .font(.footnote)
+                            .font(.headline)
                             .padding(.horizontal)
                         
                         ScrollView(.horizontal) {
                             HStack(alignment: .center) {
                                 ForEach(goal.dates, id: \.self) { date in
                                     HStack {
-                                        Calendar.autoupdatingCurrent.dateComponents([.hour], from: date).hour.map { Text("\($0):") } ?? Text("")
-                                        Calendar.autoupdatingCurrent.dateComponents([.minute], from: date).minute.map { Text("\($0)") } ?? Text("")
+                                        Calendar.autoupdatingCurrent.dateComponents([.hour], from: date).hour.map {
+                                            Text("\($0):").font(.headline) } ?? Text("")
+                                        Calendar.autoupdatingCurrent.dateComponents([.minute], from: date).minute.map { Text("\($0)").font(.headline) } ?? Text("")
                                     }
-                                    .padding(.trailing, 5)
+                                    .padding([.leading, .trailing], 5)
                                     .font(.footnote)
                                     .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray, lineWidth: 0.5))
                                     .background(content: {
-                                        Color.orange.opacity(0.1)
+                                        Color.gray.opacity(0.2)
                                     })
                                 }
                             }

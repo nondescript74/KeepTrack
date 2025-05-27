@@ -9,26 +9,36 @@ import Foundation
 import SwiftUI
 import OSLog
 import HealthKit
+import VisionKit
 
 struct AppDashboard: View {
     fileprivate let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "AppDashboard")
     @State private var store: CommonStore = CommonStore()
     @State private var goals: CommonGoals = CommonGoals()
+    @State private var healthKitManager = HealthKitManager()
+    
     let columnLayout = Array(repeating: GridItem(.flexible(minimum: 45)), count: 4  )
     
     var body: some View {
         NavigationStack {
-            HStack {
-                Text(Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String)
-                Text(Bundle.main.infoDictionary!["CFBundleVersion"] as! String)
+            VStack {
+                HStack {
+                    Text("Welcome to KeepTrack!")
+                    Text(Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String)
+                    Text(Bundle.main.infoDictionary!["CFBundleVersion"] as! String)
+                }
+                Text(healthKitManager.descriptionLabel)
             }
-            .padding(.horizontal)
-            .font(.footnote)
+            .padding(.bottom, 20)
 
+//            VStack(spacing: 20) {
+//                DisplayHKHistory()
+//            }
+//            .background(Color.green.opacity(0.1))
+            
+             
             History()
-            
-//            HistoryHK(dataTypeIdentifier: HKQuantityTypeIdentifier.dietaryWater.rawValue)
-            
+                        
             GoalDisplayByName()
                 
             LazyVGrid(columns: columnLayout, alignment: .center) {
@@ -89,6 +99,10 @@ struct AppDashboard: View {
         }
         .environment(goals)
         .environment(store)
+        .environment(healthKitManager)
+        #if os(VisionOS)
+        .glassBackgroundEffect()
+        #endif
     }
 }
 
@@ -96,4 +110,5 @@ struct AppDashboard: View {
     AppDashboard()
         .environment(CommonGoals())
         .environment(CommonStore())
+        .environment(HealthKitManager())
 }
