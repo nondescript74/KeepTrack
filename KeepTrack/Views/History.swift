@@ -88,30 +88,30 @@ struct History: View {
                     }
                 }
                 
-//                Section(header: Text("Yesterday").font(.largeTitle)) {
-//                    VStack(alignment: .leading) {
-//                        if getYesterday().isEmpty {
-//                            Text("Nothing taken yesterday")
-//                                .foregroundColor(.red)
-//                        } else {
-//                            ForEach(types, id: \.self) { type in
-//                                if sortYesterdayByName(name: type).isEmpty {
-//                                    Text("No \(type) ")
-//                                        .font(.caption)
-//                                        .foregroundStyle(.red)
-//                                } else {
-//                                    HStack {
-//                                        Text("\(type): ")
-//                                        Text(getUniqueYesterdayByNameCount(name: type).description)
-//                                    }
-//                                    .font(.caption)
-//                                    .foregroundStyle(getYesterdaysGoalsByNameCount(name: type) <= getUniqueYesterdayByNameCount(name: type) ? .green : .red)
-//
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
+                Section(header: Text("Yesterday").font(.largeTitle)) {
+                    VStack(alignment: .leading) {
+                        if getYesterday().isEmpty {
+                            Text("Nothing taken yesterday")
+                                .foregroundColor(.red)
+                        } else {
+                            ForEach(types, id: \.self) { type in
+                                if sortYesterdayByName(name: type).isEmpty {
+                                    Text("No \(type) ")
+                                        .font(.caption)
+                                        .foregroundStyle(.red)
+                                } else {
+                                    HStack {
+                                        Text("\(type): ")
+                                        Text(getUniqueYesterdayByNameCount(name: type).description)
+                                    }
+                                    .font(.caption)
+                                    .foregroundStyle(getYesterdaysGoalsByNameCount(name: type) <= getUniqueYesterdayByNameCount(name: type) ? .green : .red)
+
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
         .environment(store)

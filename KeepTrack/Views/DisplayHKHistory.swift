@@ -25,12 +25,17 @@ struct DisplayHKHistory: View {
             HStack {
                 Button(action: {
                     // perform query from here
-                     logger.info("Getting HK Water Intake History")
-                },
-                       label: {Text("Get Intake")
+                    Task {
+                        await healthKitManager.requestWaterSamples(from: Date().addingTimeInterval(-86400), to: Date())
+                         logger.info("Getting HK Water Intake History")
+                    }
+                }, label: {
+                    Text("Get Intake")
                         .padding(5)
-                    .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.blue, lineWidth: 1))}
-                )
+                        .overlay(
+                            RoundedRectangle(
+                                cornerRadius: 5).stroke(Color.blue, lineWidth: 1))
+                })
                  
                 Button(action: {
                     showDetail.toggle()
@@ -45,6 +50,8 @@ struct DisplayHKHistory: View {
                     .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.blue, lineWidth: 1))}
                 )
             }
+            
+            Text("HK water intake: \(healthKitManager.waterIntake, specifier: "%.1f")")
         }
         .padding(20)
         .background(Color.gray.opacity(0.2))

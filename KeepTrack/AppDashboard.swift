@@ -17,7 +17,7 @@ struct AppDashboard: View {
     @State private var goals: CommonGoals = CommonGoals()
     @State private var healthKitManager = HealthKitManager()
     
-    let columnLayout = Array(repeating: GridItem(.flexible(minimum: 45)), count: 4  )
+    let columnLayout = Array(repeating: GridItem(.flexible(minimum: 45)), count: 5  )
     
     var body: some View {
         NavigationStack {
@@ -30,13 +30,7 @@ struct AppDashboard: View {
                 Text(healthKitManager.descriptionLabel)
             }
             .padding(.bottom, 20)
-
-//            VStack(spacing: 20) {
-//                DisplayHKHistory()
-//            }
-//            .background(Color.green.opacity(0.1))
             
-             
             History()
                         
             GoalDisplayByName()
@@ -88,6 +82,18 @@ struct AppDashboard: View {
                     }
                     .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50))
                     Text("Edit Goals")
+                        .foregroundColor(.red)
+                        .font(.caption)
+                }
+                .padding(.top)
+                VStack {
+                    NavigationLink(destination: DisplayHKHistory()) {
+                        Image(systemName: "heart")
+                            .symbolRenderingMode(.multicolor)
+                            .frame(minHeight: 50)
+                    }
+                    .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50))
+                    Text("HealthKit")
                         .foregroundColor(.red)
                         .font(.caption)
                 }
