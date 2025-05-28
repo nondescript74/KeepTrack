@@ -28,6 +28,7 @@ struct AppDashboard: View {
                     Text(Bundle.main.infoDictionary!["CFBundleVersion"] as! String)
                 }
                 Text(healthKitManager.descriptionLabel)
+                    .font(.footnote)
             }
             .padding(.bottom, 20)
             

@@ -17,13 +17,10 @@ import SwiftUI
     fileprivate let calendar = Calendar.autoupdatingCurrent
     
     let healthStore: HKHealthStore = HKHealthStore()
-    
-    let formatter = NumberFormatter()
-    
-//    var hasRequestedHealthData: Bool = false
     var descriptionLabel: String = ""
     
     var waterIntake: Double = 0
+    var dailyWaterIntake: [Double] = []
     
     // MARK: - Data Types
     
@@ -60,21 +57,18 @@ import SwiftUI
         
         if let numberOfAuthorizedTypes = dictionary[.sharingAuthorized] {
             let format = NSLocalizedString("AUTHORIZED", comment: "")
-//            let format = NSLocalizedString("AUTHORIZED_NUMBER_OF_TYPES", comment: "")
             let formattedString = String(format: format, locale: .current, arguments: [numberOfAuthorizedTypes])
             
             descriptionArray.append(formattedString)
         }
         if let numberOfDeniedTypes = dictionary[.sharingDenied] {
             let format = NSLocalizedString("DENIED", comment: "")
-//            let format = NSLocalizedString("DENIED_NUMBER_OF_TYPES", comment: "")
             let formattedString = String(format: format, locale: .current, arguments: [numberOfDeniedTypes])
             
             descriptionArray.append(formattedString)
         }
         if let numberOfUndeterminedTypes = dictionary[.notDetermined] {
             let format = NSLocalizedString("UNDETERMINED", comment: "")
-//            let format = NSLocalizedString("UNDETERMINED_NUMBER_OF_TYPES", comment: "")
             let formattedString = String(format: format, locale: .current, arguments: [numberOfUndeterminedTypes])
             
             descriptionArray.append(formattedString)
@@ -101,15 +95,13 @@ import SwiftUI
                 } else {
                     switch authorizationRequestStatus {
                     case .shouldRequest:
-//                        self.hasRequestedHealthData = false
-                        status = "The application has not yet requested authorization for all of the specified data types."
+                        status = "The application has not yet requested authorization."
                         self.logger.info("\(status)")
                     case .unknown:
-                        status = "The authorization request status could not be determined because an error occurred."
+                        status = "Authorization request undetermined, error occurred."
                         self.logger.info("\(status)")
                     case .unnecessary:
-//                        self.hasRequestedHealthData = true
-                        status = "The application has already requested authorization for the specified data types. "
+                        status = "Application has already requested authorization."
                         status += self.createAuthorizationStatusDescription(for: [HKQuantityType.quantityType(forIdentifier: .dietaryWater)!])
                         self.logger.info("\(status)")
                     default:
@@ -160,6 +152,39 @@ import SwiftUI
             logger.info( "Water consumed: \(newQuantity)")
             self.waterIntake = newQuantity
             
+        } catch {
+            fatalError( "HealthKit is not available.")
+        }
+    }
+    
+    func requestDailyWaterIntake(from startDate: Date, to endDate: Date) async {
+         let periodOfTime = Calendar.current.dateComponents([.day], from: startDate, to: endDate)
+        
+        guard periodOfTime.day != nil else {
+            logger.warning("Failed to calculate the number of days between \(startDate) and \(endDate)")
+            return
+        }
+        
+        let thisPeriod = HKQuery.predicateForSamples(withStart: startDate, end: endDate)
+        
+        // query descriptor
+        let waterType = HKQuantityType(.dietaryWater)
+        let waterThisPeriod = HKSamplePredicate.quantitySample(type: waterType, predicate: thisPeriod)
+        let everyDay = DateComponents(day: 1)
+        
+        let sumOfWaterQuery = HKStatisticsCollectionQueryDescriptor(
+            predicate: waterThisPeriod,
+            options: [.cumulativeSum],
+            anchorDate: endDate,
+            intervalComponents: everyDay
+        )
+        
+        do {
+            let waterCount = try await sumOfWaterQuery.result(for: healthStore)
+                .statistics()
+            dailyWaterIntake = waterCount.map(\.description).compactMap(Double.init)
+            logger.info("Daily water intake: \(self.dailyWaterIntake)")
+             
         } catch {
             fatalError( "HealthKit is not available.")
         }

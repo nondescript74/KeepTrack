@@ -22,36 +22,29 @@ struct DisplayHKHistory: View {
         VStack {
             Text(("Water Intake History"))
             
-            HStack {
-                Button(action: {
-                    // perform query from here
-                    Task {
-                        await healthKitManager.requestWaterSamples(from: Date().addingTimeInterval(-86400), to: Date())
-                         logger.info("Getting HK Water Intake History")
-                    }
-                }, label: {
-                    Text("Get Intake")
-                        .padding(5)
-                        .overlay(
-                            RoundedRectangle(
-                                cornerRadius: 5).stroke(Color.blue, lineWidth: 1))
-                })
-                 
-                Button(action: {
-                    showDetail.toggle()
-                    if showDetail {
-                        logger.info("showDetail is true")
-                    } else {
-                        logger.info( "showDetail is false")
-                    }
-                },
-                       label: {Text("show/hide")
-                        .padding(5)
-                    .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.blue, lineWidth: 1))}
-                )
-            }
+            Button(action: {
+                // perform query from here
+                Task {
+                    await healthKitManager.requestWaterSamples(from: Date().addingTimeInterval(-86400), to: Date())
+                    logger.info("Got HK Water Intake Yesterday")
+                    await healthKitManager.requestDailyWaterIntake(from: Date().addingTimeInterval(-86400 * 7), to: Date())
+                    logger.info("Got HK Water Intake Weekly History")
+                }
+            }, label: {
+                Text("Get Intake")
+                    .padding(5)
+                    .overlay(
+                        RoundedRectangle(
+                            cornerRadius: 5).stroke(Color.blue, lineWidth: 1))
+            })
+            Text("HK water intake Yesterday \(healthKitManager.waterIntake.rounded(), specifier: "%.1f")")
             
-            Text("HK water intake: \(healthKitManager.waterIntake, specifier: "%.1f")")
+            if healthKitManager.dailyWaterIntake.isEmpty {
+                Text("No weekly data")
+            } else {
+                Text("Weekly Water Intake: \(healthKitManager.dailyWaterIntake)")
+                
+            }
         }
         .padding(20)
         .background(Color.gray.opacity(0.2))
