@@ -17,7 +17,7 @@ struct AppDashboard: View {
     @State private var goals: CommonGoals = CommonGoals()
     @State private var healthKitManager = HealthKitManager()
     
-    let columnLayout = Array(repeating: GridItem(.flexible(minimum: 45)), count: 5  )
+    fileprivate let columnLayout = Array(repeating: GridItem(.flexible(minimum: 45)), count: 5  )
     
     var body: some View {
         NavigationStack {
@@ -27,8 +27,8 @@ struct AppDashboard: View {
                     Text(Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String)
                     Text(Bundle.main.infoDictionary!["CFBundleVersion"] as! String)
                 }
-                Text(healthKitManager.descriptionLabel)
-                    .font(.footnote)
+//                Text(healthKitManager.descriptionLabel)
+//                    .font(.footnote)
             }
             .padding(.bottom, 20)
             

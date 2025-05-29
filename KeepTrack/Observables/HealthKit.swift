@@ -11,12 +11,12 @@ import HealthKit
 import OSLog
 import SwiftUI
 
-@Observable class HealthKitManager {
+@Observable final class HealthKitManager {
     
     fileprivate let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "HealthKitManager")
     fileprivate let calendar = Calendar.autoupdatingCurrent
     
-    let healthStore: HKHealthStore = HKHealthStore()
+    let healthStore: HKHealthStore
     var descriptionLabel: String = ""
     
     var waterIntake: Double = 0
@@ -85,6 +85,7 @@ import SwiftUI
     }
     
     init() {
+        self.healthStore = HKHealthStore()
         if HKHealthStore.isHealthDataAvailable() {
             healthStore.getRequestStatusForAuthorization(toShare: [HKQuantityType.quantityType(forIdentifier: .dietaryWater)!], read: [HKQuantityType.quantityType(forIdentifier: .dietaryWater)!]) { (authorizationRequestStatus, error) in
                 
