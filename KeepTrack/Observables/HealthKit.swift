@@ -44,6 +44,7 @@ import SwiftUI
         var dictionary = [HKAuthorizationStatus: Int]()
         
         for type in types {
+            logger.info("processing type : \(type.description)")
             let status = healthStore.authorizationStatus(for: type)
             
             if let existingValue = dictionary[status] {
@@ -60,18 +61,21 @@ import SwiftUI
             let formattedString = String(format: format, locale: .current, arguments: [numberOfAuthorizedTypes])
             
             descriptionArray.append(formattedString)
+            logger.info("appended \(formattedString)")
         }
         if let numberOfDeniedTypes = dictionary[.sharingDenied] {
             let format = NSLocalizedString("DENIED", comment: "")
             let formattedString = String(format: format, locale: .current, arguments: [numberOfDeniedTypes])
             
             descriptionArray.append(formattedString)
+            logger.info("appended \(formattedString)")
         }
         if let numberOfUndeterminedTypes = dictionary[.notDetermined] {
             let format = NSLocalizedString("UNDETERMINED", comment: "")
             let formattedString = String(format: format, locale: .current, arguments: [numberOfUndeterminedTypes])
             
             descriptionArray.append(formattedString)
+            logger.info("appended \(formattedString)")
         }
         
         // Format the sentence for grammar if there are multiple clauses.
@@ -81,6 +85,7 @@ import SwiftUI
         
         let description = "Sharing is " + descriptionArray.joined(separator: ", ") + "."
         
+        logger.info("returning \(description)")
         return description
     }
     
