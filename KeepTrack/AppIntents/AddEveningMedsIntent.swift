@@ -42,7 +42,7 @@ struct AddEveningMedsIntent: AppIntent {
             Text("Metformin and Latanoprost added")
             Text("You have consumed your evening meds")
         }
-        return .result(dialog: "Metforminand Latanoprost added",
+        return .result(dialog: "Metformin and Latanoprost added",
                        view: snippetView)
     }
 }

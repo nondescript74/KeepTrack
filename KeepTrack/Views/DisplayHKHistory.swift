@@ -25,10 +25,10 @@ struct DisplayHKHistory: View {
             Button(action: {
                 // perform query from here
                 Task {
-                    await healthKitManager.requestWaterSamples(from: Date().addingTimeInterval(-86400), to: Date())
-                    logger.info("Got HK Water Intake Yesterday")
-                    await healthKitManager.requestDailyWaterIntake(from: Date().addingTimeInterval(-86400 * 7), to: Date())
-                    logger.info("Got HK Water Intake Weekly History")
+                    await healthKitManager.requestWaterSamples(from: Date().addingTimeInterval(-86400 * 8), to: Date().addingTimeInterval(86400))
+                    logger.info("Got HK Water Intake for 8 days")
+                    await healthKitManager.requestDailyWaterIntake(to: Date().addingTimeInterval(-86400))
+                    logger.info("Got HK Water intake for 24 hours")
                 }
             }, label: {
                 Text("Get Intake")
@@ -37,7 +37,7 @@ struct DisplayHKHistory: View {
                         RoundedRectangle(
                             cornerRadius: 5).stroke(Color.blue, lineWidth: 1))
             })
-            Text("HK water intake Yesterday \(healthKitManager.waterIntake.rounded(), specifier: "%.1f")")
+            Text("HK water intake Yesterday \( healthKitManager.waterIntake.debugDescription)")
             
             if healthKitManager.dailyWaterIntake.isEmpty {
                 Text("No weekly data")
