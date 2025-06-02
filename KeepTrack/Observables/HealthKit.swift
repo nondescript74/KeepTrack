@@ -19,7 +19,7 @@ import SwiftUI
     let healthStore: HKHealthStore
     var descriptionLabel: String = ""
     
-    var waterIntake: Double = 0
+    var waterIntake: [Double] = []
     var dailyWaterIntake: [Double] = []
     
     // MARK: - Data Types
@@ -145,33 +145,49 @@ import SwiftUI
     
     func requestWaterSamples(from startDate: Date, to endDate: Date) async  {
         
-        let waterIntakeHKType = HKObjectType.quantityType(forIdentifier: .dietaryWater)!
-        let predicate = HKSamplePredicate.quantitySample(type: waterIntakeHKType)
-        let sumOfWaterQuery = HKStatisticsQueryDescriptor(predicate: predicate, options: .cumulativeSum)
-
+        guard let endDate = Calendar.current.date(byAdding: .day, value: 1, to: endDate) else {
+            return
+        }
+        
+        guard let startDate = Calendar.current.date(byAdding: .day, value: 0, to: startDate) else {
+            return
+        }
+        
+        let thePeriod = HKQuery.predicateForSamples(withStart: startDate, end: endDate)
+                
+        let waterIntakeHKType = HKQuantityType(.dietaryWater)
+        let periodPredicate = HKSamplePredicate.quantitySample(type: waterIntakeHKType, predicate: thePeriod)
+        let everyHour = DateComponents(hour: 1)
+        
+        let sumOfWaterQuery = HKStatisticsCollectionQueryDescriptor(
+            predicate: periodPredicate,
+            options: .cumulativeSum,
+            anchorDate: startDate,
+            intervalComponents: everyHour
+        )
+        
+        logger.info( "Water consumed query: \(sumOfWaterQuery.intervalComponents)")
         
         do {
-            let quantity = try await sumOfWaterQuery.result(for: healthStore)?
-                .sumQuantity()?
-                .doubleValue(for: .fluidOunceUS()) ?? 0
-            let newQuantity = quantity * 0.034
-            logger.info( "Water consumed: \(newQuantity)")
-            self.waterIntake = newQuantity
+            let quantityCounts = try await sumOfWaterQuery.result(for: healthStore).statistics(for: .distantPast)
+            logger.info( "Water consumed: \(quantityCounts)")
+//            self.waterIntake = quantityCounts
             
         } catch {
             fatalError( "HealthKit is not available.")
         }
     }
     
-    func requestDailyWaterIntake(from startDate: Date, to endDate: Date) async {
-         let periodOfTime = Calendar.current.dateComponents([.day], from: startDate, to: endDate)
+    func requestDailyWaterIntake(to endDate: Date) async {
+        let periodOfTime = Calendar.current.dateComponents([.day], from: endDate.addingTimeInterval(-86400), to: endDate)
+        logger.info( "Period of time: \(periodOfTime)")
         
         guard periodOfTime.day != nil else {
-            logger.warning("Failed to calculate the number of days between \(startDate) and \(endDate)")
+            logger.warning("Failed to calculate the number of days")
             return
         }
         
-        let thisPeriod = HKQuery.predicateForSamples(withStart: startDate, end: endDate)
+        let thisPeriod = HKQuery.predicateForSamples(withStart: endDate.addingTimeInterval(-86400), end: endDate)
         
         // query descriptor
         let waterType = HKQuantityType(.dietaryWater)
