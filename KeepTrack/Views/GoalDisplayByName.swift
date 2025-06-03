@@ -19,12 +19,19 @@ struct GoalDisplayByName: View {
         return goals.goals.sorted { $0.name < $1.name }
     }
     
-    let dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .none
-        formatter.timeStyle = .short
-        return formatter
-    }()
+    fileprivate func hourForDate(_ date: Date) -> Int {
+        var calendar = Calendar.autoupdatingCurrent
+        calendar.timeZone = .current
+        let components = calendar.dateComponents([.hour], from: date)
+        return components.hour ?? 0
+    }
+    
+    fileprivate func minuteForDate(_ date: Date) -> Int {
+        var calendar = Calendar.autoupdatingCurrent
+        calendar.timeZone = .current
+        let components = calendar.dateComponents([.minute], from: date)
+        return components.minute ?? 0
+    }
     
     var body: some View {
         VStack {
@@ -42,23 +49,23 @@ struct GoalDisplayByName: View {
                     HStack(alignment: .center) {
                         Text(goal.name)
                             .foregroundColor(colors[index % colors.count])
-                            .font(.headline)
+                            .font(.subheadline)
                             .padding(.horizontal)
                         
                         ScrollView(.horizontal) {
                             HStack(alignment: .center) {
                                 ForEach(goal.dates, id: \.self) { date in
                                     HStack {
-                                        Calendar.autoupdatingCurrent.dateComponents([.hour], from: date).hour.map {
-                                            Text("\($0):").font(.headline) } ?? Text("")
-                                        Calendar.autoupdatingCurrent.dateComponents([.minute], from: date).minute.map { Text("\($0)").font(.headline) } ?? Text("")
+                                       Clock(hour: hourForDate(date), minute: minuteForDate(date), is12HourFormat: true)
+//                                            .padding()
+                                        
                                     }
-                                    .padding([.leading, .trailing], 5)
+//                                    .padding([.leading, .trailing], 5)
                                     .font(.footnote)
                                     .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray, lineWidth: 0.5))
-                                    .background(content: {
-                                        Color.gray.opacity(0.2)
-                                    })
+//                                    .background(content: {
+//                                        Color.gray.opacity(0.2)
+//                                    })
                                 }
                             }
                             

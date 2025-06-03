@@ -128,7 +128,7 @@ import SwiftUI
     }
     
     func addWaterSample(quantity: HKQuantity) async {
-        if descriptionLabel == "HealthKit authorization successful." {
+        if descriptionLabel.lowercased().contains("authorized") {
             let sample = HKQuantitySample(type: HKObjectType.quantityType(forIdentifier: .dietaryWater)!, quantity: quantity, start: Date(), end: Date())
             do {
                 try await healthStore.save(sample)
@@ -138,7 +138,7 @@ import SwiftUI
             }
         } else {
             // cannot save
-            self.logger.info("(\(self.descriptionLabel)")
+            self.logger.info("(\(self.descriptionLabel) water sample not saved")
             return
         }
     }
