@@ -19,7 +19,7 @@ struct Arc: View {
     
     var body: some View {
         ArcShape(startAngle: startangle, endAngle: endangle, clockwise: clockwise, color: color)
-            .stroke(color, lineWidth: 5)
+            .stroke(color, lineWidth: 2)
             .frame(width: (size != nil) ? size : 50, height: (size != nil) ? size : 50)
     }
 }

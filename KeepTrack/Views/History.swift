@@ -13,6 +13,8 @@ struct History: View {
     @Environment(CommonStore.self) private var store
     @Environment(CommonGoals.self) private var goals
     
+    @State private var toggeled: Bool = false
+    
     let rowLayout = Array(repeating: GridItem(.flexible(minimum: 10)), count: 3)
     
     fileprivate var zBug: Bool = false
@@ -56,57 +58,24 @@ struct History: View {
     }
     
     var body: some View {
-        VStack {
-            List {
-                Section(header: Text("Today").font(.largeTitle)) {
-                    VStack(alignment: .leading) {
-                        if getToday().isEmpty {
-                            Text("Nothing taken today")
-                                .foregroundColor(.gray)
-                        } else {
-                            ForEach(types, id: \.self) { type in
-                                if sortTodayByName(name: type).isEmpty {
-                                    Text("No \(type) ")
-                                        .font(.caption)
-                                        .foregroundStyle(.secondary)
-                                } else {
-                                    ScrollView(.horizontal) {
-                                        HStack {
-                                            ForEach(sortTodayByName(name: type)) { entry in
-                                                HStack {
-                                                    Text(entry.date, style: .time)
-                                                    Text(entry.name)
-                                                }
-                                                .font(.caption2)
-                                                .foregroundStyle(entry.goalMet ? .green : .red)
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                
-                Section(header: Text("Yesterday").font(.largeTitle)) {
-                    VStack(alignment: .leading) {
-                        if getYesterday().isEmpty {
-                            Text("Nothing taken yesterday")
-                                .foregroundColor(.red)
-                        } else {
-                            ForEach(types, id: \.self) { type in
-                                if sortYesterdayByName(name: type).isEmpty {
-                                    Text("No \(type) ")
-                                        .font(.caption)
-                                        .foregroundStyle(.red)
-                                } else {
+        VStack  {
+            Text("Today")
+                .font(.title)
+            if getToday().isEmpty {
+                Text("Nothing taken today")
+                    .foregroundColor(.red)
+            } else {
+                ForEach(types, id: \.self) { type in
+                    if !sortTodayByName(name: type).isEmpty {
+                        ScrollView(.horizontal) {
+                            HStack {
+                                ForEach(sortTodayByName(name: type)) { entry in
                                     HStack {
-                                        Text("\(type): ")
-                                        Text(getUniqueYesterdayByNameCount(name: type).description)
+                                        Text(entry.date, style: .time)
+                                        Text(entry.name)
                                     }
-                                    .font(.caption)
-                                    .foregroundStyle(getYesterdaysGoalsByNameCount(name: type) <= getUniqueYesterdayByNameCount(name: type) ? .green : .red)
-
+                                    .font(.caption2)
+                                    .foregroundStyle(entry.goalMet ? .green : .red)
                                 }
                             }
                         }
@@ -114,11 +83,40 @@ struct History: View {
                 }
             }
         }
+        .padding(.horizontal)
+        
+        Divider()
+        
+        VStack {
+            Text("Yesterday")
+                .font(.title)
+            if getYesterday().isEmpty {
+                Text("Nothing taken yesterday")
+                    .foregroundColor(.red)
+            } else {
+                ForEach(types, id: \.self) { type in
+                    if !sortYesterdayByName(name: type).isEmpty {
+                        HStack {
+                            Text("\(type): ")
+                            Spacer()
+                            Text(getUniqueYesterdayByNameCount(name: type).description)
+                                .foregroundStyle(
+                                    getYesterdaysGoalsByNameCount(name: type) <= getUniqueYesterdayByNameCount(name: type) ? .green : .red)
+                             
+                        }
+                        .font(.caption)
+                        .padding(.trailing)
+                         
+                    }
+                }
+            }
+        }
+        .padding(.horizontal)
         .environment(store)
         .environment(goals)
-        #if os(VisionOs)
+#if os(VisionOs)
         .glassBackgroundEffect()
-        #endif
+#endif
     }
 }
 

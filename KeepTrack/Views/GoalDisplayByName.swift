@@ -36,7 +36,7 @@ struct GoalDisplayByName: View {
     var body: some View {
         VStack {
             Text("Intake Goals")
-                .font(.largeTitle)
+                .font(.title)
                 .foregroundColor(.secondary)
             
             if myGoals.isEmpty {
@@ -56,21 +56,14 @@ struct GoalDisplayByName: View {
                             HStack(alignment: .center) {
                                 ForEach(goal.dates, id: \.self) { date in
                                     HStack {
-                                       Clock(hour: hourForDate(date), minute: minuteForDate(date), is12HourFormat: true)
-//                                            .padding()
+                                        Clock(hour: hourForDate(date), minute: minuteForDate(date), is12HourFormat: true)
                                         
                                     }
-//                                    .padding([.leading, .trailing], 5)
                                     .font(.footnote)
                                     .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray, lineWidth: 0.5))
-//                                    .background(content: {
-//                                        Color.gray.opacity(0.2)
-//                                    })
                                 }
                             }
-                            
                         }
-                        
                     }
                 }
             }

@@ -21,9 +21,11 @@ struct Clock: View {
     @State private var is12HourFormat: Bool
     
     fileprivate let angleCorrection: Int = 180
-    fileprivate let clockDiameter: CGFloat = 35
-    fileprivate let clockInsideDiameter: CGFloat = 5
-    fileprivate let minuteHandLength: CGFloat = 15
+    fileprivate let clockDiameter: CGFloat = 30
+    fileprivate let clockInsideDiameter: CGFloat = 2
+    
+    fileprivate let minuteHandWidth: CGFloat = 2
+    
     fileprivate let hourHandLength: CGFloat = 12
     fileprivate let letterOffset: CGFloat = 35
     
@@ -38,35 +40,21 @@ struct Clock: View {
                 .fill(Color.black)
                 .frame(width: clockInsideDiameter, height: clockInsideDiameter)
             
-//            Text("9")
-//                .offset(x: -letterOffset)
-//                .font(.caption)
-//            Text("3")
-//                .offset(x: letterOffset)
-//                .font(.caption)
-//            Text("12")
-//                .offset(y: -letterOffset)
-//                .font(.caption)
-//            Text("6")
-//                .offset(y: letterOffset)
-//                .font(.caption)
-            
             Rectangle()
                 .fill(Color.red)
-                .frame(width: 3, height: minuteHandLength)
-                .offset(y: 12)
+                .frame(width: minuteHandWidth, height: clockDiameter - 20)
+                .offset(y: clockDiameter / 2 - 3)
                 .rotationEffect(Angle(degrees: Double(6 * minute + angleCorrection)))
             
             Rectangle()
-                .fill(Color.red)
-                .frame(width: 5, height: hourHandLength)
-                .offset(y: 11)
+                .fill(Color.black)
+                .frame(width: minuteHandWidth + 2, height: clockDiameter - 20)
+                .offset(y: clockDiameter / 2 - 5)
                 .rotationEffect(Angle(degrees: Double(30 * hour + angleCorrection)))
         }
-
     }
 }
 
 #Preview {
-    Clock(hour: 9, minute: 59, is12HourFormat: true)
+    Clock(hour: 9, minute: 5, is12HourFormat: true)
 }
