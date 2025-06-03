@@ -19,20 +19,14 @@ struct AppDashboard: View {
     
     fileprivate let columnLayout = Array(repeating: GridItem(.flexible(minimum: 45)), count: 5  )
     
+    fileprivate let heightOfBar: CGFloat = 40
+    
     var body: some View {
         NavigationStack {
-            VStack {
-                HStack {
-                    Text("Welcome to KeepTrack!")
-                    Text(Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String)
-                    Text(Bundle.main.infoDictionary!["CFBundleVersion"] as! String)
-                }
-//                Text(healthKitManager.descriptionLabel)
-//                    .font(.footnote)
-            }
-            .padding(.bottom, 20)
-            
             History()
+            .padding(.bottom, 15)
+            
+            Divider()
                         
             GoalDisplayByName()
                 
@@ -41,10 +35,10 @@ struct AppDashboard: View {
                     NavigationLink(destination: EnterIntake()) {
                         Image(systemName: "wineglass")
                             .symbolRenderingMode(.multicolor)
-                            .frame(minHeight: 50)
+                            .frame(minHeight: heightOfBar)
                     }
                     .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50))
-                    Text("Enter intake")
+                    Text("Enter ...")
                         .foregroundColor(.blue)
                         .font(.caption)
                 }
@@ -52,9 +46,9 @@ struct AppDashboard: View {
 
                 VStack {
                     NavigationLink(destination: EnterGoal()) {
-                        Image(systemName: "sportscourt.circle.fill")
+                        Image(systemName: "basketball")
                             .symbolRenderingMode(.multicolor)
-                            .frame(minHeight: 50)
+                            .frame(minHeight: heightOfBar)
                     }
                     .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50))
                     Text("Enter Goal")
@@ -67,7 +61,7 @@ struct AppDashboard: View {
                     NavigationLink(destination: EditHistory(items: $store.history)) {
                         Image(systemName: "heart.text.clipboard")
                             .symbolRenderingMode(.multicolor)
-                            .frame(minHeight: 50)
+                            .frame(minHeight: heightOfBar)
                     }
                     .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50))
                     Text("Edit Intake")
@@ -77,9 +71,9 @@ struct AppDashboard: View {
                 .padding(.top)
                 VStack {
                     NavigationLink(destination: EditGoals(items: $goals.goals)) {
-                        Image(systemName: "sportscourt")
+                        Image(systemName: "heart.text.clipboard")
                             .symbolRenderingMode(.multicolor)
-                            .frame(minHeight: 50)
+                            .frame(minHeight: heightOfBar)
                     }
                     .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50))
                     Text("Edit Goals")
@@ -91,7 +85,7 @@ struct AppDashboard: View {
                     NavigationLink(destination: DisplayHKHistory()) {
                         Image(systemName: "heart")
                             .symbolRenderingMode(.multicolor)
-                            .frame(minHeight: 50)
+                            .frame(minHeight: heightOfBar)
                     }
                     .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50))
                     Text("HealthKit")
@@ -99,10 +93,17 @@ struct AppDashboard: View {
                         .font(.caption)
                 }
                 .padding(.top)
+                
             }
-            .padding([.horizontal, .bottom])
-            .background(Color.gray.opacity(0.2))
+            .padding([.horizontal])
+            .background(Color.green.opacity(0.1))
             
+            HStack {
+                Text("Welcome to KeepTrack!")
+                Text(Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String)
+                Text(Bundle.main.infoDictionary!["CFBundleVersion"] as! String)
+            }
+            .font(.subheadline)
         }
         .environment(goals)
         .environment(store)
