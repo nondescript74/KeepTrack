@@ -33,9 +33,13 @@ struct GoalDisplayByName: View {
         return components.minute ?? 0
     }
     
+    fileprivate func isItAM(_ date: Date) -> Bool {
+        return hourForDate(date) >= 0 && hourForDate(date) < 12
+    }
+    
     var body: some View {
         VStack {
-            Text("Intake Goals")
+            Text("Intake Goals For the Day")
                 .font(.title)
                 .foregroundColor(.secondary)
             
@@ -56,13 +60,14 @@ struct GoalDisplayByName: View {
                             HStack(alignment: .center) {
                                 ForEach(goal.dates, id: \.self) { date in
                                     HStack {
-                                        Clock(hour: hourForDate(date), minute: minuteForDate(date), is12HourFormat: true)
+                                        Clock(hour: hourForDate(date), minute: minuteForDate(date), is12HourFormat: true, isAM: isItAM(date))
                                         
                                     }
                                     .font(.footnote)
-                                    .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray, lineWidth: 0.5))
+//                                    .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray, lineWidth: 0.5))
                                 }
                             }
+                            .padding(.top, 8)
                         }
                     }
                 }

@@ -11,7 +11,7 @@ import SwiftUI
 struct AddMorningMedsIntent: AppIntent {
     
     static let title: LocalizedStringResource = "Add four meds"
-    static var description: LocalizedStringResource? = "This adds metformin, losartan, and rosuvastatin"
+    static var description: LocalizedStringResource? = "This adds Amlodipine, Losartan, and Rosuvastatin"
     
     
     func getPreviousIntake(typeName: String) async -> Int {
@@ -27,13 +27,13 @@ struct AddMorningMedsIntent: AppIntent {
     }
     
     func localGoalMet(typeName: String) async -> Bool {
-        let result = await getGoal(typeName: "Metformin") != nil ? isGoalMet(goal: getGoal(typeName: "Metformin")!, previous: getPreviousIntake(typeName: "Metformin")) : true
+        let result = await getGoal(typeName: typeName) != nil ? isGoalMet(goal: getGoal(typeName: typeName)!, previous: getPreviousIntake(typeName: typeName)) : true
         return result
     }
         
     func perform() async throws -> some IntentResult & ProvidesDialog & ShowsSnippetView {
-        let commonEntryMetformin: CommonEntry = await CommonEntry(id: UUID(), date: Date(), units: matchingUnitsDictionary["Metformin"] ?? "mg", amount: matchingAmountDictionary["Metformin"] ?? 500, name: "Metformin", goalMet: localGoalMet(typeName: "Metformin"))
-        await KeepTrack.CommonStore().addEntry(entry: commonEntryMetformin)
+//        let commonEntryMetformin: CommonEntry = await CommonEntry(id: UUID(), date: Date(), units: matchingUnitsDictionary["Metformin"] ?? "mg", amount: matchingAmountDictionary["Metformin"] ?? 500, name: "Metformin", goalMet: localGoalMet(typeName: "Metformin"))
+//        await KeepTrack.CommonStore().addEntry(entry: commonEntryMetformin)
         
         let commonEntryLosartan: CommonEntry = await CommonEntry(id: UUID(), date: Date(), units: matchingUnitsDictionary["Losartan"] ?? "mg", amount: matchingAmountDictionary["Losartan"] ?? 25, name: "Losartan", goalMet: localGoalMet(typeName: "Losartan"))
         await KeepTrack.CommonStore().addEntry(entry: commonEntryLosartan)
@@ -45,10 +45,10 @@ struct AddMorningMedsIntent: AppIntent {
         await KeepTrack.CommonStore().addEntry(entry: commonEntryAmlodipine)
         
         let snippetView: some View = VStack {
-            Text("Metformin, Losartan, Rosuvastatin, Amlodipine added")
+            Text("Losartan, Rosuvastatin, Amlodipine added")
             Text("You have consumed your morning meds")
         }
-        return .result(dialog: "Okay Metformin, Losartan, Rosuvastatin, Amlodipine added",
+        return .result(dialog: "Losartan, Rosuvastatin, Amlodipine added",
                        view: snippetView)
     }
 }

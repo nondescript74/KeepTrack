@@ -10,8 +10,8 @@ import SwiftUI
 
 struct AddEveningMedsIntent: AppIntent {
     
-    static let title: LocalizedStringResource = "Add two meds"
-    static var description: LocalizedStringResource? = "This adds metformin and latanoprost"
+    static let title: LocalizedStringResource = "Add one meds"
+    static var description: LocalizedStringResource? = "This adds latanoprost"
     
     
     func getPreviousIntake(typeName: String) async -> Int {
@@ -32,17 +32,17 @@ struct AddEveningMedsIntent: AppIntent {
     }
         
     func perform() async throws -> some IntentResult & ProvidesDialog & ShowsSnippetView {
-        let commonEntryMetformin: CommonEntry = await CommonEntry(id: UUID(), date: Date(), units: matchingUnitsDictionary["Metformin"] ?? "mg", amount: matchingAmountDictionary["Metformin"] ?? 500, name: "Metformin", goalMet: localGoalMet(typeName: "Metformin"))
-        await KeepTrack.CommonStore().addEntry(entry: commonEntryMetformin)
+//        let commonEntryMetformin: CommonEntry = await CommonEntry(id: UUID(), date: Date(), units: matchingUnitsDictionary["Metformin"] ?? "mg", amount: matchingAmountDictionary["Metformin"] ?? 500, name: "Metformin", goalMet: localGoalMet(typeName: "Metformin"))
+//        await KeepTrack.CommonStore().addEntry(entry: commonEntryMetformin)
         
         let commonEntryLatanoProst: CommonEntry = await CommonEntry(id: UUID(), date: Date(), units: matchingUnitsDictionary["Latanoprost"] ?? "mg", amount: matchingAmountDictionary["Latanoprost"] ?? 1, name: "Latanoprost", goalMet: localGoalMet(typeName: "Latanoprost"))
         await KeepTrack.CommonStore().addEntry(entry: commonEntryLatanoProst)
         
         let snippetView: some View = VStack {
-            Text("Metformin and Latanoprost added")
-            Text("You have consumed your evening meds")
+//            Text("Metformin and Latanoprost added")
+            Text("You have consumed latanoprost")
         }
-        return .result(dialog: "Metformin and Latanoprost added",
+        return .result(dialog: "Latanoprost added",
                        view: snippetView)
     }
 }
