@@ -29,6 +29,8 @@ struct AppDashboard: View {
             Divider()
                         
             GoalDisplayByName()
+            
+            Spacer()
                 
             LazyVGrid(columns: columnLayout, alignment: .center) {
                 VStack {
@@ -38,7 +40,7 @@ struct AppDashboard: View {
                             .frame(minHeight: heightOfBar)
                     }
                     .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50))
-                    Text("Enter ...")
+                    Text("Enter Intake")
                         .foregroundColor(.blue)
                         .font(.caption)
                 }
@@ -93,10 +95,11 @@ struct AppDashboard: View {
                         .font(.caption)
                 }
                 .padding(.top)
-                
             }
-            .padding([.horizontal])
-            .background(Color.green.opacity(0.1))
+            .padding([.horizontal], 3)
+            .background(Color.gray.opacity(0.2))
+            
+            Spacer()
             
             HStack {
                 Text("Welcome to KeepTrack!")
