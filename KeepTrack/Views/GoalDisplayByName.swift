@@ -64,10 +64,11 @@ struct GoalDisplayByName: View {
                                         
                                     }
                                     .font(.footnote)
-//                                    .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray, lineWidth: 0.5))
                                 }
+                                .padding(.leading, 3)
                             }
-                            .padding(.top, 8)
+                            .padding([.top], 9)
+                            .padding([.bottom], 4)
                         }
                     }
                 }

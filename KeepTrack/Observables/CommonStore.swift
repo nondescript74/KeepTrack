@@ -34,7 +34,7 @@ import SwiftUI
                         if zBug { logger.info("history is empty") }
                     } else {
                         let tempContents: [CommonEntry] = try JSONDecoder().decode([CommonEntry].self, from: try Data(contentsOf: fileURL))
-                        history = tempContents
+                        history = tempContents.sorted { $0.date > $1.date }
                         if zBug { logger.info(" decoded history: \(tempContents)") }
                     }
                 } catch {
@@ -69,10 +69,6 @@ import SwiftUI
     
     func addEntry(entry: CommonEntry) {
         history.append(entry)
-        if entry.name == "Water" {
-//            addEntryToHK(entry: entry)
-            logger.info( "Added entry to HK: \(entry.name)")
-        }
         logger.info("Added entry to CommonStore \(entry.name)")
         save()
     }
@@ -88,13 +84,4 @@ import SwiftUI
         let todays = history.filter { Calendar.autoupdatingCurrent.isDateInToday($0.date) }
         return  todays
     }
-    
-//    fileprivate func addEntryToHK(entry: CommonEntry) {
-//        let quantityType = HKQuantityType.quantityType(forIdentifier: .dietaryWater)!
-//        logger.info( "quantityType \(quantityType)")
-//        let quantity = HKQuantity(unit: .fluidOunceUS(), doubleValue: entry.amount)
-//        logger.info( "quantity \(quantity)")
-//        
-//        HealthKitManager.addWaterSample(quantity: quantity)
-//    }
 }

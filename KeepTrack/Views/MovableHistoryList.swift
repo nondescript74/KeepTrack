@@ -9,7 +9,7 @@ import SwiftUI
 import OSLog
 
 
-struct MovableHistoryList<Element: Identifiable, Content: View>: View{
+struct MovableHistoryList<Element: Identifiable, Content: View>: View {
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "MovableHistoryList")
     
     @Environment(CommonStore.self) var store
@@ -32,6 +32,7 @@ struct MovableHistoryList<Element: Identifiable, Content: View>: View{
             store.removeEntryAtId(uuid: data[idx].id as! UUID)
         }
     }
+    
     
     var body: some View {
         List {

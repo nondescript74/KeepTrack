@@ -75,6 +75,7 @@ struct EnterIntake: View {
                         }
                     }
                 } else {
+                    logger.info("goalToUse dates are \(goalToUse!.dates.compactMap({$0}))")
                     let result = isGoalMet(goal: goalToUse!, previous: store.getTodaysIntake().filter({$0.name == self.name}).count)
                     logger.info("todays intake \(result)")
                     let entry = CommonEntry(id: UUID(), date: Date(), units: getMatchingUnit(), amount: getMatchingAmount(), name: self.name, goalMet: result)
