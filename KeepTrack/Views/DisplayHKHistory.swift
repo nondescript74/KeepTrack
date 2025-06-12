@@ -37,12 +37,12 @@ struct DisplayHKHistory: View {
                         RoundedRectangle(
                             cornerRadius: 5).stroke(Color.blue, lineWidth: 1))
             })
-            Text("HK water intake Yesterday \( healthKitManager.waterIntake.debugDescription)")
+            Text("HK water intake Yesterday \( healthKitManager.waterIntake)")
             
             if healthKitManager.dailyWaterIntake.isEmpty {
                 Text("No weekly data")
             } else {
-                Text("Weekly Water Intake: \(healthKitManager.dailyWaterIntake)")
+//                Text("Weekly Water Intake: \(healthKitManager.dailyWaterIntake)")
                 
             }
         }
