@@ -1,0 +1,267 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "%@" : {
+
+    },
+    "%@: " : {
+
+    },
+    "Active" : {
+
+    },
+    "Add" : {
+
+    },
+    "Add evening meds" : {
+
+    },
+    "Add four meds" : {
+
+    },
+    "Add morning meds" : {
+
+    },
+    "Add one meds" : {
+
+    },
+    "Add sake" : {
+
+    },
+    "Add Sake" : {
+
+    },
+    "Add water" : {
+
+    },
+    "Add Water" : {
+
+    },
+    "AM" : {
+
+    },
+    "amount" : {
+
+    },
+    "AUTHORIZED" : {
+
+    },
+    "Change Goal" : {
+
+    },
+    "Completed" : {
+
+    },
+    "Current goals are :" : {
+
+    },
+    "DENIED" : {
+
+    },
+    "Dosage: " : {
+
+    },
+    "Edit Goals" : {
+
+    },
+    "Edit History" : {
+
+    },
+    "Edit Intake" : {
+
+    },
+    "Edit this Goal" : {
+
+    },
+    "Enter Goal" : {
+
+    },
+    "Enter Goal Details" : {
+
+    },
+    "Enter Intake" : {
+
+    },
+    "Enter intake details" : {
+
+    },
+    "Get Intake" : {
+
+    },
+    "HealthKit" : {
+
+    },
+    "HK water intake Yesterday %@" : {
+
+    },
+    "HK water intake Yesterday %lld" : {
+
+    },
+    "Inactive" : {
+
+    },
+    "Incomplete" : {
+
+    },
+    "Intake added" : {
+
+    },
+    "Intake Goals For the Day" : {
+
+    },
+    "Is Active" : {
+
+    },
+    "Is Completed" : {
+
+    },
+    "item" : {
+
+    },
+    "Latanoprost added" : {
+
+    },
+    "Losartan, Rosuvastatin, Amlodipine added" : {
+
+    },
+    "Name" : {
+
+    },
+    "Nihon-shu added" : {
+
+    },
+    "No goals yet!" : {
+
+    },
+    "No weekly data" : {
+
+    },
+    "Nothing taken today" : {
+
+    },
+    "Nothing taken yesterday" : {
+
+    },
+    "Okay 14 ounces of water added" : {
+
+    },
+    "Okay one glass of sake added" : {
+
+    },
+    "Okay, you consumed %lld  glasses of sake today." : {
+
+    },
+    "Okay, you consumed %lld amlopidine, %lld metformin, %lld rosuvastatin, %lld losartan, and %lld latanoprost." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Okay, you consumed %1$lld amlopidine, %2$lld metformin, %3$lld rosuvastatin, %4$lld losartan, and %5$lld latanoprost."
+          }
+        }
+      }
+    },
+    "Okay, you consumed %lld amlopidine, %lld metformin, %lld rosuvastatin, and %lld losartan" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Okay, you consumed %1$lld amlopidine, %2$lld metformin, %3$lld rosuvastatin, and %4$lld losartan"
+          }
+        }
+      }
+    },
+    "PM" : {
+
+    },
+    "Select intake" : {
+
+    },
+    "Select intake: " : {
+
+    },
+    "Select Type" : {
+
+    },
+    "Show all meds taken today" : {
+
+    },
+    "show meds" : {
+
+    },
+    "Show morning meds" : {
+
+    },
+    "show sake" : {
+
+    },
+    "Show Todays Liquid Intake" : {
+
+    },
+    "Show Todays Sake" : {
+
+    },
+    "show water" : {
+
+    },
+    "Start Date" : {
+
+    },
+    "This adds a 3.5 oz glass of sake" : {
+
+    },
+    "This adds a 14 oz glass of water" : {
+
+    },
+    "This adds Amlodipine, Losartan, and Rosuvastatin" : {
+
+    },
+    "This adds latanoprost" : {
+
+    },
+    "Times" : {
+
+    },
+    "Today" : {
+
+    },
+    "UNDETERMINED" : {
+
+    },
+    "Units: " : {
+
+    },
+    "Water Intake History" : {
+
+    },
+    "Welcome to KeepTrack!" : {
+
+    },
+    "Yesterday" : {
+
+    },
+    "You added a 14 ounce glasses of water" : {
+
+    },
+    "You consumed %lld  glasses of water today and %lld smoothies." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "You consumed %1$lld  glasses of water today and %2$lld smoothies."
+          }
+        }
+      }
+    },
+    "You have consumed a 3.5 fluid ounce glass of sake" : {
+
+    },
+    "You have consumed latanoprost" : {
+
+    },
+    "You have consumed your morning meds" : {
+
+    }
+  },
+  "version" : "1.1"
+}

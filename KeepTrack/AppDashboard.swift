@@ -83,18 +83,18 @@ struct AppDashboard: View {
                         .font(.caption)
                 }
                 .padding(.top)
-//                VStack {
-//                    NavigationLink(destination: DisplayHKHistory()) {
-//                        Image(systemName: "heart")
-//                            .symbolRenderingMode(.multicolor)
-//                            .frame(minHeight: heightOfBar)
-//                    }
-//                    .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50))
-//                    Text("HealthKit")
-//                        .foregroundColor(.red)
-//                        .font(.caption)
-//                }
-//                .padding([.top])
+                VStack {
+                    NavigationLink(destination: DisplayHKHistory()) {
+                        Image(systemName: "heart")
+                            .symbolRenderingMode(.multicolor)
+                            .frame(minHeight: heightOfBar)
+                    }
+                    .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50))
+                    Text("HealthKit")
+                        .foregroundColor(.red)
+                        .font(.caption)
+                }
+                .padding([.top])
             }
             .padding([.horizontal], 3)
             .background(Color.gray.opacity(0.2))

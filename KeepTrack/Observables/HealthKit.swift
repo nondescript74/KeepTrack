@@ -19,7 +19,7 @@ import SwiftUI
     let healthStore: HKHealthStore
     var descriptionLabel: String = ""
     
-    var waterIntake: [Double] = []
+    var waterIntake: Int = 0
     var dailyWaterIntake: [Double] = []
     
     // MARK: - Data Types
@@ -170,8 +170,8 @@ import SwiftUI
         
         do {
             let quantityCounts = try await sumOfWaterQuery.result(for: healthStore).statistics(for: .distantPast)
-            logger.info( "Water consumed: \(quantityCounts)")
-//            self.waterIntake = quantityCounts
+            logger.info( "Water consumed: \(quantityCounts.debugDescription)")
+//            self.waterIntake = quantityCounts?.sumQuantity()
             
         } catch {
             fatalError( "HealthKit is not available.")
