@@ -60,7 +60,7 @@ import SwiftUI
             let data = try JSONEncoder().encode(history)
             try data.write(to: fileURL)
             logger.info( "Saved history to file")
-            self.history = try JSONDecoder().decode([CommonEntry].self, from: data)
+            self.history = try JSONDecoder().decode([CommonEntry].self, from: data).sorted(by: ({$0 .date > $1.date}))
             logger.info("reloaded history from data")
         } catch {
             fatalError( "Couldn't save history file")
