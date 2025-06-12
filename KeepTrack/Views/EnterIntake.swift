@@ -71,7 +71,7 @@ struct EnterIntake: View {
                     if name == "Water" {
                         Task {
                             await healthKitManager.addWaterSample(quantity:  HKQuantity(unit: HKUnit.fluidOunceUS(), doubleValue: getMatchingAmount()))
-                            logger.info("HealthKit: added water sample")
+                            logger.info("EnterIntake: added water sample via HealthKit")
                         }
                     }
                 } else {
@@ -84,7 +84,7 @@ struct EnterIntake: View {
                     if name == "Water" {
                         Task {
                             await healthKitManager.addWaterSample(quantity:  HKQuantity(unit: HKUnit.fluidOunceUS(), doubleValue: getMatchingAmount()))
-                            logger.info("HealthKit: added water sample")
+                            logger.info("EnterIntake: added water sample via HealthKit")
                         }
                     }
                 }
