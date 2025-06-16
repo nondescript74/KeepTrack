@@ -27,8 +27,8 @@ import OSLog
                         logger.info("goalsstore.json file is empty")
                     } else {
                         let tempContents: [CommonGoal] = try JSONDecoder().decode([CommonGoal].self, from: try Data(contentsOf: fileURL))
-                        goals = tempContents
-                        logger.info(" decoded goals: \(tempContents)")
+                        goals = tempContents.filter { !$0.isCompleted == true }
+                        logger.info(" goals: \(self.goals)")
                     }
                 } catch {
                     fatalError( "Couldn't read goals")
@@ -46,8 +46,10 @@ import OSLog
     func addGoal(goal: CommonGoal) {
         // if goal exists, replace it
         goals.removeAll { $0.id == goal.id }
-        goals.append(goal)
-        logger.info("added or replaced goal: \(goal.name)")
+        if goal.isActive {
+            goals.append(goal)
+            logger.info("added or replaced goal: \(goal.name)")
+        }
         save()
     }
     

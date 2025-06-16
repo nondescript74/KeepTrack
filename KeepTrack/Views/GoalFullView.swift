@@ -65,7 +65,7 @@ struct GoalFullView: View {
             }
             
             Text(goal.isActive ? "Active" : "Inactive")
-            Text(goal.isCompleted ? "Completed" : "Incomplete")
+//            Text(goal.isCompleted ? "Completed" : "Incomplete")
                 .padding(.bottom)
             
             VStack {
@@ -95,15 +95,15 @@ struct GoalFullView: View {
                 
                 HStack {
                     Toggle("Is Active", isOn: $isActive)
-                    Spacer()
-                    Toggle("Is Completed", isOn: $isCompleted)
+//                    Space()
+//                    Toggle("Is Completed", isOn: $isCompleted)
                 }
                 .padding([.horizontal, .bottom])
             }
             
             Button("Change Goal", action: {
                 logger.info("Deleting goal with id \(self.goal.id)")
-                goals.removeGoalAtId(uuid: self.goal.id)
+//                goals.removeGoalAtId(uuid: self.goal.id)
                 let savedUUID = self.goal.id
                 
                 let goal = CommonGoal(id: savedUUID, name: self.goal.name, description: getMatchingDesription(), dates: self.dates, isActive: self.isActive, isCompleted: self.isCompleted, dosage: getMatchingAmounts(), units: getMatchingUnits(), frequency: getMatchingFrequency())

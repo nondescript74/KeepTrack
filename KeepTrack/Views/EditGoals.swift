@@ -29,7 +29,7 @@ struct EditGoals: View {
                     }
                 }
             }
-            .navigationTitle(Text("Edit Goals").font(.largeTitle))
+            .navigationTitle(Text("Edit Goals"))
         }
         .environment(goals)
         #if os(VisionOS)
