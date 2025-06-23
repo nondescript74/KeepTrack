@@ -15,11 +15,14 @@ struct AddWaterIntent: AppIntent {
     static var description: LocalizedStringResource? = "This adds a 14 oz glass of water"
     
     func perform() async throws -> some IntentResult & ProvidesDialog & ShowsSnippetView {
-        let commonEntry: CommonEntry = CommonEntry(id: UUID(), date: Date(), units: "fluid ounces", amount: 14, name: "Water", goalMet: false)
+        let previous: Int = await CommonStore().getTodaysIntake().count
+        let goal: CommonGoal? = await CommonGoals().getTodaysGoalForName(namez: "Water") ?? nil
+        let commonEntry: CommonEntry = CommonEntry(id: UUID(), date: Date(), units: "fluid ounces", amount: 14, name: "Water", goalMet: (goal == nil) ? true : isGoalMet(goal: goal!, previous: previous))
+        
         await KeepTrack.CommonStore().addEntry(entry: commonEntry)
         let snippetView: some View = VStack {
             Text("Intake added")
-            Text("You added a 14 ounce glasses of water")
+            Text("You added a 14 ounce glass of water")
         }
         
         let quantity: HKQuantity = HKQuantity(unit: .fluidOunceUS(), doubleValue: 14)
@@ -28,11 +31,8 @@ struct AddWaterIntent: AppIntent {
             await HealthKitManager().addWaterSample(quantity: quantity)
             logger.info("HealthKit: app intent added water sample")
         }
-//        let quantity: HKQuantity = HKQuantity(unit: .fluidOunceUS(), doubleValue: 14)
-//        
-//        await HealthKitManager().addWaterSample(quantity: quantity)
         
-        return .result(dialog: "Okay 14 ounces of water added",
+        return .result(dialog: "14 ounces of water added",
                        view: snippetView)
     }
 }

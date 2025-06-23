@@ -7,6 +7,9 @@
     "%@: " : {
 
     },
+    "14 ounces of water added" : {
+
+    },
     "Active" : {
 
     },
@@ -103,9 +106,6 @@
     "Is Active" : {
 
     },
-    "item" : {
-
-    },
     "Latanoprost added" : {
 
     },
@@ -128,9 +128,6 @@
 
     },
     "Nothing taken yesterday" : {
-
-    },
-    "Okay 14 ounces of water added" : {
 
     },
     "Okay one glass of sake added" : {
@@ -228,7 +225,7 @@
     "Yesterday" : {
 
     },
-    "You added a 14 ounce glasses of water" : {
+    "You added a 14 ounce glass of water" : {
 
     },
     "You consumed %lld  glasses of water today and %lld smoothies." : {

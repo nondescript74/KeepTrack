@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "ma_n_z copy.png",
+      "filename" : "Carol_covid_mask 2.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -13,6 +13,7 @@
           "value" : "dark"
         }
       ],
+      "filename" : "Carol_covid_mask 1.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -24,6 +25,7 @@
           "value" : "tinted"
         }
       ],
+      "filename" : "Carol_covid_mask.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"

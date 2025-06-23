@@ -19,20 +19,6 @@ struct GoalDisplayByName: View {
         return goals.goals.sorted { $0.name < $1.name }
     }
     
-    fileprivate func hourForDate(_ date: Date) -> Int {
-        var calendar = Calendar.autoupdatingCurrent
-        calendar.timeZone = .current
-        let components = calendar.dateComponents([.hour], from: date)
-        return components.hour ?? 0
-    }
-    
-    fileprivate func minuteForDate(_ date: Date) -> Int {
-        var calendar = Calendar.autoupdatingCurrent
-        calendar.timeZone = .current
-        let components = calendar.dateComponents([.minute], from: date)
-        return components.minute ?? 0
-    }
-    
     fileprivate func isItAM(_ date: Date) -> Bool {
         return hourForDate(date) >= 0 && hourForDate(date) < 12
     }
@@ -60,7 +46,7 @@ struct GoalDisplayByName: View {
                             HStack(alignment: .center) {
                                 ForEach(goal.dates, id: \.self) { date in
                                     HStack {
-                                        Clock(hour: hourForDate(date), minute: minuteForDate(date), is12HourFormat: true, isAM: isItAM(date))
+                                        Clock(hour: hourForDate(date), minute: minuteForDate(date), is12HourFormat: true, isAM: self.isItAM(date))
                                         
                                     }
                                     .font(.footnote)
