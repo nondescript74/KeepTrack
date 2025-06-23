@@ -29,7 +29,7 @@ struct EnterIntake: View {
         self.dataTypeIdentifier = "Water"
     }
     
-    @State var name: String = (types.sorted(by: {$0 < $1}).last ?? types.sorted(by: {$0 < $1})[0])
+    @State private var name: String = (types.sorted(by: {$0 < $1}).last ?? types.sorted(by: {$0 < $1})[0])
     
     fileprivate func getMatchingUnit() -> String {
         return matchingUnitsDictionary.first(where: {$0.key == name})?.value ?? ""
@@ -45,7 +45,10 @@ struct EnterIntake: View {
                 .font(.headline)
                 .fontWeight(.bold)
             HStack {
-                Text("item")
+                
+//                List(types.sorted(by: {$0 < $1}), id: \.self) { item in
+//                    Text(item)
+//                }
                 Picker("Select Type", selection: $name) {
                     ForEach(types.sorted(by: {$0 < $1}), id: \.self) {
                         Text($0)
@@ -90,6 +93,8 @@ struct EnterIntake: View {
                 }
                 dismiss()
             }
+            .frame(width: 100, height: 40)
+            .border(Color.blue)
             .disabled(name.isEmpty)
             Spacer()
             

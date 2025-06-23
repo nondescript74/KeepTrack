@@ -32,6 +32,25 @@ public extension Array where Element: Hashable {
     }
 }
 
+func hourForDate(_ date: Date) -> Int {
+    var calendar = Calendar.autoupdatingCurrent
+    calendar.timeZone = .current
+    let components = calendar.dateComponents([.hour], from: date)
+    return components.hour ?? 0
+}
+
+func minuteForDate(_ date: Date) -> Int {
+    var calendar = Calendar.autoupdatingCurrent
+    calendar.timeZone = .current
+    let components = calendar.dateComponents([.minute], from: date)
+    return components.minute ?? 0
+}
+
+fileprivate func isItAM(date: Date) -> Bool {
+    return hourForDate(date) >= 0 && hourForDate(date) < 12
+}
+
+
 func isGoalMet(goal: CommonGoal, previous: Int) -> Bool {
     // previous is the count of previous intake
     var calendar = Calendar.autoupdatingCurrent

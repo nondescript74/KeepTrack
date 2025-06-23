@@ -53,26 +53,19 @@ struct Clock: View {
                     .rotationEffect(Angle(degrees: Double(6 * minute + angleCorrection)))
                 
                 Rectangle()
-                    .fill(Color.black)
+                    .fill(Color.orange)
                     .frame(width: minuteHandWidth + 2, height: clockDiameter - 20)
                     .offset(y: clockDiameter / 4)
                     .rotationEffect(Angle(degrees: Double(30 * hour + angleCorrection)))
                 
                 ForEach(0..<4) { index in
                     Rectangle()
-                        .fill(Color.blue)
+                        .fill(Color.brown)
                         .frame(width: indicatorsWidth, height: indicatorsWidth)
                         .offset(y: clockDiameter / 2)
                         .rotationEffect(Angle(degrees: Double(90 * index + angleCorrection)))
                 }
                 
-//                ForEach(0..<12) { index in
-//                    Rectangle()
-//                        .fill(Color.blue)
-//                        .frame(width: indicatorsWidth, height: indicatorsWidth)
-//                        .offset(y: clockDiameter / 2)
-//                        .rotationEffect(Angle(degrees: Double(30 * index + angleCorrection)))
-//                }
                 
                 Text(isAM ? "AM" : "PM")
                     .font(.system(size: 10))
