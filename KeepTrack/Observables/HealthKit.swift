@@ -103,6 +103,8 @@ import SwiftUI
                     case .shouldRequest:
                         status = "The application has not yet requested authorization."
                         self.logger.info("\(status)")
+                        status = self.createAuthorizationStatusDescription(for: [HKQuantityType.quantityType(forIdentifier: .dietaryWater)!])
+                        self.logger.info("\(status)")
                     case .unknown:
                         status = "Authorization request undetermined, error occurred."
                         self.logger.info("\(status)")
@@ -115,8 +117,8 @@ import SwiftUI
                     }
                 }
                 
-                self.logger.info("\(status)")
-                
+//                self.logger.info("\(status)")
+//                
                 // Results come back on a background thread. Dispatch UI updates to the main thread.
                 DispatchQueue.main.async {
                     self.descriptionLabel = status

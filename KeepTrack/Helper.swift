@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import OSLog
 
-let types = ["Rosuvastatin", "Metformin", "Losartan", "Latanoprost", "Water", "Smoothie", "Protein", "Sake", "Magnesium Glycinate", "Vitamin D3", "Amlodipine", "Coffee"].sorted()
+let types:[String] = ["Rosuvastatin", "Metformin", "Losartan", "Latanoprost", "Water", "Smoothie", "Protein", "Sake", "Magnesium Glycinate", "Vitamin D3", "Amlodipine", "Coffee"].sorted()
 
 let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "Helper")
 
@@ -24,6 +24,8 @@ let matchingDescriptionDictionary: Dictionary<String, String> = ["Rosuvastatin":
 
 
 let matchingFrequencyDictionary: Dictionary<String, String> = ["Rosuvastatin": "Once daily", "Metformin": "twice daily", "Losartan": "Once daily", "Latanoprost": "Once daily, evening", "Water": "Six times daily", "Smoothie": "Once daily", "Protein": "Once daily", "Sake": "Once daily", "Magnesium Glycinate": "Once daily", "Vitamin D3": "Once daily", "Amlodipine": "Once daily", "Coffee": "Twice daily"]
+
+let colors: [Color] = [.orange, .yellow, .blue, .indigo, .purple, .pink, .cyan]
 
 public extension Array where Element: Hashable {
     func uniqued() -> [Element] {
@@ -46,7 +48,7 @@ func minuteForDate(_ date: Date) -> Int {
     return components.minute ?? 0
 }
 
-fileprivate func isItAM(date: Date) -> Bool {
+func isItAM(date: Date) -> Bool {
     return hourForDate(date) >= 0 && hourForDate(date) < 12
 }
 

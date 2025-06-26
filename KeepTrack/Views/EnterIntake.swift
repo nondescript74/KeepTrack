@@ -44,17 +44,14 @@ struct EnterIntake: View {
             Text("Enter intake details")
                 .font(.headline)
                 .fontWeight(.bold)
-            HStack {
-                
-//                List(types.sorted(by: {$0 < $1}), id: \.self) { item in
-//                    Text(item)
-//                }
-                Picker("Select Type", selection: $name) {
-                    ForEach(types.sorted(by: {$0 < $1}), id: \.self) {
-                        Text($0)
-                    }
+            
+            Picker("Select Type", selection: $name) {
+                ForEach(types.sorted(by: {$0 < $1}), id: \.self) {
+                    Text($0)
                 }
             }
+            .background(Color.gray.opacity(1.0))
+            
             HStack {
                 Text("amount")
                 Text(getMatchingAmount().formatted())
@@ -63,7 +60,8 @@ struct EnterIntake: View {
             .padding(.bottom)
             
             
-            Button("Add") {
+            
+            Button(action: ( {
                 let goalToUse = goals.getTodaysGoalForName(namez: self.name)
                 // single goal
                 
@@ -71,10 +69,9 @@ struct EnterIntake: View {
                     let entry = CommonEntry(id: UUID(), date: Date(), units: getMatchingUnit(), amount: getMatchingAmount(), name: name, goalMet: true)
                     store.addEntry(entry: entry)
                     logger.info("CommonStore: Added intake  \(name) no goals for name")
-                    if name == "Water" {
+                    if name == "Water" && healthKitManager.descriptionLabel.contains("authorized") {
                         Task {
                             await healthKitManager.addWaterSample(quantity:  HKQuantity(unit: HKUnit.fluidOunceUS(), doubleValue: getMatchingAmount()))
-                            logger.info("EnterIntake: added water sample via HealthKit")
                         }
                     }
                 } else {
@@ -84,20 +81,22 @@ struct EnterIntake: View {
                     let entry = CommonEntry(id: UUID(), date: Date(), units: getMatchingUnit(), amount: getMatchingAmount(), name: self.name, goalMet: result)
                     store.addEntry(entry: entry)
                     logger.info("CommonStore: added intake \(name)")
-                    if name == "Water" {
+                    if name == "Water" && healthKitManager.descriptionLabel.contains("authorized") {
                         Task {
                             await healthKitManager.addWaterSample(quantity:  HKQuantity(unit: HKUnit.fluidOunceUS(), doubleValue: getMatchingAmount()))
-                            logger.info("EnterIntake: added water sample via HealthKit")
                         }
+                    } else if name == "Water" && !healthKitManager.descriptionLabel.contains("authorized") {
+                        logger.warning("EnterIntake: cannot add water sample via HealthKit, not authorized")
                     }
                 }
-                dismiss()
-            }
-            .frame(width: 100, height: 40)
-            .border(Color.blue)
-            .disabled(name.isEmpty)
+            }), label: ({
+                Image(systemName: "plus.arrow.trianglehead.clockwise")
+                    .padding(10)
+                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(style: StrokeStyle(lineWidth: 2)))
+            }))
+            .padding()
+            .foregroundStyle(.blue)
             Spacer()
-            
         }
         .environment(store)
         .environment(goals)
