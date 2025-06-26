@@ -24,22 +24,22 @@ struct AppDashboard: View {
     var body: some View {
         NavigationStack {
             History()
-            .padding(.bottom, 15)
-            
-            Divider()
-                        
+                .padding(.bottom, 15)
+                                    
             GoalDisplayByName()
             
             Spacer()
-                
-            LazyVGrid(columns: columnLayout, alignment: .center) {
+            HStack {
                 VStack {
                     NavigationLink(destination: EnterIntake()) {
-                        Image(systemName: "wineglass")
-                            .symbolRenderingMode(.multicolor)
-                            .frame(minHeight: heightOfBar)
+                        ZStack {
+                            Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50)
+                            Image(systemName: "wineglass")
+                                .foregroundStyle(Color.red)
+                                .symbolRenderingMode(.multicolor)
+                                .frame(minHeight: heightOfBar)
+                        }
                     }
-                    .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50))
                     Text("Enter Intake")
                         .foregroundColor(.blue)
                         .font(.caption)
@@ -48,11 +48,14 @@ struct AppDashboard: View {
 
                 VStack {
                     NavigationLink(destination: EnterGoal()) {
-                        Image(systemName: "basketball")
-                            .symbolRenderingMode(.multicolor)
-                            .frame(minHeight: heightOfBar)
+                        ZStack {
+                            Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50)
+                            Image(systemName: "microphone.badge.plus")
+                                .foregroundStyle(Color.red)
+                                .symbolRenderingMode(.multicolor)
+                                .frame(minHeight: heightOfBar)
+                        }
                     }
-                    .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50))
                     Text("Enter Goal")
                         .foregroundColor(.blue)
                         .font(.caption)
@@ -61,23 +64,29 @@ struct AppDashboard: View {
                 .padding(.top)
                 VStack {
                     NavigationLink(destination: EditHistory(items: $store.history)) {
-                        Image(systemName: "heart.text.clipboard")
-                            .symbolRenderingMode(.multicolor)
-                            .frame(minHeight: heightOfBar)
+                        ZStack {
+                            Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50)
+                            Image(systemName: "heart.text.clipboard")
+                                .foregroundStyle(Color.red)
+                                .symbolRenderingMode(.multicolor)
+                                .frame(minHeight: heightOfBar)
+                        }
                     }
-                    .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50))
                     Text("Edit Intake")
-                        .foregroundColor(.red)
+                        .foregroundColor(.orange)
                         .font(.caption)
                 }
                 .padding(.top)
                 VStack {
                     NavigationLink(destination: EditGoals(items: $goals.goals)) {
-                        Image(systemName: "heart.text.clipboard")
-                            .symbolRenderingMode(.multicolor)
-                            .frame(minHeight: heightOfBar)
+                        ZStack {
+                            Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50)
+                            Image(systemName: "figure.hockey")
+                                .foregroundStyle(Color.red)
+                                .symbolRenderingMode(.multicolor)
+                                .frame(minHeight: heightOfBar)
+                        }
                     }
-                    .overlay(Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50))
                     Text("Edit Goals")
                         .foregroundColor(.red)
                         .font(.caption)
@@ -99,9 +108,9 @@ struct AppDashboard: View {
         .environment(goals)
         .environment(store)
         .environment(healthKitManager)
-//        #if os(VisionOS)
-//        .glassBackgroundEffect()
-//        #endif
+        #if os(VisionOS)
+        .glassBackgroundEffect()
+        #endif
     }
 }
 

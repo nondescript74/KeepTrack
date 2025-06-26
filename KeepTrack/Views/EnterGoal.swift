@@ -16,19 +16,19 @@ struct EnterGoal: View {
     
     @State fileprivate var name: String = types.sorted(by: <)[0]
     @State fileprivate var startDate: Date = Date()
-    #if os(iOS)
+#if os(iOS)
     @State fileprivate var stateFul: Bool = true
-    #endif
-    #if os(macOS) || os(iPadOS)
+#endif
+#if os(macOS) || os(iPadOS)
     @State fileprivate var stateFul: Bool = false
-    #endif
-    #if os(visionOS)
+#endif
+#if os(visionOS)
     @State fileprivate var stateFul: Bool = false
-    #endif
+#endif
     
     
     fileprivate func getMatchingDesription() -> String {
-         return matchingDescriptionDictionary[name] ?? "no description"
+        return matchingDescriptionDictionary[name] ?? "no description"
     }
     
     fileprivate func getMatchingUnits() -> String {
@@ -45,7 +45,6 @@ struct EnterGoal: View {
     
     
     var body: some View {
-        
         Section{
             VStack {
                 Text("Enter Goal Details").font(.headline)
@@ -53,11 +52,14 @@ struct EnterGoal: View {
                 HStack {
                     Text("Select intake: ")
                     Spacer()
+                    
                     Picker("Select intake", selection: $name) {
                         ForEach(types, id: \.self) {
                             Text($0)
                         }
                     }
+                    .background(Color.gray.opacity(1.0))
+                    
                 }.padding(.horizontal)
                 
                 HStack {
@@ -77,10 +79,10 @@ struct EnterGoal: View {
                 
                 HStack {
                     DatePicker(
-                            "Start Date",
-                            selection: $startDate,
-                            displayedComponents: [.hourAndMinute]
-                        )
+                        "Start Date",
+                        selection: $startDate,
+                        displayedComponents: [.hourAndMinute]
+                    )
                 }
                 .padding(.horizontal)
                 
@@ -98,17 +100,17 @@ struct EnterGoal: View {
                         var newDates = remain[0].dates
                         newDates.append(startDate)
                         let goal = CommonGoal(id: remain[0].id, name: name, description: getMatchingDesription(), dates: newDates, isActive: true, isCompleted: false, dosage: getMatchingAmounts(), units: getMatchingUnits(), frequency: getMatchingFrequency() )
-                         
+                        
                         goals.addGoal(goal: goal)
                         
                     } else {
                         let dateArrayForGoal: [Date] = matchingDateArray(name: self.name, startDate: startDate)
-
+                        
                         let goal = CommonGoal(id: UUID(), name: self.name, description: getMatchingDesription(), dates: dateArrayForGoal, isActive: true, isCompleted: false, dosage: getMatchingAmounts(), units: getMatchingUnits(), frequency: getMatchingFrequency() )
                         
                         goals.addGoal(goal: goal)
                     }
-
+                    
                     self.name = types.sorted(by: <)[0]
                     logger.info("added a goal")
                     
@@ -117,8 +119,9 @@ struct EnterGoal: View {
                         .padding(10)
                         .overlay(RoundedRectangle(cornerRadius: 10).stroke(style: StrokeStyle(lineWidth: 2)))
                 }))
-                .padding(.top)
-                .disabled(name.isEmpty)
+                .padding()
+                .foregroundStyle(.blue)
+                //                .disabled(name.isEmpty)
             }
             .padding(.bottom)
         }
@@ -134,11 +137,11 @@ struct EnterGoal: View {
                     Text(goal.name)
                         .foregroundStyle(stateFul ? .green : .orange)
                         .padding(.bottom, 5)
-                    #if macos || ipadOS
+#if macos || ipadOS
                         .onHover(perform: { imOver in
                             stateFul = imOver
                         })
-                    #endif
+#endif
                 }
             }
             .defaultHoverEffect(.automatic)

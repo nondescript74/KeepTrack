@@ -14,7 +14,6 @@ struct GoalDisplayByName: View {
     @Environment(CommonGoals.self) private var goals
     
     fileprivate var startDegrees: Double = 270
-    fileprivate var colors: [Color] = [.orange, .yellow, .blue, .indigo, .purple, .pink, .cyan]
     fileprivate var myGoals:[CommonGoal] {
         return goals.goals.sorted { $0.name < $1.name }
     }
