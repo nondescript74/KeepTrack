@@ -3,17 +3,19 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 90;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXCopyFilesBuildPhase section */
 		F897BF532D95EC1700F7225B /* Embed App Clips */ = {
 			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
 			dstPath = "$(CONTENTS_FOLDER_PATH)/AppClips";
-			dstSubfolder = Product;
+			dstSubfolderSpec = 16;
 			files = (
 			);
 			name = "Embed App Clips";
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -50,8 +52,10 @@
 /* Begin PBXFrameworksBuildPhase section */
 		F81C71CF2D8A29280037FCCB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
 			files = (
 			);
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
@@ -87,10 +91,14 @@
 			);
 			buildRules = (
 			);
+			dependencies = (
+			);
 			fileSystemSynchronizedGroups = (
 				F81C71D42D8A29280037FCCB /* KeepTrack */,
 			);
 			name = KeepTrack;
+			packageProductDependencies = (
+			);
 			productName = KeepTrack;
 			productReference = F81C71D22D8A29280037FCCB /* KeepTrack.app */;
 			productType = "com.apple.product-type.application";
@@ -121,7 +129,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 			);
-			preferredProjectObjectVersion = 90;
+			preferredProjectObjectVersion = 77;
 			productRefGroup = F81C71D32D8A29280037FCCB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -134,21 +142,25 @@
 /* Begin PBXResourcesBuildPhase section */
 		F81C71D02D8A29280037FCCB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
 			files = (
 			);
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		F81C71CE2D8A29280037FCCB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
 			files = (
 			);
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		F81C71DC2D8A292A0037FCCB /* Debug configuration for PBXProject "KeepTrack" */ = {
+		F81C71DC2D8A292A0037FCCB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -213,7 +225,7 @@
 			};
 			name = Debug;
 		};
-		F81C71DD2D8A292A0037FCCB /* Release configuration for PBXProject "KeepTrack" */ = {
+		F81C71DD2D8A292A0037FCCB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -270,14 +282,14 @@
 			};
 			name = Release;
 		};
-		F81C71DF2D8A292A0037FCCB /* Debug configuration for PBXNativeTarget "KeepTrack" */ = {
+		F81C71DF2D8A292A0037FCCB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = KeepTrack/KeepTrack.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 94;
+				CURRENT_PROJECT_VERSION = 96;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = YKHW2TJ32G;
 				ENABLE_APP_SANDBOX = YES;
@@ -319,14 +331,14 @@
 			};
 			name = Debug;
 		};
-		F81C71E02D8A292A0037FCCB /* Release configuration for PBXNativeTarget "KeepTrack" */ = {
+		F81C71E02D8A292A0037FCCB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = KeepTrack/KeepTrack.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 94;
+				CURRENT_PROJECT_VERSION = 96;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = YKHW2TJ32G;
 				ENABLE_APP_SANDBOX = YES;
@@ -374,17 +386,19 @@
 		F81C71CD2D8A29280037FCCB /* Build configuration list for PBXProject "KeepTrack" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				F81C71DC2D8A292A0037FCCB /* Debug configuration for PBXProject "KeepTrack" */,
-				F81C71DD2D8A292A0037FCCB /* Release configuration for PBXProject "KeepTrack" */,
+				F81C71DC2D8A292A0037FCCB /* Debug */,
+				F81C71DD2D8A292A0037FCCB /* Release */,
 			);
+			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 		F81C71DE2D8A292A0037FCCB /* Build configuration list for PBXNativeTarget "KeepTrack" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				F81C71DF2D8A292A0037FCCB /* Debug configuration for PBXNativeTarget "KeepTrack" */,
-				F81C71E02D8A292A0037FCCB /* Release configuration for PBXNativeTarget "KeepTrack" */,
+				F81C71DF2D8A292A0037FCCB /* Debug */,
+				F81C71E02D8A292A0037FCCB /* Release */,
 			);
+			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
