@@ -16,6 +16,7 @@ struct AppDashboard: View {
     @State private var store: CommonStore = CommonStore()
     @State private var goals: CommonGoals = CommonGoals()
     @State private var healthKitManager = HealthKitManager()
+    @State private var cIntakeTypes = CurrentIntakeTypes()
     
     fileprivate let columnLayout = Array(repeating: GridItem(.flexible(minimum: 45)), count: 5  )
     
@@ -45,7 +46,6 @@ struct AppDashboard: View {
                         .font(.caption)
                 }
                 .padding(.top)
-
                 VStack {
                     NavigationLink(destination: EnterGoal()) {
                         ZStack {
@@ -60,7 +60,6 @@ struct AppDashboard: View {
                         .foregroundColor(.blue)
                         .font(.caption)
                 }
-
                 .padding(.top)
                 VStack {
                     NavigationLink(destination: EditHistory(items: $store.history)) {
@@ -108,6 +107,7 @@ struct AppDashboard: View {
         .environment(goals)
         .environment(store)
         .environment(healthKitManager)
+        .environment(cIntakeTypes)
         #if os(VisionOS)
         .glassBackgroundEffect()
         #endif
@@ -119,4 +119,5 @@ struct AppDashboard: View {
         .environment(CommonGoals())
         .environment(CommonStore())
         .environment(HealthKitManager())
+        .environment(CurrentIntakeTypes())
 }

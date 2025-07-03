@@ -10,6 +10,8 @@ import OSLog
 
 struct GoalDisplayByName: View {
     
+    @Environment(\.colorScheme) var colorScheme
+    
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "GoalDisplayByName")
     @Environment(CommonGoals.self) private var goals
     
@@ -37,8 +39,7 @@ struct GoalDisplayByName: View {
                     let goal = myGoals[index]
                     HStack(alignment: .center) {
                         Text(goal.name)
-                            .foregroundColor(colors[index % colors.count])
-                            .font(.subheadline)
+                            .font(.headline)
                             .padding(.horizontal)
                         
                         ScrollView(.horizontal) {

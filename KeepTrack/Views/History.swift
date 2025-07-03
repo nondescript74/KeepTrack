@@ -12,6 +12,7 @@ struct History: View {
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "History")
     @Environment(CommonStore.self) private var store
     @Environment(CommonGoals.self) private var goals
+    @Environment(CurrentIntakeTypes.self) private var cIntakeTypes
     
     @State private var toggeled: Bool = false
     
@@ -31,6 +32,7 @@ struct History: View {
         if zBug {logger.info("gY \(myReturn.count)") }
         return myReturn
     }
+    //
     
     fileprivate func sortTodayByName(name: String) -> [CommonEntry] {
         let myReturn  = getToday().filter { $0.name.lowercased() == name.lowercased() }.sorted { $0.date < $1.date }
@@ -38,16 +40,30 @@ struct History: View {
         return myReturn
     }
     
-    
     fileprivate func sortYesterdayByName(name: String) -> [CommonEntry] {
         let myReturn = getYesterday().filter { $0.name.lowercased() == name.lowercased() }.sorted { $0.date < $1.date }.uniqued()
         if zBug {logger.info("sYBN \(myReturn.count)") }
         return myReturn
     }
+    //
+    
+    fileprivate func getUniqueTodayByNameCount(name: String) -> Int {
+        let myReturn: Int = sortTodayByName(name: name).count
+        if zBug {logger.info("gUTBNCount: \(myReturn)") }
+        return myReturn
+    }
     
     fileprivate func getUniqueYesterdayByNameCount(name: String) -> Int {
         let myReturn: Int = sortYesterdayByName(name: name).count
-        if zBug {logger.info("gYUBNC: \(myReturn)") }
+        if zBug {logger.info("gUYBNCount: \(myReturn)") }
+        return myReturn
+    }
+    //
+    
+    
+    fileprivate func getTodaysGoalsByNameCount(name: String) -> Int {
+        let myReturn: Int = goals.goals.filter { $0.name.lowercased() == name.lowercased() }.count
+        if zBug {logger.info("gYGBNC: \(myReturn)") }
         return myReturn
     }
     
@@ -56,6 +72,7 @@ struct History: View {
         if zBug {logger.info("gYGBNC: \(myReturn)") }
         return myReturn
     }
+    //
     
     var body: some View {
         VStack  {
@@ -65,19 +82,15 @@ struct History: View {
                 Text("Nothing taken today")
                     .foregroundColor(.red)
             } else {
-                ForEach(types, id: \.self) { type in
-                    if !sortTodayByName(name: type).isEmpty {
-                        ScrollView(.horizontal) {
-                            HStack {
-                                ForEach(sortTodayByName(name: type)) { entry in
-                                    HStack {
-                                        Text(entry.date, style: .time)
-                                        Text(entry.name)
-                                    }
-                                    .font(.caption2)
-                                    .foregroundStyle(entry.goalMet ? .green : .red)
-                                }
-                            }
+                
+                ForEach(cIntakeTypes.intakeTypeArray, id: \.self) { type in
+                    if !sortTodayByName(name: type.name).isEmpty {
+                        HStack {
+                            Text("\(type.name): ")
+                            Spacer()
+                            Text(getUniqueTodayByNameCount(name: type.name).description)
+                                .foregroundStyle(
+                                    getTodaysGoalsByNameCount(name: type.name) <= getUniqueTodayByNameCount(name: type.name) ? .green : .red)
                         }
                     }
                 }
@@ -94,14 +107,14 @@ struct History: View {
                 Text("Nothing taken yesterday")
                     .foregroundColor(.red)
             } else {
-                ForEach(types, id: \.self) { type in
-                    if !sortYesterdayByName(name: type).isEmpty {
+                ForEach(cIntakeTypes.intakeTypeArray, id: \.self) { type in
+                    if !sortYesterdayByName(name: type.name).isEmpty {
                         HStack {
-                            Text("\(type): ")
+                            Text("\(type.name): ")
                             Spacer()
-                            Text(getUniqueYesterdayByNameCount(name: type).description)
+                            Text(getUniqueYesterdayByNameCount(name: type.name).description)
                                 .foregroundStyle(
-                                    getYesterdaysGoalsByNameCount(name: type) <= getUniqueYesterdayByNameCount(name: type) ? .green : .red)
+                                    getYesterdaysGoalsByNameCount(name: type.name) <= getUniqueYesterdayByNameCount(name: type.name) ? .green : .red)
                              
                         }
                         .font(.caption)
@@ -114,6 +127,7 @@ struct History: View {
         .padding(.horizontal)
         .environment(store)
         .environment(goals)
+        .environment(cIntakeTypes)
 #if os(VisionOs)
         .glassBackgroundEffect()
 #endif
@@ -124,5 +138,6 @@ struct History: View {
     History()
         .environment(CommonStore())
         .environment(CommonGoals())
+        .environment(CurrentIntakeTypes())
 }
 

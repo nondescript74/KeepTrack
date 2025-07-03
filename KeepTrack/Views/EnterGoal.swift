@@ -12,9 +12,10 @@ struct EnterGoal: View {
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "EnterGoal")
     
     @Environment(CommonGoals.self) var goals
+    @Environment(CurrentIntakeTypes.self) var cIntakeTypes
     @Environment(\.dismiss) var dismiss
     
-    @State fileprivate var name: String = types.sorted(by: <)[0]
+    @State fileprivate var name: String = "Water"
     @State fileprivate var startDate: Date = Date()
 #if os(iOS)
     @State fileprivate var stateFul: Bool = true
@@ -28,24 +29,24 @@ struct EnterGoal: View {
     
     
     fileprivate func getMatchingDesription() -> String {
-        return matchingDescriptionDictionary[name] ?? "no description"
+        return cIntakeTypes.intakeTypeArray.first(where: { $0.name == name })?.descrip ?? "no description"
     }
     
     fileprivate func getMatchingUnits() -> String {
-        return matchingUnitsDictionary[name] ?? "no units"
+        return cIntakeTypes.intakeTypeArray.first(where: { $0.name == name })?.unit ?? "no unit"
     }
     
     fileprivate func getMatchingAmounts() -> Double {
-        return matchingAmountDictionary[name] ?? 0.0
+        return cIntakeTypes.intakeTypeArray.first(where: { $0.name == name })?.amount ?? 0
     }
     
     fileprivate func getMatchingFrequency() -> String {
-        return matchingFrequencyDictionary[name] ?? "no frequency"
+        return cIntakeTypes.intakeTypeArray.first(where: { $0.name == name })?.frequency ?? "no frequency"
     }
     
     
     var body: some View {
-        Section{
+        NavigationStack {
             VStack {
                 Text("Enter Goal Details").font(.headline)
                 
@@ -54,8 +55,8 @@ struct EnterGoal: View {
                     Spacer()
                     
                     Picker("Select intake", selection: $name) {
-                        ForEach(types, id: \.self) {
-                            Text($0)
+                        ForEach(cIntakeTypes.intakeTypeArray, id: \.self) { type in
+                            Text(type.name)
                         }
                     }
                     .background(Color.gray.opacity(1.0))
@@ -111,7 +112,7 @@ struct EnterGoal: View {
                         goals.addGoal(goal: goal)
                     }
                     
-                    self.name = types.sorted(by: <)[0]
+                    self.name = cIntakeTypes.intakeTypeArray.sorted(by: {$0.name < $1.name})[0].name
                     logger.info("added a goal")
                     
                 }), label: ({
@@ -121,14 +122,12 @@ struct EnterGoal: View {
                 }))
                 .padding()
                 .foregroundStyle(.blue)
-                //                .disabled(name.isEmpty)
             }
             .padding(.bottom)
-        }
-        
-        Divider()
-        
-        Section {
+            
+            
+            Divider()
+            
             VStack {
                 Text("Current goals are :")
                     .font(.headline)
@@ -137,21 +136,20 @@ struct EnterGoal: View {
                     Text(goal.name)
                         .foregroundStyle(stateFul ? .green : .orange)
                         .padding(.bottom, 5)
-#if macos || ipadOS
-                        .onHover(perform: { imOver in
-                            stateFul = imOver
-                        })
-#endif
                 }
             }
-            .defaultHoverEffect(.automatic)
+            
             Spacer()
         }
+        .environment(goals)
+        .environment(cIntakeTypes)
+        
     }
 }
 
 #Preview {
     EnterGoal()
         .environment(CommonGoals())
+        .environment(CurrentIntakeTypes())
 }
 

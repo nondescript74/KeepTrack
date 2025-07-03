@@ -32,14 +32,11 @@ struct AddEveningMedsIntent: AppIntent {
     }
         
     func perform() async throws -> some IntentResult & ProvidesDialog & ShowsSnippetView {
-//        let commonEntryMetformin: CommonEntry = await CommonEntry(id: UUID(), date: Date(), units: matchingUnitsDictionary["Metformin"] ?? "mg", amount: matchingAmountDictionary["Metformin"] ?? 500, name: "Metformin", goalMet: localGoalMet(typeName: "Metformin"))
-//        await KeepTrack.CommonStore().addEntry(entry: commonEntryMetformin)
         
-        let commonEntryLatanoProst: CommonEntry = await CommonEntry(id: UUID(), date: Date(), units: matchingUnitsDictionary["Latanoprost"] ?? "mg", amount: matchingAmountDictionary["Latanoprost"] ?? 1, name: "Latanoprost", goalMet: localGoalMet(typeName: "Latanoprost"))
+        let commonEntryLatanoProst: CommonEntry = await CommonEntry(id: UUID(), date: Date(), units: "drop", amount: 1, name: "Latanoprost", goalMet: localGoalMet(typeName: "Latanoprost"))
         await KeepTrack.CommonStore().addEntry(entry: commonEntryLatanoProst)
         
         let snippetView: some View = VStack {
-//            Text("Metformin and Latanoprost added")
             Text("You have consumed latanoprost")
         }
         return .result(dialog: "Latanoprost added",
