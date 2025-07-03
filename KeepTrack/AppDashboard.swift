@@ -23,94 +23,95 @@ struct AppDashboard: View {
     fileprivate let heightOfBar: CGFloat = 40
     
     var body: some View {
-        NavigationStack {
-            History()
-                .padding(.bottom, 15)
-                                    
-            GoalDisplayByName()
-            
-            Spacer()
-            HStack {
-                VStack {
-                    NavigationLink(destination: EnterIntake()) {
-                        ZStack {
-                            Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50)
-                            Image(systemName: "wineglass")
-                                .foregroundStyle(Color.red)
-                                .symbolRenderingMode(.multicolor)
-                                .frame(minHeight: heightOfBar)
+        NavigationView {
+            VStack {
+                History()
+                    .padding(.bottom, 15)
+                
+                GoalDisplayByName()
+                
+                HStack {
+                    VStack {
+                        NavigationLink(destination: EnterIntake()) {
+                            ZStack {
+                                Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50)
+                                Image(systemName: "wineglass")
+                                    .foregroundStyle(Color.red)
+                                    .symbolRenderingMode(.multicolor)
+                                    .frame(minHeight: heightOfBar)
+                            }
                         }
+                        Text("Enter Intake")
+                            .foregroundColor(.blue)
+                            .font(.caption)
                     }
-                    Text("Enter Intake")
-                        .foregroundColor(.blue)
-                        .font(.caption)
-                }
-                .padding(.top)
-                VStack {
-                    NavigationLink(destination: EnterGoal()) {
-                        ZStack {
-                            Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50)
-                            Image(systemName: "microphone.badge.plus")
-                                .foregroundStyle(Color.red)
-                                .symbolRenderingMode(.multicolor)
-                                .frame(minHeight: heightOfBar)
+                    .padding(.top)
+                    VStack {
+                        NavigationLink(destination: EnterGoal()) {
+                            ZStack {
+                                Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50)
+                                Image(systemName: "microphone.badge.plus")
+                                    .foregroundStyle(Color.red)
+                                    .symbolRenderingMode(.multicolor)
+                                    .frame(minHeight: heightOfBar)
+                            }
                         }
+                        Text("Enter Goal")
+                            .foregroundColor(.blue)
+                            .font(.caption)
                     }
-                    Text("Enter Goal")
-                        .foregroundColor(.blue)
-                        .font(.caption)
-                }
-                .padding(.top)
-                VStack {
-                    NavigationLink(destination: EditHistory(items: $store.history)) {
-                        ZStack {
-                            Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50)
-                            Image(systemName: "heart.text.clipboard")
-                                .foregroundStyle(Color.red)
-                                .symbolRenderingMode(.multicolor)
-                                .frame(minHeight: heightOfBar)
+                    .padding(.top)
+                    VStack {
+                        NavigationLink(destination: EditHistory(items: $store.history)) {
+                            ZStack {
+                                Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50)
+                                Image(systemName: "heart.text.clipboard")
+                                    .foregroundStyle(Color.red)
+                                    .symbolRenderingMode(.multicolor)
+                                    .frame(minHeight: heightOfBar)
+                            }
                         }
+                        Text("Edit Intake")
+                            .foregroundColor(.orange)
+                            .font(.caption)
                     }
-                    Text("Edit Intake")
-                        .foregroundColor(.orange)
-                        .font(.caption)
-                }
-                .padding(.top)
-                VStack {
-                    NavigationLink(destination: EditGoals(items: $goals.goals)) {
-                        ZStack {
-                            Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50)
-                            Image(systemName: "figure.hockey")
-                                .foregroundStyle(Color.red)
-                                .symbolRenderingMode(.multicolor)
-                                .frame(minHeight: heightOfBar)
+                    .padding(.top)
+                    VStack {
+                        NavigationLink(destination: EditGoals(items: $goals.goals)) {
+                            ZStack {
+                                Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50)
+                                Image(systemName: "figure.hockey")
+                                    .foregroundStyle(Color.red)
+                                    .symbolRenderingMode(.multicolor)
+                                    .frame(minHeight: heightOfBar)
+                            }
                         }
+                        Text("Edit Goals")
+                            .foregroundColor(.red)
+                            .font(.caption)
                     }
-                    Text("Edit Goals")
-                        .foregroundColor(.red)
-                        .font(.caption)
+                    .padding(.top)
                 }
-                .padding(.top)
+                .padding([.horizontal], 3)
+                .background(Color.gray.opacity(0.2))
+                
+                Spacer()
+                
+                HStack {
+                    Text("Welcome to KeepTrack!")
+                    Text(Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String)
+                    Text(Bundle.main.infoDictionary!["CFBundleVersion"] as! String)
+                }
+                .font(.subheadline)
             }
-            .padding([.horizontal], 3)
-            .background(Color.gray.opacity(0.2))
-            
-            Spacer()
-            
-            HStack {
-                Text("Welcome to KeepTrack!")
-                Text(Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String)
-                Text(Bundle.main.infoDictionary!["CFBundleVersion"] as! String)
-            }
-            .font(.subheadline)
         }
         .environment(goals)
         .environment(store)
         .environment(healthKitManager)
         .environment(cIntakeTypes)
-        #if os(VisionOS)
+#if os(VisionOS)
         .glassBackgroundEffect()
-        #endif
+#endif
     }
 }
 

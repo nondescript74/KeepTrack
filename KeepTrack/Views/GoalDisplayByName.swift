@@ -14,6 +14,7 @@ struct GoalDisplayByName: View {
     
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "GoalDisplayByName")
     @Environment(CommonGoals.self) private var goals
+    @Environment(CurrentIntakeTypes.self) private var cIntakeTypes
     
     fileprivate var startDegrees: Double = 270
     fileprivate var myGoals:[CommonGoal] {
@@ -61,10 +62,12 @@ struct GoalDisplayByName: View {
             }
         }
         .environment(goals)
+        .environment(cIntakeTypes)
     }
 }
 
 #Preview {
     GoalDisplayByName()
         .environment(CommonGoals())
+        .environment(CurrentIntakeTypes())
 }

@@ -74,6 +74,26 @@ struct History: View {
     }
     //
     
+    fileprivate func getUniqueTodaysCommonEntriesUntilNow(name: String) -> [CommonEntry] {
+        let myReturn: [CommonEntry] = sortTodayByName(name: name)
+        if zBug {logger.info("gUTCEUN \(myReturn.debugDescription)") }
+        return myReturn
+    }
+    
+    func getHour(from date: Date) -> Int {
+        var calendar = Calendar.current
+        calendar.timeZone = .current
+        let hour = calendar.component(.hour, from: date)
+        return hour
+    }
+    
+    func getMinute(from date: Date) -> Int {
+        var calendar = Calendar.current
+        calendar.timeZone = .current
+        let minute = calendar.component(.minute, from: date)
+        return minute
+    }
+    
     var body: some View {
         VStack  {
             Text("Today")
@@ -87,6 +107,11 @@ struct History: View {
                     if !sortTodayByName(name: type.name).isEmpty {
                         HStack {
                             Text("\(type.name): ")
+                            
+                            ForEach(getUniqueTodaysCommonEntriesUntilNow(name: type.name)) { entry in
+                                Clock(hour: getHour(from: entry.date), minute: getMinute(from: entry.date), is12HourFormat: true, isAM: isItAM(date: entry.date))
+                            }
+
                             Spacer()
                             Text(getUniqueTodayByNameCount(name: type.name).description)
                                 .foregroundStyle(
