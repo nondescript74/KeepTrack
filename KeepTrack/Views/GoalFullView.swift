@@ -12,6 +12,7 @@ struct GoalFullView: View {
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "GoalFullView")
     
     @Environment(CommonGoals.self) var goals
+    @Environment(CurrentIntakeTypes.self) var cIntakeTypes
     @Environment(\.dismiss) var dismiss
     
     var goal:CommonGoal
@@ -25,23 +26,6 @@ struct GoalFullView: View {
         self.isActive = goal.isActive
         self.isCompleted = goal.isCompleted
         self.dates = goal.dates
-    }
-    
-    fileprivate func getMatchingDesription() -> String {
-        return matchingDescriptionDictionary[self.goal.name] ?? "no description"
-    }
-    
-    fileprivate func getMatchingUnits() -> String {
-        return matchingUnitsDictionary[self.goal.name]  ?? "no units"
-    }
-    
-    fileprivate func getMatchingAmounts() -> Double {
-        let myReturnValue: Double = matchingAmountDictionary[self.goal.name] ?? 0.0
-        return myReturnValue
-    }
-    
-    fileprivate func getMatchingFrequency() -> String {
-        return matchingFrequencyDictionary[self.goal.name] ?? "no frequency"
     }
     
     fileprivate func getFormattedDate(_ date: Date) -> String {
@@ -59,13 +43,12 @@ struct GoalFullView: View {
             Text(goal.name)
                 .font(.subheadline)
             HStack {
-                Text(getMatchingAmounts().description)
-                Text(getMatchingUnits())
-                Text(getMatchingFrequency())
+                Text(cIntakeTypes.intakeTypeArray.first(where: {$0.name == self.goal.name})?.amount.description ?? 0.description)
+                Text(cIntakeTypes.intakeTypeArray.first(where: {$0.name == self.goal.name})?.unit ?? "unit")
+                Text(cIntakeTypes.intakeTypeArray.first(where: {$0.name == self.goal.name})?.frequency ?? "no frequency")
             }
             
             Text(goal.isActive ? "Active" : "Inactive")
-            //            Text(goal.isCompleted ? "Completed" : "Incomplete")
                 .padding(.bottom)
             
             VStack {
@@ -77,10 +60,10 @@ struct GoalFullView: View {
                 
                 HStack {
                     Text("Dosage: ")
-                    Text(getMatchingAmounts().description)
+                    Text(cIntakeTypes.intakeTypeArray.first(where: {$0.name == self.goal.name})?.amount.description ?? 0.description)
                     Spacer()
                     Text("Units: ")
-                    Text(getMatchingUnits())
+                    Text(cIntakeTypes.intakeTypeArray.first(where: {$0.name == self.goal.name})?.unit ?? "unit")
                 }
                 .padding(.horizontal)
                 
@@ -97,31 +80,33 @@ struct GoalFullView: View {
                     Toggle("Is Active", isOn: $isActive)
                 }
                 .padding([.horizontal, .bottom])
-            
-            
-            
-            Button("Change Goal", action: {
-                let savedUUID = self.goal.id
                 
-                let goal = CommonGoal(id: savedUUID, name: self.goal.name, description: getMatchingDesription(), dates: self.dates, isActive: self.isActive, isCompleted: self.isCompleted, dosage: getMatchingAmounts(), units: getMatchingUnits(), frequency: getMatchingFrequency())
                 
-                goals.addGoal(goal: goal)
-                logger.info("added new goal")
-                dismiss()
-            })
-            .foregroundStyle(Color.blue)
-            .padding()
-            .overlay(RoundedRectangle(cornerRadius: 5).stroke(style: StrokeStyle(lineWidth: 2)))
-            Spacer()
-        }
+                
+                Button("Change Goal", action: {
+                    let savedUUID = self.goal.id
+                    
+                    let goal = CommonGoal(id: savedUUID, name: self.goal.name, description: cIntakeTypes.intakeTypeArray.first(where: {$0.name == self.goal.name})?.descrip ?? "no description", dates: self.dates, isActive: self.isActive, isCompleted: self.isCompleted, dosage: cIntakeTypes.intakeTypeArray.first(where: {$0.name == self.goal.name})?.amount ?? 0, units: cIntakeTypes.intakeTypeArray.first(where: {$0.name == self.goal.name})?.unit ?? "no unit", frequency: cIntakeTypes.intakeTypeArray.first(where: {$0.name == self.goal.name})?.frequency ?? "no frequency")
+                    
+                    goals.addGoal(goal: goal)
+                    logger.info("added new goal")
+                    dismiss()
+                })
+                .foregroundStyle(Color.blue)
+                .padding()
+                .overlay(RoundedRectangle(cornerRadius: 5).stroke(style: StrokeStyle(lineWidth: 2)))
+                Spacer()
+            }
         }
         .environment(goals)
+        .environment(cIntakeTypes)
     }
 }
 
 #Preview {
-    let goal = CommonGoal(id: UUID(), name: "Metformin", description: matchingDescriptionDictionary["Metformin"] ?? "no description", dates: [Date(), Date().addingTimeInterval(60 * 60 * 2)], isActive: true, isCompleted: false, dosage: matchingAmountDictionary["Metformin"] ?? 0.0, units: matchingUnitsDictionary["Metformin"] ?? "fluid ounces", frequency: matchingFrequencyDictionary["Metformin"] ?? "twice a day")
+    let goal = CommonGoal(id: UUID(), name: "Metformin", description: "Sugar control", dates: [Date(), Date().addingTimeInterval(60 * 60 * 2)], isActive: true, isCompleted: false, dosage: 400, units: "mg", frequency: "twice a day")
     GoalFullView(goal: goal)
         .environment(CommonGoals())
+        .environment(CurrentIntakeTypes())
 }
 

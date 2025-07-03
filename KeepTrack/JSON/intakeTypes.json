@@ -1,0 +1,98 @@
+[
+    {
+        "name": "Rosuvastatin",
+        "unit": "mg",
+        "amount": 20,
+        "descrip": "Cholesterol-lowering",
+        "frequency": "once daily",
+        "id": "626B95A1-ACA3-4BAB-BAA0-871393ADC0EA"
+    },
+    {
+        "name": "Losartan",
+        "unit": "mg",
+        "amount": 20,
+        "descrip": "Blood pressure-lowering",
+        "frequency": "once daily",
+        "id": "DD956CEF-E210-4680-B5F2-64722ED4BD59"
+    },
+    {
+        "name": "Amplodine",
+        "unit": "mg",
+        "amount": 5,
+        "descrip": "Blood pressure-lowering",
+        "frequency": "once daily",
+        "id": "E78079A1-E8A9-4732-8FA7-069A7F07EB23"
+    },
+    {
+        "name": "Latanoprost",
+        "unit": "drop",
+        "amount": 1,
+        "descrip": "Eye pressure reduction",
+        "frequency": "once daily",
+        "id": "8D2AAD12-7EDE-4ADB-A3A8-44F657A2374A"
+    },
+    {
+        "name": "Smoothie",
+        "unit": "fluid ounces",
+        "amount": 10,
+        "descrip": "Nutrient-rich beverage",
+        "frequency": "once daily",
+        "id": "AB99BDD7-1617-43A8-B004-DD9D001F1E12"
+    },
+    {
+        "name": "Water",
+        "unit": "fluid ounces",
+        "amount": 14,
+        "descrip": "Hydration",
+        "frequency": "six times daily",
+        "id": "33C83EEC-F3AB-4ADD-925F-062B6BA129B1"
+    },
+    {
+        "name": "Protein",
+        "unit": "grams",
+        "amount": 14,
+        "descrip": "Essential amino acid supplement",
+        "frequency": "twice a week",
+        "id": "CABD0FAB-59F2-434B-85D0-3CBA78F24989"
+    },
+    {
+        "name": "Magnesium Glycinate",
+        "unit": "mg",
+        "amount": 400,
+        "descrip": "Cholesterol-lowering",
+        "frequency": "twice a week",
+        "id": "BD75CD5A-B8A3-4FCE-954F-8E8081E90C60"
+    },
+    {
+        "name": "Vitamin D3",
+        "unit": "IU",
+        "amount": 1000,
+        "descrip": "Mind and Immune function support",
+        "frequency": "twice a week",
+        "id": "2CDDD770-0C35-417F-BA03-C1324D2ED0AF"
+    },
+    {
+        "name": "Vitamin B12",
+        "unit": "IU",
+        "amount": 1000,
+        "descrip": "Mind and Immune function support",
+        "frequency": "twice a week",
+        "id": "DA3478BC-9E10-4154-BD9E-15FA75A68216"
+    },
+    {
+        "name": "Minoxidil",
+        "unit": "dropper",
+        "amount": 1,
+        "descrip": "hair growing",
+        "frequency": "once daily",
+        "id": "39004559-B0F0-45E0-A482-C8E32A0A7B90"
+    },
+    {
+        "name": "Coffee",
+        "unit": "fluid ounces",
+        "amount": 3,
+        "descrip": "Energy boost",
+        "frequency": "twice daily",
+        "id": "B2755324-D374-4168-8A72-5433C2FD4E68"
+    }
+]
