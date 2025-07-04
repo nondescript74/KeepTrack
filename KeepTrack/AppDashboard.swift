@@ -23,8 +23,8 @@ struct AppDashboard: View {
     fileprivate let heightOfBar: CGFloat = 40
     
     var body: some View {
-        NavigationView {
-            VStack {
+        NavigationStack {
+            ScrollView {
                 History()
                     .padding(.bottom, 15)
                 
@@ -104,6 +104,7 @@ struct AppDashboard: View {
                 }
                 .font(.subheadline)
             }
+            
         }
         .environment(goals)
         .environment(store)
