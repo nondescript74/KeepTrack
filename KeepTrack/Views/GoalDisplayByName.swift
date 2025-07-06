@@ -36,11 +36,10 @@ struct GoalDisplayByName: View {
                     .foregroundColor(.secondary)
                     .font(.headline)
             } else {
-                ForEach(myGoals.indices, id: \.self) { index in
+                ForEach(myGoals.sorted(by: {$0.name < $1.name}).indices, id: \.self) { index in
                     let goal = myGoals[index]
                     HStack(alignment: .center) {
                         Text(goal.name)
-                            .font(.headline)
                             .padding(.horizontal)
                         
                         ScrollView(.horizontal) {
@@ -48,14 +47,11 @@ struct GoalDisplayByName: View {
                                 ForEach(goal.dates, id: \.self) { date in
                                     HStack {
                                         Clock(hour: hourForDate(date), minute: minuteForDate(date), is12HourFormat: true, isAM: self.isItAM(date))
-                                        
                                     }
-                                    .font(.footnote)
-                                }
-                                .padding(.leading, 3)
+                                    .padding(.top, 10)
+                                                                    }
                             }
-                            .padding([.top], 9)
-                            .padding([.bottom], 4)
+                            .font(.caption)
                         }
                     }
                 }
