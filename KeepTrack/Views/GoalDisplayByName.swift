@@ -51,9 +51,10 @@ struct GoalDisplayByName: View {
                                     .padding(.top, 10)
                                                                     }
                             }
-                            .font(.caption)
+//                            .font(.caption)
                         }
                     }
+                    .font(.caption)
                 }
             }
         }
