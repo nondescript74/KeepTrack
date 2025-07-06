@@ -103,7 +103,7 @@ struct History: View {
                     .foregroundColor(.red)
             } else {
                 
-                ForEach(cIntakeTypes.intakeTypeArray, id: \.self) { type in
+                ForEach(cIntakeTypes.intakeTypeArray.sorted(by: {$0.name < $1.name}), id: \.self) { type in
                     if !sortTodayByName(name: type.name).isEmpty {
                         HStack {
                             Text("\(type.name): ")
@@ -114,9 +114,10 @@ struct History: View {
 
                             Spacer()
                             Text(getUniqueTodayByNameCount(name: type.name).description)
-                                .foregroundStyle(
-                                    getTodaysGoalsByNameCount(name: type.name) <= getUniqueTodayByNameCount(name: type.name) ? .green : .red)
+//                                .foregroundStyle(
+//                                    getTodaysGoalsByNameCount(name: type.name) <= getUniqueTodayByNameCount(name: type.name) ? .green : .red)
                         }
+                        .font(.caption)
                     }
                 }
             }
@@ -138,8 +139,8 @@ struct History: View {
                             Text("\(type.name): ")
                             Spacer()
                             Text(getUniqueYesterdayByNameCount(name: type.name).description)
-                                .foregroundStyle(
-                                    getYesterdaysGoalsByNameCount(name: type.name) <= getUniqueYesterdayByNameCount(name: type.name) ? .green : .red)
+//                                .foregroundStyle(
+//                                    getYesterdaysGoalsByNameCount(name: type.name) <= getUniqueYesterdayByNameCount(name: type.name) ? .green : .red)
                              
                         }
                         .font(.caption)
