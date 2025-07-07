@@ -11,7 +11,7 @@ import OSLog
 
 let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "Helper")
 
-let colors: [Color] = [.orange, .yellow, .blue, .indigo, .purple, .pink, .cyan]
+let colors: [Color] = [.orange, .yellow, .blue, .indigo, .purple, .pink, .cyan, .black, .brown, .green, .gray, .red, .teal, .mint]
 
 public extension Array where Element: Hashable {
     func uniqued() -> [Element] {
