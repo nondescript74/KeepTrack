@@ -94,6 +94,12 @@ struct History: View {
         return minute
     }
     
+    func getTypeColor(intakeType: IntakeType) -> Color {
+        let types = cIntakeTypes.intakeTypeArray.sorted(by: {$0.name < $1.name})
+        let index = types.firstIndex(of: intakeType)!
+        return colors[index]
+    }
+    
     var body: some View {
         VStack  {
             Text("Today")
@@ -107,17 +113,23 @@ struct History: View {
                     if !sortTodayByName(name: type.name).isEmpty {
                         HStack {
                             Text("\(type.name): ")
+                                .foregroundStyle(getTypeColor(intakeType: type))
                             
                             ForEach(getUniqueTodaysCommonEntriesUntilNow(name: type.name)) { entry in
-                                Clock(hour: getHour(from: entry.date), minute: getMinute(from: entry.date), is12HourFormat: true, isAM: isItAM(date: entry.date))
+                                
+                                ZStack {
+                                    Rectangle()
+                                        .fill(entry.goalMet ? .green : .red)
+                                    Clock(hour: getHour(from: entry.date), minute: getMinute(from: entry.date), is12HourFormat: true, isAM: isItAM(date: entry.date))
+                                }
+                                .frame(width: 50, height: 50)
                             }
-
+                            
                             Spacer()
                             Text(getUniqueTodayByNameCount(name: type.name).description)
-//                                .foregroundStyle(
-//                                    getTodaysGoalsByNameCount(name: type.name) <= getUniqueTodayByNameCount(name: type.name) ? .green : .red)
                         }
                         .font(.caption)
+                        .padding(.trailing)
                     }
                 }
             }
@@ -133,19 +145,17 @@ struct History: View {
                 Text("Nothing taken yesterday")
                     .foregroundColor(.red)
             } else {
-                ForEach(cIntakeTypes.intakeTypeArray, id: \.self) { type in
+                ForEach(cIntakeTypes.intakeTypeArray.sorted(by: {$0.name < $1.name}), id: \.self) { type in
                     if !sortYesterdayByName(name: type.name).isEmpty {
                         HStack {
                             Text("\(type.name): ")
+                                .foregroundStyle(getTypeColor(intakeType: type))
                             Spacer()
                             Text(getUniqueYesterdayByNameCount(name: type.name).description)
-//                                .foregroundStyle(
-//                                    getYesterdaysGoalsByNameCount(name: type.name) <= getUniqueYesterdayByNameCount(name: type.name) ? .green : .red)
-                             
                         }
                         .font(.caption)
                         .padding(.trailing)
-                         
+                        
                     }
                 }
             }
