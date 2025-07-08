@@ -29,19 +29,25 @@ struct EnterGoal: View {
     
     
     fileprivate func getMatchingDesription() -> String {
-        return cIntakeTypes.intakeTypeArray.first(where: { $0.name == name })?.descrip ?? "no description"
+        let myReturn = cIntakeTypes.intakeTypeArray.first(where: { $0.name == name })?.descrip ?? "no description"
+        logger.info("\(myReturn)")
+        return myReturn
     }
     
     fileprivate func getMatchingUnits() -> String {
-        return cIntakeTypes.intakeTypeArray.first(where: { $0.name == name })?.unit ?? "no unit"
+        let myReturn = cIntakeTypes.intakeTypeArray.first(where: { $0.name == name })?.unit ?? units.none.rawValue
+        logger.info("\(myReturn)")
+        return myReturn
     }
     
     fileprivate func getMatchingAmounts() -> Double {
         return cIntakeTypes.intakeTypeArray.first(where: { $0.name == name })?.amount ?? 0
     }
     
-    fileprivate func getMatchingFrequency() -> String {
-        return cIntakeTypes.intakeTypeArray.first(where: { $0.name == name })?.frequency ?? "no frequency"
+    fileprivate func getMatchingFrequency() -> frequency.RawValue {
+        let myReturn = cIntakeTypes.intakeTypeArray.first(where: { $0.name == name })?.frequency ?? frequency.none.rawValue
+        logger.info("\(myReturn)")
+        return myReturn
     }
     
     
@@ -84,7 +90,7 @@ struct EnterGoal: View {
                 DatePicker(
                     "Start Date",
                     selection: $startDate,
-                    displayedComponents: [.hourAndMinute]
+                    displayedComponents: [.date, .hourAndMinute]
                 )
             }
             .padding(.horizontal)
@@ -109,13 +115,17 @@ struct EnterGoal: View {
                 } else {
                     let dateArrayForGoal: [Date] = matchingDateArray(name: self.name, startDate: startDate)
                     
+                    logger.info( "name: \(self.name)" )
+                    logger.info( "dateArrayForGoal: \(dateArrayForGoal)" )
+                    
                     let goal = CommonGoal(id: UUID(), name: self.name, description: getMatchingDesription(), dates: dateArrayForGoal, isActive: true, isCompleted: false, dosage: getMatchingAmounts(), units: getMatchingUnits(), frequency: getMatchingFrequency() )
                     
                     goals.addGoal(goal: goal)
+                    logger.info("added a new goal")
                 }
                 
                 self.name = cIntakeTypes.intakeTypeArray.sorted(by: {$0.name < $1.name})[0].name
-                logger.info("added a goal")
+                
                 
             }), label: ({
                 Image(systemName: "plus.arrow.trianglehead.clockwise")

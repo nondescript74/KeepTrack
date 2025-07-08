@@ -114,19 +114,24 @@ struct History: View {
                         HStack {
                             Text("\(type.name): ")
                                 .foregroundStyle(getTypeColor(intakeType: type))
+                                .font(.subheadline)
+                            
+                            Spacer()
                             
                             ForEach(getUniqueTodaysCommonEntriesUntilNow(name: type.name)) { entry in
                                 
                                 ZStack {
-                                    Rectangle()
+                                    RoundedRectangle(cornerRadius: 10)
                                         .fill(entry.goalMet ? .green : .red)
+                                        .opacity(0.5)
                                     Clock(hour: getHour(from: entry.date), minute: getMinute(from: entry.date), is12HourFormat: true, isAM: isItAM(date: entry.date))
                                 }
                                 .frame(width: 50, height: 50)
                             }
                             
-                            Spacer()
-                            Text(getUniqueTodayByNameCount(name: type.name).description)
+//                            Spacer()
+//                            Text(getUniqueTodayByNameCount(name: type.name).description)
+//                                .font(.subheadline)
                         }
                         .font(.caption)
                         .padding(.trailing)
@@ -152,6 +157,7 @@ struct History: View {
                                 .foregroundStyle(getTypeColor(intakeType: type))
                             Spacer()
                             Text(getUniqueYesterdayByNameCount(name: type.name).description)
+                            
                         }
                         .font(.caption)
                         .padding(.trailing)
