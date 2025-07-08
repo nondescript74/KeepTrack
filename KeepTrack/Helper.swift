@@ -13,6 +13,37 @@ let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", cate
 
 let colors: [Color] = [.orange, .yellow, .blue, .indigo, .purple, .pink, .cyan, .black, .brown, .green, .gray, .red, .teal, .mint]
 
+enum frequency: String, CaseIterable {
+    case daily
+    case twiceADay
+    case threeTimesADay
+    case fourTimesADay
+    case sixTimesADay
+    case weekly
+    case twiceWeekly
+    case threeTimesWeekly
+    case fourTimesWeekly
+    case monthly
+    case twiceMonthly
+    case threeTimesMonthly
+    case none
+}
+
+enum units: String, CaseIterable {
+    case ml
+    case tsp
+    case tbsp
+    case cups
+    case fluidOunces
+    case grams
+    case mg
+    case drops
+    case pounds
+    case killograms
+    case IU
+    case none
+}
+
 public extension Array where Element: Hashable {
     func uniqued() -> [Element] {
         var seen = Set<Element>()
@@ -122,17 +153,42 @@ func isGoalMet(goal: CommonGoal, previous: Int) -> Bool {
 
 
 func matchingDateArray(name: String, startDate: Date) -> [Date] {
+    var calendar = Calendar.current
+    calendar.timeZone = .current
     var datesArray: [Date] = [startDate]
-    if name.lowercased( ).contains( "water" ) {
-        datesArray.append( Calendar.current.date(byAdding: .hour, value: 2, to: startDate)! )
-        datesArray.append( Calendar.current.date(byAdding: .hour, value: 4, to: startDate)! )
-        datesArray.append( Calendar.current.date(byAdding: .hour, value: 6, to: startDate)! )
-        datesArray.append( Calendar.current.date(byAdding: .hour, value: 8, to: startDate)! )
-        datesArray.append( Calendar.current.date(byAdding: .hour, value: 10, to: startDate)! )
+    
+    let myIntakeTypeUrl = Bundle.main.url(forResource: "intakeTypes", withExtension: "json")!
+    let myIntakeTypeData = try! Data(contentsOf: myIntakeTypeUrl)
+    let myIntakeTypeArray = try! JSONDecoder().decode([IntakeType].self, from: myIntakeTypeData).sorted { $0.name < $1.name }
+    
+    let mySpecificIntakeTypeIndex = myIntakeTypeArray.firstIndex { $0.name.lowercased() == name.lowercased() } ?? 0
+    let mySpecificIntakeType = myIntakeTypeArray[mySpecificIntakeTypeIndex]
+    
+    let myFrequency = mySpecificIntakeType.frequency
+    
+    switch myFrequency {
+    case frequency.daily.rawValue:
+        break
+    case frequency.twiceADay.rawValue:
+        datesArray.append(calendar.date(byAdding: .hour, value: 12, to: startDate)!)
+    case frequency.threeTimesADay.rawValue:
+        datesArray.append(calendar.date(byAdding: .hour, value: 8, to: startDate)!)
+        datesArray.append(calendar.date(byAdding: .hour, value: 16, to: startDate)!)
+    case frequency.fourTimesADay.rawValue:
+        datesArray.append(calendar.date(byAdding: .hour, value: 6, to: startDate)!)
+        datesArray.append(calendar.date(byAdding: .hour, value: 12, to: startDate)!)
+        datesArray.append(calendar.date(byAdding: .hour, value: 18, to: startDate)!)
+    case frequency.sixTimesADay.rawValue:
+        datesArray.append(calendar.date(byAdding: .hour, value: 2, to: startDate)!)
+        datesArray.append(calendar.date(byAdding: .hour, value: 4, to: startDate)!)
+        datesArray.append(calendar.date(byAdding: .hour, value: 6, to: startDate)!)
+        datesArray.append(calendar.date(byAdding: .hour, value: 8, to: startDate)!)
+        datesArray.append(calendar.date(byAdding: .hour, value: 10, to: startDate)!)
+    default:
+        break
     }
-    if name.lowercased( ).contains( "metformin" ) {
-        datesArray.append( Calendar.current.date(byAdding: .hour, value: 8, to: startDate)! )
-    }
+    
     return datesArray
 }
+
 

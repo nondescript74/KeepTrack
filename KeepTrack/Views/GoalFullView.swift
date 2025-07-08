@@ -45,7 +45,7 @@ struct GoalFullView: View {
             HStack {
                 Text(cIntakeTypes.intakeTypeArray.first(where: {$0.name == self.goal.name})?.amount.description ?? 0.description)
                 Text(cIntakeTypes.intakeTypeArray.first(where: {$0.name == self.goal.name})?.unit ?? "unit")
-                Text(cIntakeTypes.intakeTypeArray.first(where: {$0.name == self.goal.name})?.frequency ?? "no frequency")
+                Text(cIntakeTypes.intakeTypeArray.first(where: {$0.name == self.goal.name})?.frequency ?? frequency.none.rawValue)
             }
             
             Text(goal.isActive ? "Active" : "Inactive")
@@ -86,7 +86,7 @@ struct GoalFullView: View {
                 Button("Change Goal", action: {
                     let savedUUID = self.goal.id
                     
-                    let goal = CommonGoal(id: savedUUID, name: self.goal.name, description: cIntakeTypes.intakeTypeArray.first(where: {$0.name == self.goal.name})?.descrip ?? "no description", dates: self.dates, isActive: self.isActive, isCompleted: self.isCompleted, dosage: cIntakeTypes.intakeTypeArray.first(where: {$0.name == self.goal.name})?.amount ?? 0, units: cIntakeTypes.intakeTypeArray.first(where: {$0.name == self.goal.name})?.unit ?? "no unit", frequency: cIntakeTypes.intakeTypeArray.first(where: {$0.name == self.goal.name})?.frequency ?? "no frequency")
+                    let goal = CommonGoal(id: savedUUID, name: self.goal.name, description: cIntakeTypes.intakeTypeArray.first(where: {$0.name == self.goal.name})?.descrip ?? "no description", dates: self.dates, isActive: self.isActive, isCompleted: self.isCompleted, dosage: cIntakeTypes.intakeTypeArray.first(where: {$0.name == self.goal.name})?.amount ?? 0, units: cIntakeTypes.intakeTypeArray.first(where: {$0.name == self.goal.name})?.unit ?? "no unit", frequency: cIntakeTypes.intakeTypeArray.first(where: {$0.name == self.goal.name})?.frequency ?? frequency.none.rawValue)
                     
                     goals.addGoal(goal: goal)
                     logger.info("added new goal")
@@ -104,7 +104,7 @@ struct GoalFullView: View {
 }
 
 #Preview {
-    let goal = CommonGoal(id: UUID(), name: "Metformin", description: "Sugar control", dates: [Date(), Date().addingTimeInterval(60 * 60 * 2)], isActive: true, isCompleted: false, dosage: 400, units: "mg", frequency: "twice a day")
+    let goal = CommonGoal(id: UUID(), name: "Metformin", description: "Sugar control", dates: [Date(), Date().addingTimeInterval(60 * 60 * 2)], isActive: true, isCompleted: false, dosage: 400, units: "mg", frequency: frequency.twiceADay.rawValue)
     GoalFullView(goal: goal)
         .environment(CommonGoals())
         .environment(CurrentIntakeTypes())

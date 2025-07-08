@@ -20,23 +20,23 @@ import OSLog
         if let docDirUrl = urls.first {
             let fileURL = docDirUrl.appendingPathComponent("goalsstore.json")
             if FileManager.default.fileExists(atPath: fileURL.path) {
-                logger.info( "fileURL for existing history \(fileURL)")
+                logger.info( "CGoals: fileURL for existing history \(fileURL)")
                 do {
                     let temp = FileManager.default.contents(atPath: fileURL.path) ?? Data()
                     if temp.count == 0 {
                         goals = []
-                        logger.info("goalsstore.json file is empty")
+                        logger.info("CGoals: goalsstore.json file is empty")
                     } else {
                         let tempContents: [CommonGoal] = try JSONDecoder().decode([CommonGoal].self, from: try Data(contentsOf: fileURL))
                         goals = tempContents.filter { !$0.isCompleted == true }
-                        logger.info(" goals: \(self.goals)")
+                        logger.info("CGoals:  \(self.goals)")
                     }
                 } catch {
                     fatalError( "Couldn't read goals")
                 }
             } else {
                 FileManager.default.createFile(atPath: docDirUrl.path().appending("goalsstore.json"), contents: nil)
-                logger.info( "Created file goalsstore.json")
+                logger.info( "CGoals: Created file goalsstore.json")
                 goals = []
             }
         } else {
@@ -49,27 +49,27 @@ import OSLog
         goals.removeAll { $0.id == goal.id }
         if goal.isActive {
             goals.append(goal)
-            logger.info("added or replaced goal: \(goal.name)")
+            logger.info("CGoals: added or replaced goal: \(goal.name)")
         }
         save()
     }
     
     func removeGoalAtId(uuid: UUID) {
         goals.removeAll { $0.id == uuid }
-        logger.info("Removed goal with id \(uuid)")
+        logger.info("CGoals: Removed goal with id \(uuid)")
         save()
     }
     
     fileprivate func save() {
         let fileURL = URL(fileURLWithPath: urls[0].appendingPathComponent("goalsstore.json").path)
-        logger.info( "fileURL for existing history \(fileURL.lastPathComponent)")
+        logger.info( "CGoals: fileURL for existing history \(fileURL.lastPathComponent)")
         
         do {
             let data = try JSONEncoder().encode(goals.sorted(by: ({$0.name < $1.name})))
             try data.write(to: fileURL)
-            logger.info( "Saved goalsstore json data to file")
+            logger.info( "CGoals: Saved goalsstore json data to file")
             self.goals = try JSONDecoder().decode([CommonGoal].self, from: data)
-            logger.info("reloaded goals from data")
+            logger.info("CGoals: reloaded goals from data")
         } catch {
             fatalError( "Couldn't save goals file")
         }
@@ -79,7 +79,6 @@ import OSLog
         let todays = goals.filter({$0.isActive == true }).sorted(by: ({$0.name < $1.name}))
         return todays
         
-        // let todays = goals.filter({$0.isActive == true && $0.dates.contains(where: { Calendar.current.isDateInToday($0) })})
      }
     
     func getTodaysGoalForName(namez: String) -> CommonGoal? {

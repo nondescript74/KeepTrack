@@ -25,17 +25,17 @@ import SwiftUI
             let fileURL = docDirUrl.appendingPathComponent("entrystore.json")
             
             if FileManager.default.fileExists(atPath: fileURL.path) {
-                if zBug { logger.info( "fileURL for existing history \(fileURL)") }
+                if zBug { logger.info( "CStore: fileURL for existing history \(fileURL)") }
                 
                 do {
                     let temp = FileManager.default.contents(atPath: fileURL.path)!
                     if temp.count == 0 {
                         history = []
-                        if zBug { logger.info("history is empty") }
+                        if zBug { logger.info("CStore: history is empty") }
                     } else {
                         let tempContents: [CommonEntry] = try JSONDecoder().decode([CommonEntry].self, from: try Data(contentsOf: fileURL))
                         history = tempContents.sorted { $0.date > $1.date }
-                        if zBug { logger.info(" decoded history: \(tempContents)") }
+                        if zBug { logger.info("CStore:  decoded history: \(tempContents)") }
                     }
                 } catch {
                     fatalError( "Couldn't read history")
@@ -44,7 +44,7 @@ import SwiftUI
                 
             } else {
                 FileManager.default.createFile(atPath: docDirUrl.path().appending("entrystore.json"), contents: nil)
-                if zBug { logger.info( "Created file entrystore.json") }
+                if zBug { logger.info( "CStore: Created file entrystore.json") }
                 history = []
             }
         } else {
@@ -54,14 +54,14 @@ import SwiftUI
     
     fileprivate func save() {
         let fileURL = URL(fileURLWithPath: FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("entrystore.json").path)
-        if zBug { logger.info( "fileURL for existing history \(fileURL.lastPathComponent)") }
+        if zBug { logger.info( "CStore: fileURL for existing history \(fileURL.lastPathComponent)") }
         
         do {
             let data = try JSONEncoder().encode(history)
             try data.write(to: fileURL)
-            logger.info( "Saved history to file")
+            logger.info( "CStore: Saved history to file")
             self.history = try JSONDecoder().decode([CommonEntry].self, from: data).sorted(by: ({$0 .date > $1.date}))
-            logger.info("reloaded history from data")
+            logger.info("CStore: reloaded history from data")
         } catch {
             fatalError( "Couldn't save history file")
         }
@@ -69,13 +69,13 @@ import SwiftUI
     
     func addEntry(entry: CommonEntry) {
         history.append(entry)
-        logger.info("Added entry to CommonStore \(entry.name)")
+        logger.info("CStore: Added entry to CommonStore \(entry.name)")
         save()
     }
     
     func removeEntryAtId(uuid: UUID) {
         history.removeAll { $0.id == uuid }
-        logger.info("Removed entry with id \(uuid)")
+        logger.info("CStore: Removed entry with id \(uuid)")
         save()
         
     }

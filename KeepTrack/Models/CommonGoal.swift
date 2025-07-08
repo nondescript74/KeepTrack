@@ -16,7 +16,7 @@ struct CommonGoal: Codable, Identifiable, Hashable {
     var isCompleted: Bool
     var dosage: Double
     var units: String
-    var frequency: String
+    var frequency: frequency.RawValue
     
     public func hash(into hasher: inout Hasher) {
         hasher.combine(name)

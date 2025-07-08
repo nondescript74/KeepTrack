@@ -13,6 +13,6 @@ struct IntakeType: Codable, Identifiable, Hashable {
     var unit: String
     var amount: Double
     var descrip: String
-    var frequency: String
+    var frequency: frequency.RawValue
 }
 
