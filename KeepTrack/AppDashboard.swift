@@ -30,7 +30,6 @@ struct AppDashboard: View {
                     
                     GoalDisplayByName()
                     
-                    
                     HStack {
                         VStack {
                             NavigationLink(destination: EnterIntake()) {
@@ -93,8 +92,9 @@ struct AppDashboard: View {
                         }
                         .padding(.top)
                     }
-                    .padding([.horizontal], 3)
-                    .background(Color.gray.opacity(0.2))
+                    .padding(.horizontal)
+                    .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.black, lineWidth: 2))
+                    
                     
                     Spacer()
                     

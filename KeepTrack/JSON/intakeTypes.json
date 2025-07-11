@@ -112,4 +112,13 @@
         "frequency": "threeTimesAWeek",
         "id": "1CDD12F7-C013-40FC-B6BC-6D3A12E3B022"
     }
+    ,
+    {
+        "name": "Timolol",
+        "unit": "ml",
+        "amount": 1,
+        "descrip": "Eye pressure control",
+        "frequency": "daily",
+        "id": "972D8B3A-2145-4D11-BA5F-4E76C8FDBB0F"
+    }
 ]
