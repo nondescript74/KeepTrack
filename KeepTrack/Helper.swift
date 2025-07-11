@@ -11,7 +11,7 @@ import OSLog
 
 let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "Helper")
 
-let colors: [Color] = [.orange, .yellow, .blue, .indigo, .purple, .pink, .cyan, .black, .brown, .green, .gray, .red, .teal, .mint]
+let colors: [Color] = [.orange, .yellow, .blue, .indigo, .purple, .pink, .cyan, .black, .brown, .green, .gray, .red, .teal, .mint, .accentColor, .primary, .secondary]
 
 enum frequency: String, CaseIterable {
     case daily
@@ -37,7 +37,7 @@ enum units: String, CaseIterable {
     case fluidOunces
     case grams
     case mg
-    case drops
+    case drop
     case pounds
     case killograms
     case IU
