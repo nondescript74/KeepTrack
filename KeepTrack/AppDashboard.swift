@@ -26,10 +26,6 @@ struct AppDashboard: View {
         NavigationStack {
             ScrollView {
                 VStack {
-                    History()
-                    
-                    GoalDisplayByName()
-                    
                     HStack {
                         VStack {
                             NavigationLink(destination: EnterIntake()) {
@@ -62,7 +58,7 @@ struct AppDashboard: View {
                         }
                         .padding(.top)
                         VStack {
-                            NavigationLink(destination: EditHistory(items: $store.history)) {
+                            NavigationLink(destination: ChangeHistory()) {
                                 ZStack {
                                     Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50)
                                     Image(systemName: "heart.text.clipboard")
@@ -71,8 +67,8 @@ struct AppDashboard: View {
                                         .frame(minHeight: heightOfBar)
                                 }
                             }
-                            Text("Edit Intake")
-                                .foregroundColor(.orange)
+                            Text("Add History")
+                                .foregroundColor(.red)
                                 .font(.caption)
                         }
                         .padding(.top)
@@ -91,12 +87,30 @@ struct AppDashboard: View {
                                 .font(.caption)
                         }
                         .padding(.top)
+                        VStack {
+                            NavigationLink(destination: EditHistory(items: $store.history)) {
+                                ZStack {
+                                    Circle().stroke(Color.black, lineWidth: 2).frame(width:50, height:50)
+                                    Image(systemName: "heart.text.clipboard")
+                                        .foregroundStyle(Color.red)
+                                        .symbolRenderingMode(.multicolor)
+                                        .frame(minHeight: heightOfBar)
+                                }
+                            }
+                            Text("Edit History")
+                                .foregroundColor(.red)
+                                .font(.caption)
+                        }
+                        .padding(.top)
                     }
                     .padding(.horizontal)
                     .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.black, lineWidth: 2))
                     
+                    Divider()
                     
-                    Spacer()
+                    History()
+                    
+                    GoalDisplayByName()
                     
                     HStack {
                         Text("Welcome to KeepTrack!")
