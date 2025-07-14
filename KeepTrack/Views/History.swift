@@ -119,19 +119,8 @@ struct History: View {
                             Spacer()
                             
                             ForEach(getUniqueTodaysCommonEntriesUntilNow(name: type.name)) { entry in
-                                
-                                ZStack {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .fill(entry.goalMet ? .green : .red)
-                                        .opacity(0.5)
-                                    Clock(hour: getHour(from: entry.date), minute: getMinute(from: entry.date), is12HourFormat: true, isAM: isItAM(date: entry.date))
-                                }
-                                .frame(width: 50, height: 50)
+                                    Clock(hour: getHour(from: entry.date), minute: getMinute(from: entry.date), is12HourFormat: true, isAM: isItAM(date: entry.date), colorGreen: entry.goalMet)
                             }
-                            
-//                            Spacer()
-//                            Text(getUniqueTodayByNameCount(name: type.name).description)
-//                                .font(.subheadline)
                         }
                         .font(.caption)
                         .padding(.trailing)

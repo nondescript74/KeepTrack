@@ -15,14 +15,24 @@ struct Clock: View {
         self.minute = minute
         self.is12HourFormat = is12HourFormat
         self.isAM = isAM
+        self.colorGreen = false
+    }
+    
+    init (hour: Int, minute: Int, is12HourFormat: Bool, isAM: Bool, colorGreen: Bool) {
+        self.hour = hour
+        self.minute = minute
+        self.is12HourFormat = is12HourFormat
+        self.isAM = isAM
+        self.colorGreen = colorGreen
     }
     
     @State private var hour: Int
     @State private var minute: Int
     @State private var is12HourFormat: Bool
     @State private var isAM: Bool
-    @State private var backgroundColorAM: Color = Color.blue.opacity(0.4)
-    @State private var backgroundColorPM: Color = Color.gray.opacity(0.4)
+//    @State private var backgroundColorAM: Color = Color.blue.opacity(0.4)
+//    @State private var backgroundColorPM: Color = Color.gray.opacity(0.4)
+    @State private var colorGreen: Bool
     
     fileprivate let angleCorrection: Int = 180
     fileprivate let clockDiameter: CGFloat = 30
@@ -39,7 +49,7 @@ struct Clock: View {
     var body: some View {
             ZStack {
                 Circle()
-                    .stroke(style: StrokeStyle(lineWidth: 1))
+                    .fill(colorGreen ? Color.green.opacity(0.6) : Color.gray.opacity(0.3))
                     .frame(width: clockDiameter, height: clockDiameter)
                 
                 Circle()

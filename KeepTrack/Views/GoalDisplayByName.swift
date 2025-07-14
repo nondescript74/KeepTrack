@@ -46,12 +46,11 @@ struct GoalDisplayByName: View {
                             HStack(alignment: .center) {
                                 ForEach(goal.dates, id: \.self) { date in
                                     HStack {
-                                        Clock(hour: hourForDate(date), minute: minuteForDate(date), is12HourFormat: true, isAM: self.isItAM(date))
+                                        Clock(hour: hourForDate(date), minute: minuteForDate(date), is12HourFormat: true, isAM: self.isItAM(date), colorGreen: false)
                                     }
                                     .padding(.top, 10)
                                                                     }
                             }
-//                            .font(.caption)
                         }
                     }
                     .font(.caption)
