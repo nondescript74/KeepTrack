@@ -38,8 +38,6 @@ struct ChangeHistory: View {
                 logger.info("Adding intake  \(name) with goalMet false")
                 store.addEntry(entry: entry)
                 
-                self.name = intakeTypes.intakeTypeArray.sorted(by: {$0.name < $1.name})[0].name
-                
                 
             }), label: ({
                 Image(systemName: "plus.arrow.trianglehead.clockwise")

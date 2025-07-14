@@ -47,7 +47,7 @@ struct DisplayHKHistory: View {
             }
         }
         .padding(20)
-        .background(Color.gray.opacity(0.2))
+//        .background(Color.gray.opacity(0.2))
         .environment(healthKitManager)
     }
 }

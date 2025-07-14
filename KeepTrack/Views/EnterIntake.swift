@@ -44,7 +44,7 @@ struct EnterIntake: View {
                         Text($0)
                     }
                 }
-                .background(Color.gray.opacity(1.0))
+//                .background(Color.gray.opacity(1.0))
                 
                 HStack {
                     Text("amount")
