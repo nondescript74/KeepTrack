@@ -49,7 +49,7 @@ struct GoalDisplayByName: View {
                                         Clock(hour: hourForDate(date), minute: minuteForDate(date), is12HourFormat: true, isAM: self.isItAM(date), colorGreen: false)
                                     }
                                     .padding(.top, 10)
-                                                                    }
+                                }
                             }
                         }
                     }

@@ -121,4 +121,13 @@
         "frequency": "daily",
         "id": "972D8B3A-2145-4D11-BA5F-4E76C8FDBB0F"
     }
+    ,
+    {
+        "name": "Potassium Chloride",
+        "unit": "mg",
+        "amount": 250,
+        "descrip": "Salt",
+        "frequency": "daily",
+        "id": "E54F20AE-030A-43B0-B8FD-72D0FB647582"
+    }
 ]
