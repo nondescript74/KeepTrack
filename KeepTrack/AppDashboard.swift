@@ -15,7 +15,7 @@ struct AppDashboard: View {
     fileprivate let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "AppDashboard")
     @State private var store: CommonStore = CommonStore()
     @State private var goals: CommonGoals = CommonGoals()
-    @State private var healthKitManager = HealthKitManager()
+//    @State private var healthKitManager = HealthKitManager()
     @State private var cIntakeTypes = CurrentIntakeTypes()
     
     fileprivate let columnLayout = Array(repeating: GridItem(.flexible(minimum: 45)), count: 5  )
@@ -123,7 +123,7 @@ struct AppDashboard: View {
         }
         .environment(goals)
         .environment(store)
-        .environment(healthKitManager)
+//        .environment(healthKitManager)
         .environment(cIntakeTypes)
 #if os(VisionOS)
         .glassBackgroundEffect()
@@ -135,6 +135,6 @@ struct AppDashboard: View {
     AppDashboard()
         .environment(CommonGoals())
         .environment(CommonStore())
-        .environment(HealthKitManager())
+//        .environment(HealthKitManager())
         .environment(CurrentIntakeTypes())
 }

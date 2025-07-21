@@ -10,7 +10,7 @@ import SwiftUI
 
 struct AddEveningMedsIntent: AppIntent {
     
-    static let title: LocalizedStringResource = "Add one meds"
+    static let title: LocalizedStringResource = "Add one med"
     static var description: LocalizedStringResource? = "This adds latanoprost"
     
     

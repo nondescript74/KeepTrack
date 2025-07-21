@@ -14,7 +14,7 @@ struct EnterIntake: View {
     @Environment(CommonStore.self) var store
     @Environment(CommonGoals.self) var goals
     @Environment(CurrentIntakeTypes.self) var cIntakeTypes
-    @Environment(HealthKitManager.self) var healthKitManager
+//    @Environment(HealthKitManager.self) var healthKitManager
     @Environment(\.dismiss) var dismiss
     
     let dateFormatter = DateFormatter()
@@ -63,11 +63,11 @@ struct EnterIntake: View {
                         let entry = CommonEntry(id: UUID(), date: Date(), units: cIntakeTypes.intakeTypeArray.first(where: {$0.name == name})?.unit ?? "no unit", amount: cIntakeTypes.intakeTypeArray.first(where: {$0.name == name})?.amount ?? 0, name: name, goalMet: true)
                         store.addEntry(entry: entry)
                         logger.info("CommonStore: Added intake  \(name) no goals for name")
-                        if name == "Water" && healthKitManager.descriptionLabel.contains("authorized") {
-                            Task {
-                                await healthKitManager.addWaterSample(quantity:  HKQuantity(unit: HKUnit.fluidOunceUS(), doubleValue: cIntakeTypes.intakeTypeArray.first(where: {$0.name == name})?.amount ?? 0))
-                            }
-                        }
+//                        if name == "Water" && healthKitManager.descriptionLabel.contains("authorized") {
+//                            Task {
+//                                await healthKitManager.addWaterSample(quantity:  HKQuantity(unit: HKUnit.fluidOunceUS(), doubleValue: cIntakeTypes.intakeTypeArray.first(where: {$0.name == name})?.amount ?? 0))
+//                            }
+//                        }
                     } else {
                         logger.info("goalToUse dates are \(goalToUse!.dates.compactMap({$0}))")
                         let result = isGoalMet(goal: goalToUse!, previous: store.getTodaysIntake().filter({$0.name == self.name}).count)
@@ -75,13 +75,13 @@ struct EnterIntake: View {
                         let entry = CommonEntry(id: UUID(), date: Date(), units: cIntakeTypes.intakeTypeArray.first(where: {$0.name == name})?.unit ?? "no unit", amount: cIntakeTypes.intakeTypeArray.first(where: {$0.name == name})?.amount ?? 0, name: name, goalMet: result)
                         store.addEntry(entry: entry)
                         logger.info("CommonStore: added intake \(name)")
-                        if name == "Water" && healthKitManager.descriptionLabel.contains("authorized") {
-                            Task {
-                                await healthKitManager.addWaterSample(quantity:  HKQuantity(unit: HKUnit.fluidOunceUS(), doubleValue: cIntakeTypes.intakeTypeArray.first(where: {$0.name == name})?.amount ?? 0))
-                            }
-                        } else if name == "Water" && !healthKitManager.descriptionLabel.contains("authorized") {
-                            logger.warning("EnterIntake: cannot add water sample via HealthKit, not authorized")
-                        }
+//                        if name == "Water" && healthKitManager.descriptionLabel.contains("authorized") {
+//                            Task {
+//                                await healthKitManager.addWaterSample(quantity:  HKQuantity(unit: HKUnit.fluidOunceUS(), doubleValue: cIntakeTypes.intakeTypeArray.first(where: {$0.name == name})?.amount ?? 0))
+//                            }
+//                        } else if name == "Water" && !healthKitManager.descriptionLabel.contains("authorized") {
+//                            logger.warning("EnterIntake: cannot add water sample via HealthKit, not authorized")
+//                        }
                     }
                 }), label: ({
                     Image(systemName: "plus.arrow.trianglehead.clockwise")
@@ -95,7 +95,7 @@ struct EnterIntake: View {
             .environment(store)
             .environment(goals)
             .environment(cIntakeTypes)
-            .environment(healthKitManager)
+//            .environment(healthKitManager)
         }
     }
 }
@@ -105,5 +105,5 @@ struct EnterIntake: View {
         .environment(CommonStore())
         .environment(CommonGoals())
         .environment(CurrentIntakeTypes())
-        .environment(HealthKitManager())
+//        .environment(HealthKitManager())
 }

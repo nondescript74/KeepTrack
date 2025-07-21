@@ -29,4 +29,35 @@ import OSLog
         }
 
     }
+    
+    func getunits(typeName: String) -> String {
+        switch typeName.lowercased() {
+        case "amlodipine":
+            return "mg"
+        case "losartan":
+            return "mg"
+        case "timolol":
+            return "ml"
+        case "rosuvastatin":
+            return "mg"
+        default:
+            return "mg"
+        }
+    }
+    
+    func getamount(typeName: String) -> Double {
+        switch typeName.lowercased() {
+        case "amlodipine":
+            return 5
+        case "losartan":
+            return 25
+        case "timolol":
+            return 1
+        case "rosuvastatin":
+            return 20
+        default:
+            return 0
+        }
+    }
+
 }

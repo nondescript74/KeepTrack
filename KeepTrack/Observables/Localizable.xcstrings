@@ -22,7 +22,7 @@
     "Add morning meds" : {
 
     },
-    "Add one meds" : {
+    "Add one med" : {
 
     },
     "Add sake" : {
@@ -82,15 +82,6 @@
     "Enter intake details" : {
 
     },
-    "Get Intake" : {
-
-    },
-    "HK water intake Yesterday %@" : {
-
-    },
-    "HK water intake Yesterday %lld" : {
-
-    },
     "Inactive" : {
 
     },
@@ -106,7 +97,7 @@
     "Latanoprost added" : {
 
     },
-    "Losartan, Rosuvastatin, Amlodipine added" : {
+    "Losartan, Rosuvastatin, Timolol, Amlodipine added" : {
 
     },
     "Name" : {
@@ -116,9 +107,6 @@
 
     },
     "No goals yet!" : {
-
-    },
-    "No weekly data" : {
 
     },
     "Nothing taken today" : {
@@ -143,12 +131,12 @@
         }
       }
     },
-    "Okay, you consumed %lld amlopidine, %lld metformin, %lld rosuvastatin, and %lld losartan" : {
+    "Okay, you consumed %lld amlopidine, %lld timolol, %lld rosuvastatin, and %lld losartan" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Okay, you consumed %1$lld amlopidine, %2$lld metformin, %3$lld rosuvastatin, and %4$lld losartan"
+            "value" : "Okay, you consumed %1$lld amlopidine, %2$lld timolol, %3$lld rosuvastatin, and %4$lld losartan"
           }
         }
       }
@@ -192,7 +180,7 @@
     "This adds a 14 oz glass of water" : {
 
     },
-    "This adds Amlodipine, Losartan, and Rosuvastatin" : {
+    "This adds Amlodipine, Losartan, Timolol and Rosuvastatin" : {
 
     },
     "This adds latanoprost" : {
@@ -208,9 +196,6 @@
 
     },
     "Units: " : {
-
-    },
-    "Water Intake History" : {
 
     },
     "Welcome to KeepTrack!" : {
