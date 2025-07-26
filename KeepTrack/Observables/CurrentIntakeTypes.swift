@@ -55,6 +55,8 @@ import OSLog
             return 1
         case "rosuvastatin":
             return 20
+        case "potassium chloride":
+            return 99
         default:
             return 0
         }

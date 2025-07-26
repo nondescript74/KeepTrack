@@ -50,7 +50,7 @@
     {
         "name": "Protein",
         "unit": "grams",
-        "amount": 14,
+        "amount": 7,
         "descrip": "Essential amino acid supplement",
         "frequency": "twiceWeekly",
         "id": "CABD0FAB-59F2-434B-85D0-3CBA78F24989"
@@ -125,7 +125,7 @@
     {
         "name": "Potassium Chloride",
         "unit": "mg",
-        "amount": 250,
+        "amount": 99,
         "descrip": "Salt",
         "frequency": "daily",
         "id": "E54F20AE-030A-43B0-B8FD-72D0FB647582"
