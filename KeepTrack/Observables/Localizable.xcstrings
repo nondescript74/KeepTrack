@@ -121,12 +121,12 @@
     "Okay, you consumed %lld  glasses of sake today." : {
 
     },
-    "Okay, you consumed %lld amlopidine, %lld metformin, %lld rosuvastatin, %lld losartan, and %lld latanoprost." : {
+    "Okay, you consumed %lld amlopidine, %lld timolol, %lld metformin, %lld rosuvastatin, %lld losartan, and %lld latanoprost." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Okay, you consumed %1$lld amlopidine, %2$lld metformin, %3$lld rosuvastatin, %4$lld losartan, and %5$lld latanoprost."
+            "value" : "Okay, you consumed %1$lld amlopidine, %2$lld timolol, %3$lld metformin, %4$lld rosuvastatin, %5$lld losartan, and %6$lld latanoprost."
           }
         }
       }
