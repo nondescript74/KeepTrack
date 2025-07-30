@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
     "%@" : {
 
     },
@@ -13,6 +16,9 @@
     "Active" : {
 
     },
+    "Add a new intake type" : {
+
+    },
     "Add evening meds" : {
 
     },
@@ -20,6 +26,9 @@
 
     },
     "Add morning meds" : {
+
+    },
+    "Add New" : {
 
     },
     "Add one med" : {
@@ -43,7 +52,7 @@
     "amount" : {
 
     },
-    "AUTHORIZED" : {
+    "Amount" : {
 
     },
     "Change Goal" : {
@@ -52,19 +61,13 @@
     "Current goals are :" : {
 
     },
-    "Date" : {
-
-    },
-    "DENIED" : {
+    "Description" : {
 
     },
     "Dosage: " : {
 
     },
     "Edit Goals" : {
-
-    },
-    "Edit History" : {
 
     },
     "Edit this Goal" : {
@@ -76,13 +79,22 @@
     "Enter goal details" : {
 
     },
-    "Enter Intake" : {
-
-    },
     "Enter intake details" : {
 
     },
+    "Frequency" : {
+
+    },
+    "Goal" : {
+
+    },
+    "History" : {
+
+    },
     "Inactive" : {
+
+    },
+    "Intake" : {
 
     },
     "Intake added" : {
@@ -192,7 +204,7 @@
     "Today" : {
 
     },
-    "UNDETERMINED" : {
+    "Unit" : {
 
     },
     "Units: " : {

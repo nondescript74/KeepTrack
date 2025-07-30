@@ -27,7 +27,7 @@ struct EditHistory: View {
                     .font(.caption)
                 }
             }
-            .navigationTitle(Text("Edit History"))
+//            .navigationTitle(Text("Edit History"))
         }
         .environment(store)
     }

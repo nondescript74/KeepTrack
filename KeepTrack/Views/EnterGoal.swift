@@ -52,7 +52,7 @@ struct EnterGoal: View {
     
     
     var body: some View {
-        NavigationStack {
+        ScrollView {
             Text("Enter goal details")
                 .font(.headline)
                 .fontWeight(.bold)
@@ -67,7 +67,6 @@ struct EnterGoal: View {
                         Text($0)
                     }
                 }
-//                .background(Color.gray.opacity(1.0))
                 
             }.padding(.horizontal)
             
@@ -134,29 +133,20 @@ struct EnterGoal: View {
             }))
             .padding()
             .foregroundStyle(.blue)
-        }
-        .padding(.bottom)
-        
-        
-        Divider()
-        
-        VStack {
+            
             Text("Current goals are :")
-                .font(.headline)
-                .padding()
+                .font(.subheadline)
+            
             ForEach(goals.goals, id: \.id) { goal in
                 Text(goal.name)
+                    .font(.caption)
                     .foregroundStyle(stateFul ? .green : .orange)
-                    .padding(.bottom, 5)
             }
         }
-        
         Spacer()
             .navigationTitle(Text("Enter Goal"))
-        
             .environment(goals)
             .environment(cIntakeTypes)
-        
     }
 }
 

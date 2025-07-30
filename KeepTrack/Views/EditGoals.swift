@@ -14,19 +14,14 @@ struct EditGoals: View {
     @Environment(CommonGoals.self) var goals
     @Environment(CurrentIntakeTypes.self) var cIntakeTypes
     
-    //    fileprivate func moveitems(from source: IndexSet, to destination: Int) {
-    //        goals.goals.move(fromOffsets: source, toOffset: destination)
-    //    }
-    
     var body: some View {
         NavigationView {
             VStack {
                 MovableGoalList(self.$items) { item in
                     Text("\(item.name.wrappedValue)")
-                        .font(.largeTitle)
                 }
             }
-            .navigationTitle(Text("Edit Goals"))
+//            .navigationTitle(Text("Edit Goals"))
         }
         .environment(goals)
         .environment(cIntakeTypes)

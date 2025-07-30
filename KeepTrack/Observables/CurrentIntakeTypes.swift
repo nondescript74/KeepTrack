@@ -30,6 +30,19 @@ import OSLog
 
     }
     
+    func saveNewIntakeType(intakeType: IntakeType) {
+        intakeTypeArray.append(intakeType)
+        let fileURL = Bundle.main.url(forResource: "intakeTypes", withExtension: "json")
+        
+        let data = try! JSONEncoder().encode(intakeTypeArray)
+        do {
+            try data.write(to: fileURL!)
+            logger.info( "CurrentIntakeTypes: Saved intakeTypeArray to disk")
+        } catch {
+            fatalError("CurrentIntakeTypes: cannot write to file")
+        }
+    }
+    
     func getunits(typeName: String) -> String {
         switch typeName.lowercased() {
         case "amlodipine":
