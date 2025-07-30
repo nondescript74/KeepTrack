@@ -27,7 +27,7 @@ struct ChangeHistory: View {
                     }
                 }
                 DatePicker(
-                    "Date",
+                    "",
                     selection: $selectedDate,
                     displayedComponents: [.date, .hourAndMinute]
                 )

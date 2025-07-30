@@ -25,12 +25,12 @@ struct AddWaterIntent: AppIntent {
             Text("You added a 14 ounce glass of water")
         }
         
-        let quantity: HKQuantity = HKQuantity(unit: .fluidOunceUS(), doubleValue: 14)
+//        let quantity: HKQuantity = HKQuantity(unit: .fluidOunceUS(), doubleValue: 14)
         
-        Task {
-            await HealthKitManager().addWaterSample(quantity: quantity)
-            logger.info("HealthKit: app intent added water sample")
-        }
+//        Task {
+//            await HealthKitManager().addWaterSample(quantity: quantity)
+//            logger.info("HealthKit: app intent added water sample")
+//        }
         
         return .result(dialog: "14 ounces of water added",
                        view: snippetView)

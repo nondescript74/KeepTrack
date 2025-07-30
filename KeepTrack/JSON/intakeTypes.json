@@ -66,9 +66,9 @@
     {
         "name": "Vitamin D3",
         "unit": "IU",
-        "amount": 1000,
+        "amount": 600,
         "descrip": "Mind and Immune function support",
-        "frequency": "twiceWeekly",
+        "frequency": "daily",
         "id": "2CDDD770-0C35-417F-BA03-C1324D2ED0AF"
     },
     {
