@@ -18,34 +18,30 @@ struct NewDashboard: View {
     
     var body: some View {
         NavigationStack {
-            ScrollView {
-                HStack {
-                    Text("Welcome to KeepTrack!")
-                    Text(Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String)
-                    Text(Bundle.main.infoDictionary!["CFBundleVersion"] as! String)
-                }
-                .font(.subheadline)
-                
-                Divider()
-                
-                HistoryToday()
-                
-                HistoryYesterday()
-                
-                Divider()
-            
-            }
             TabView {
                 Tab("Intake", systemImage: "wineglass") {
                     EnterIntake()
                 }
                 
-                Tab("Goal", systemImage: "microphone.badge.plus") {
-                    EnterGoal()
+                Tab("Today", systemImage: "wineglass") {
+                    HistoryToday()
                 }
+                
+                Tab("Yesterday", systemImage: "wineglass") {
+                    HistoryYesterday()
+                }
+                
                 
                 Tab("Add History", systemImage: "heart.text.clipboard") {
                     ChangeHistory()
+                }
+                
+                Tab("Show Goals", systemImage: "wineglass") {
+                    GoalDisplayByName()
+                }
+                
+                Tab("Goal", systemImage: "microphone.badge.plus") {
+                    EnterGoal()
                 }
                 
                 Tab("History", systemImage: "heart.text.clipboard") {
@@ -61,6 +57,12 @@ struct NewDashboard: View {
                 }
             }
             .padding(10)
+            HStack {
+                Text("Welcome to KeepTrack!")
+                Text(Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String)
+                Text(Bundle.main.infoDictionary!["CFBundleVersion"] as! String)
+            }
+            .font(.subheadline)
         }
         
         .padding()
