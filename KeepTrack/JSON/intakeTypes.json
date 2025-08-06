@@ -34,7 +34,7 @@
     {
         "name": "Smoothie",
         "unit": "fluidOunces",
-        "amount": 10,
+        "amount": 7,
         "descrip": "Nutrient-rich beverage",
         "frequency": "twiceWeekly",
         "id": "AB99BDD7-1617-43A8-B004-DD9D001F1E12"
@@ -50,7 +50,7 @@
     {
         "name": "Protein",
         "unit": "grams",
-        "amount": 7,
+        "amount": 5,
         "descrip": "Essential amino acid supplement",
         "frequency": "twiceWeekly",
         "id": "CABD0FAB-59F2-434B-85D0-3CBA78F24989"
@@ -97,8 +97,8 @@
     },
     {
         "name": "Sake",
-        "unit": "fluidOunces",
-        "amount": 3.5,
+        "unit": "ml",
+        "amount": 30,
         "descrip": "Alcohol",
         "frequency": "threeTimesADay",
         "id": "3837B3C7-4E70-4CF1-BEB8-96611CE97A8D"
