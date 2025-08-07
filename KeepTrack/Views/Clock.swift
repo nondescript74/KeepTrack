@@ -38,7 +38,7 @@ struct Clock: View {
     
     fileprivate let minuteHandWidth: CGFloat = 2
     
-    fileprivate let indicatorsWidth: CGFloat = 5
+    fileprivate let indicatorsWidth: CGFloat = 3
     
     var body: some View {
         ZStack {
@@ -47,7 +47,7 @@ struct Clock: View {
                 .frame(width: clockDiameter, height: clockDiameter)
             
             Circle()
-                .stroke(style: StrokeStyle(lineWidth: 1, lineCap: .round, lineJoin: .round))
+                .stroke(style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
                 .frame(width: clockDiameter, height: clockDiameter)
                 .foregroundStyle(Color.gray)
             
@@ -57,22 +57,22 @@ struct Clock: View {
             
             Rectangle()
                 .fill(Color.red)
-                .frame(width: minuteHandWidth, height: clockDiameter / 2 )
-                .offset(y: clockDiameter / 3 )
+                .frame(width: minuteHandWidth, height: clockDiameter / 3 )
+                .offset(y: clockDiameter / 4 )
                 .rotationEffect(Angle(degrees: Double(6 * minute + angleCorrection)))
             
             Rectangle()
                 .fill(Color.black)
-                .frame(width: minuteHandWidth + 2, height: clockDiameter / 2)
-                .offset(y: clockDiameter / 3)
+                .frame(width: minuteHandWidth + 2, height: clockDiameter / 3)
+                .offset(y: clockDiameter / 4)
                 .rotationEffect(Angle(degrees: Double(30 * hour + angleCorrection)))
             
-            ForEach(0..<4) { index in
+            ForEach(0..<12) { index in
                 Rectangle()
-                    .fill(Color.blue)
+                    .fill(Color.black)
                     .frame(width: indicatorsWidth, height: indicatorsWidth)
                     .offset(y: clockDiameter / 2)
-                    .rotationEffect(Angle(degrees: Double(90 * index + angleCorrection)))
+                    .rotationEffect(Angle(degrees: Double(30 * index + angleCorrection)))
             }
             
             Text(isAM ? "AM" : "PM")
