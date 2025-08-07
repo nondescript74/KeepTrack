@@ -43,10 +43,11 @@ struct HistoryYesterday: View {
         VStack {
             Text("Yesterday")
                 .font(.title)
-            if getYesterday().isEmpty {
-                Text("Nothing taken yesterday")
-                    .foregroundColor(.red)
-            } else {
+            
+            Text(getYesterday().isEmpty ? "No entries yet" : "")
+                .foregroundColor(.red)
+            
+            ScrollView {
                 ForEach(cIntakeTypes.intakeTypeArray.sorted(by: {$0.name < $1.name}), id: \.self) { type in
                     if !sortYesterdayByName(name: type.name).isEmpty {
                         HStack {
@@ -54,18 +55,23 @@ struct HistoryYesterday: View {
                                 .foregroundStyle(getTypeColor(intakeType: type))
                             Spacer()
                             Text(getUniqueYesterdayByNameCount(name: type.name).description)
-                            
                         }
-                        .font(.caption)
-                        .padding(.trailing)
+                        .font(.title2)
+                        .padding(.all)
                         
                     }
                 }
             }
         }
+        .environment(store)
+        .environment(goals)
+        .environment(cIntakeTypes)
     }
 }
 
 #Preview {
     HistoryYesterday()
+        .environment(CommonStore())
+        .environment(CommonGoals())
+        .environment(CurrentIntakeTypes())
 }
