@@ -33,25 +33,26 @@ struct EnterIntake: View {
     
     var body: some View {
         NavigationStack {
-            VStack {
-                Text("Enter intake details")
-                    .font(.headline)
-                    .fontWeight(.bold)
+            HStack {
+//                Text("Enter intake details")
+//                    .font(.headline)
+//                    .fontWeight(.bold)
                 
                 Picker("Select Type", selection: $name) {
                     ForEach(cIntakeTypes.intakeTypeNameArray.sorted(by: {$0 < $1}), id: \.self) {
                         Text($0)
                     }
                 }
+                Spacer()
                 
-                HStack {
-                    Text("amount")
+//                HStack {
+//                    Text("amount")
                     Text(cIntakeTypes.intakeTypeArray.first(where: {$0.name == name})?.amount.description ?? 0.description)
                     Text(cIntakeTypes.intakeTypeArray.first(where: {$0.name == name})?.unit ?? "no unit")
-                }
-                .padding(.bottom)
+//                }
+//                .padding(.bottom)
                 
-                
+                Spacer()
                 
                 Button(action: ( {
                     let goalToUse = goals.getTodaysGoalForName(namez: self.name)
@@ -75,7 +76,7 @@ struct EnterIntake: View {
                         .padding(10)
                         .overlay(RoundedRectangle(cornerRadius: 10).stroke(style: StrokeStyle(lineWidth: 2)))
                 }))
-                .padding()
+//                .padding()
                 .foregroundStyle(.blue)
                 Spacer()
             }

@@ -62,26 +62,31 @@ struct HistoryToday: View {
                 Text("Nothing taken today")
                     .foregroundColor(.red)
             } else {
-                ScrollView {
-                    ForEach(cIntakeTypes.intakeTypeArray.sorted(by: {$0.name < $1.name}), id: \.self) { type in
-                        if !sortTodayByName(name: type.name).isEmpty {
-                            HStack {
-                                Text("\(type.name): ")
-                                    .foregroundStyle(getTypeColor(intakeType: type))
-                                    .font(.subheadline)
-                                ScrollView(.horizontal) {
-                                    HStack {
-                                        ForEach(getUniqueTodaysCommonEntriesUntilNow(name: type.name)) { entry in
-                                            Clock(hour: getHour(from: entry.date), minute: getMinute(from: entry.date), is12HourFormat: true, isAM: isItAM(date: entry.date), colorGreen: entry.goalMet)
+                VStack {
+                    ScrollView {
+                        ForEach(cIntakeTypes.intakeTypeArray.sorted(by: {$0.name < $1.name}), id: \.self) { type in
+                            if !sortTodayByName(name: type.name).isEmpty {
+                                HStack {
+                                    Text("\(type.name): ")
+                                        .foregroundStyle(getTypeColor(intakeType: type))
+                                        .font(.subheadline)
+                                    ScrollView(.horizontal) {
+                                        HStack {
+                                            ForEach(getUniqueTodaysCommonEntriesUntilNow(name: type.name)) { entry in
+                                                Clock(hour: getHour(from: entry.date), minute: getMinute(from: entry.date), is12HourFormat: true, isAM: isItAM(date: entry.date), colorGreen: entry.goalMet)
+                                            }
+                                            .font(.caption)
+                                            .padding([.bottom, .top], 5)
                                         }
-                                        .font(.caption)
-                                        .padding([.bottom, .top], 5)
                                     }
+                                    
                                 }
-                                
                             }
                         }
                     }
+                    Divider()
+                    EnterIntake()
+                    Divider()
                 }
             }
         }
