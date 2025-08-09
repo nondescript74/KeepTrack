@@ -43,7 +43,7 @@ struct Clock: View {
     var body: some View {
         ZStack {
             Circle()
-                .fill(colorGreen ? Color.green.opacity(0.6) : Color.white)
+                .fill(colorGreen ? Color.green.opacity(0.4) : Color.white)
                 .frame(width: clockDiameter, height: clockDiameter)
             
             Circle()

@@ -19,9 +19,9 @@ struct NewDashboard: View {
     var body: some View {
         NavigationStack {
             TabView {
-                Tab("Intake", systemImage: "wineglass") {
-                    EnterIntake()
-                }
+//                Tab("Intake", systemImage: "wineglass") {
+//                    EnterIntake()
+//                }
                 
                 Tab("Today", systemImage: "wineglass") {
                     HistoryToday()

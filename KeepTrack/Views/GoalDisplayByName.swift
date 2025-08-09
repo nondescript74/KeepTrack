@@ -36,25 +36,31 @@ struct GoalDisplayByName: View {
                     .foregroundColor(.secondary)
                     .font(.headline)
             } else {
-                ForEach(myGoals.sorted(by: {$0.name < $1.name}).indices, id: \.self) { index in
-                    let goal = myGoals[index]
-                    HStack(alignment: .center) {
-                        Text(goal.name)
-                            .padding(.horizontal)
-                        
-                        ScrollView(.horizontal) {
+                VStack {
+                    ScrollView {
+                        ForEach(myGoals.sorted(by: {$0.name < $1.name}).indices, id: \.self) { index in
+                            let goal = myGoals[index]
                             HStack(alignment: .center) {
-                                ForEach(goal.dates, id: \.self) { date in
-                                    HStack {
-                                        Clock(hour: hourForDate(date), minute: minuteForDate(date), is12HourFormat: true, isAM: self.isItAM(date), colorGreen: false)
+                                Text(goal.name)
+                                    .padding(.horizontal)
+                                
+                                ScrollView(.horizontal) {
+                                    HStack(alignment: .center) {
+                                        ForEach(goal.dates, id: \.self) { date in
+                                            HStack {
+                                                Clock(hour: hourForDate(date), minute: minuteForDate(date), is12HourFormat: true, isAM: self.isItAM(date), colorGreen: false)
+                                            }
+                                            .padding(.all, 10)
+                                        }
                                     }
-                                    .padding(.top, 10)
                                 }
                             }
+                            .font(.caption)
                         }
                     }
-                    .font(.caption)
                 }
+                Spacer()
+                Divider()
             }
         }
         .environment(goals)
