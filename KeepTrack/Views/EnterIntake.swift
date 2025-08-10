@@ -34,23 +34,15 @@ struct EnterIntake: View {
     var body: some View {
         NavigationStack {
             HStack {
-//                Text("Enter intake details")
-//                    .font(.headline)
-//                    .fontWeight(.bold)
-                
                 Picker("Select Type", selection: $name) {
                     ForEach(cIntakeTypes.intakeTypeNameArray.sorted(by: {$0 < $1}), id: \.self) {
                         Text($0)
                     }
                 }
-                Spacer()
+                .padding(.trailing)
                 
-//                HStack {
-//                    Text("amount")
-                    Text(cIntakeTypes.intakeTypeArray.first(where: {$0.name == name})?.amount.description ?? 0.description)
-                    Text(cIntakeTypes.intakeTypeArray.first(where: {$0.name == name})?.unit ?? "no unit")
-//                }
-//                .padding(.bottom)
+                Text(cIntakeTypes.intakeTypeArray.first(where: {$0.name == name})?.amount.description ?? 0.description)
+                Text(cIntakeTypes.intakeTypeArray.first(where: {$0.name == name})?.unit ?? "no unit")
                 
                 Spacer()
                 
@@ -62,7 +54,7 @@ struct EnterIntake: View {
                         let entry = CommonEntry(id: UUID(), date: Date(), units: cIntakeTypes.intakeTypeArray.first(where: {$0.name == name})?.unit ?? "no unit", amount: cIntakeTypes.intakeTypeArray.first(where: {$0.name == name})?.amount ?? 0, name: name, goalMet: true)
                         store.addEntry(entry: entry)
                         logger.info("CommonStore: Added intake  \(name) no goals for name")
-
+                        
                     } else {
                         logger.info("goalToUse dates are \(goalToUse!.dates.compactMap({$0}))")
                         let result = isGoalMet(goal: goalToUse!, previous: store.getTodaysIntake().filter({$0.name == self.name}).count)
@@ -76,10 +68,10 @@ struct EnterIntake: View {
                         .padding(10)
                         .overlay(RoundedRectangle(cornerRadius: 10).stroke(style: StrokeStyle(lineWidth: 2)))
                 }))
-//                .padding()
+                
                 .foregroundStyle(.blue)
-                Spacer()
             }
+            .padding(.trailing)
             .environment(store)
             .environment(goals)
             .environment(cIntakeTypes)
@@ -92,5 +84,4 @@ struct EnterIntake: View {
         .environment(CommonStore())
         .environment(CommonGoals())
         .environment(CurrentIntakeTypes())
-//        .environment(HealthKitManager())
 }
