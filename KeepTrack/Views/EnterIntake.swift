@@ -41,8 +41,8 @@ struct EnterIntake: View {
                 }
                 .padding(.trailing)
                 
-                Text(cIntakeTypes.intakeTypeArray.first(where: {$0.name == name})?.amount.description ?? 0.description)
-                Text(cIntakeTypes.intakeTypeArray.first(where: {$0.name == name})?.unit ?? "no unit")
+//                Text(cIntakeTypes.intakeTypeArray.first(where: {$0.name == name})?.amount.description ?? 0.description)
+//                Text(cIntakeTypes.intakeTypeArray.first(where: {$0.name == name})?.unit ?? "no unit")
                 
                 Spacer()
                 

@@ -61,34 +61,34 @@ struct HistoryToday: View {
             if getToday().isEmpty {
                 Text("Nothing taken today")
                     .foregroundColor(.red)
-            } else {
-                VStack {
-                    ScrollView {
-                        ForEach(cIntakeTypes.intakeTypeArray.sorted(by: {$0.name < $1.name}), id: \.self) { type in
-                            if !sortTodayByName(name: type.name).isEmpty {
-                                HStack {
-                                    Text("\(type.name): ")
-                                        .foregroundStyle(getTypeColor(intakeType: type))
-                                        .font(.subheadline)
-                                    ScrollView(.horizontal) {
-                                        HStack {
-                                            ForEach(getUniqueTodaysCommonEntriesUntilNow(name: type.name)) { entry in
-                                                Clock(hour: getHour(from: entry.date), minute: getMinute(from: entry.date), is12HourFormat: true, isAM: isItAM(date: entry.date), colorGreen: entry.goalMet)
-                                            }
-                                            .font(.caption)
-                                            .padding([.bottom, .top], 5)
+            }
+            VStack {
+                ScrollView {
+                    ForEach(cIntakeTypes.intakeTypeArray.sorted(by: {$0.name < $1.name}), id: \.self) { type in
+                        if !sortTodayByName(name: type.name).isEmpty {
+                            HStack {
+                                Text("\(type.name): ")
+                                    .foregroundStyle(getTypeColor(intakeType: type))
+                                    .font(.subheadline)
+                                ScrollView(.horizontal) {
+                                    HStack {
+                                        ForEach(getUniqueTodaysCommonEntriesUntilNow(name: type.name)) { entry in
+                                            Clock(hour: getHour(from: entry.date), minute: getMinute(from: entry.date), is12HourFormat: true, isAM: isItAM(date: entry.date), colorGreen: entry.goalMet)
                                         }
+                                        .font(.caption)
+                                        .padding([.bottom, .top], 5)
                                     }
-                                    
                                 }
+                                
                             }
                         }
                     }
-                    Divider()
-                    EnterIntake()
-                    Divider()
                 }
+                Divider()
+                EnterIntake()
+                Divider()
             }
+            
         }
         .environment(store)
         .environment(goals)
