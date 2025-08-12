@@ -19,7 +19,7 @@ struct EnterIntake: View {
     let dateFormatter = DateFormatter()
     
     var dataTypeIdentifier: String
-    var dataValues: [HealthDataTypeValue] = []
+//    var dataValues: [HealthDataTypeValue] = []
     
     public var showGroupedTableViewTitle: Bool = false
     
