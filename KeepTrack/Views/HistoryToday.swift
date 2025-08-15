@@ -69,9 +69,9 @@ struct HistoryToday: View {
 //                        Text("Type: \(type.name), Entries today: \(sortTodayByName(name: type.name).count)")
                         if !sortTodayByName(name: type.name).isEmpty {
                             HStack {
-//                                Text("\(type.name): ")
-//                                    .foregroundStyle(getTypeColor(intakeType: type))
-//                                    .font(.subheadline)
+                                Text("\(type.name): ")
+                                    .foregroundStyle(getTypeColor(intakeType: type))
+                                    .font(.subheadline)
                                 ScrollView(.horizontal) {
                                     HStack {
                                         ForEach(getUniqueTodaysCommonEntriesUntilNow(name: type.name)) { entry in
