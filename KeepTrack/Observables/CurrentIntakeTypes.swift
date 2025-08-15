@@ -9,40 +9,92 @@ import Foundation
 import SwiftUI
 import OSLog
 
+@MainActor
+@Observable final class CurrentIntakeTypes {
+    // MARK: - Properties
+    private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "CurrentIntakeTypes")
+    private static let intakeTypesFilename = "intakeTypes.json"
+    private let fileURL: URL
 
-@Observable final class CurrentIntakeTypes: ObservableObject {
-    let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "CurrentIntakeTypes")
-    var intakeTypeArray: [IntakeType]
+    var intakeTypeArray: [IntakeType] = []
     var intakeTypeNameArray: [String] {
-        intakeTypeArray.map(\.self.name)
+        intakeTypeArray.map(\.name)
     }
-    
-    init() {
-        if let fileURL = Bundle.main.url(forResource: "intakeTypes", withExtension: "json") {
-            // File found, proceed to read it
-            let data: Data = try! Data(contentsOf: fileURL)
-            intakeTypeArray = try! JSONDecoder().decode([IntakeType].self, from: data)
-            logger.info("Loaded \(self.intakeTypeArray.count) intake types")
-        } else {
-            intakeTypeArray = []
-            logger.info( "No intake types file found")
-        }
 
+    // MARK: - Init
+    init() {
+        // Get documents directory for read/write
+        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        if let docDirUrl = urls.first {
+            self.fileURL = docDirUrl.appendingPathComponent(Self.intakeTypesFilename)
+        } else {
+            self.fileURL = URL(fileURLWithPath: "/dev/null")
+            logger.fault("Failed to resolve document directory")
+        }
+        // Load asynchronously after init
+        Task { await self.loadIntakeTypes() }
     }
-    
-    func saveNewIntakeType(intakeType: IntakeType) {
-        intakeTypeArray.append(intakeType)
-        let fileURL = Bundle.main.url(forResource: "intakeTypes", withExtension: "json")
-        
-        let data = try! JSONEncoder().encode(intakeTypeArray)
-        do {
-            try data.write(to: fileURL!)
-            logger.info( "CurrentIntakeTypes: Saved intakeTypeArray to disk")
-        } catch {
-            fatalError("CurrentIntakeTypes: cannot write to file")
+
+    // MARK: - Persistence (concurrent)
+    func loadIntakeTypes() async {
+        let fileURL = self.fileURL
+        let logger = self.logger
+        await withCheckedContinuation { continuation in
+            DispatchQueue.global(qos: .background).async {
+                if FileManager.default.fileExists(atPath: fileURL.path) {
+                    do {
+                        let data = try Data(contentsOf: fileURL)
+                        let types = try JSONDecoder().decode([IntakeType].self, from: data)
+                        Task { @MainActor in
+                            self.intakeTypeArray = types
+                            logger.info("Loaded \(types.count) intake types")
+                            continuation.resume()
+                        }
+                    } catch {
+                        Task { @MainActor in
+                            self.intakeTypeArray = []
+                            logger.error("Failed to load intake types: \(error.localizedDescription)")
+                            continuation.resume()
+                        }
+                    }
+                } else {
+                    Task { @MainActor in
+                        self.intakeTypeArray = []
+                        logger.info("No intake types file found")
+                        continuation.resume()
+                    }
+                }
+            }
         }
     }
-    
+
+    func saveNewIntakeType(intakeType: IntakeType) {
+        self.intakeTypeArray.append(intakeType)
+        Task {
+            await self.saveIntakeTypes()
+        }
+    }
+
+    /// Save the array to file off the main actor
+    func saveIntakeTypes() async {
+        let types = self.intakeTypeArray
+        let fileURL = self.fileURL
+        let logger = self.logger
+        await withCheckedContinuation { continuation in
+            DispatchQueue.global(qos: .background).async {
+                do {
+                    let data = try JSONEncoder().encode(types)
+                    try data.write(to: fileURL, options: [.atomic])
+                    logger.info("CurrentIntakeTypes: Saved intakeTypeArray to disk")
+                } catch {
+                    logger.error("CurrentIntakeTypes: cannot write to file: \(error.localizedDescription)")
+                }
+                continuation.resume()
+            }
+        }
+    }
+
+    // MARK: - Helpers
     func getunits(typeName: String) -> String {
         switch typeName.lowercased() {
         case "amlodipine":
@@ -53,11 +105,13 @@ import OSLog
             return "ml"
         case "rosuvastatin":
             return "mg"
+        case "coffee":
+            return "fluidOunces"
         default:
             return "mg"
         }
     }
-    
+
     func getamount(typeName: String) -> Double {
         switch typeName.lowercased() {
         case "amlodipine":
@@ -70,9 +124,10 @@ import OSLog
             return 20
         case "potassium chloride":
             return 99
+        case "coffee":
+            return 3
         default:
             return 0
         }
     }
-
 }

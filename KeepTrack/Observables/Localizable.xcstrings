@@ -121,28 +121,28 @@
     "Okay one glass of sake added" : {
 
     },
-    "Okay, you consumed %lld  glasses of sake today." : {
+    "Okay, you consumed %lld amlodipine, %lld timolol, %lld metformin, %lld rosuvastatin, %lld losartan, and %lld latanoprost." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Okay, you consumed %1$lld amlodipine, %2$lld timolol, %3$lld metformin, %4$lld rosuvastatin, %5$lld losartan, and %6$lld latanoprost."
+          }
+        }
+      }
+    },
+    "Okay, you consumed %lld amlodipine, %lld timolol, %lld rosuvastatin, and %lld losartan" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Okay, you consumed %1$lld amlodipine, %2$lld timolol, %3$lld rosuvastatin, and %4$lld losartan"
+          }
+        }
+      }
+    },
+    "Okay, you consumed %lld glasses of sake today." : {
 
-    },
-    "Okay, you consumed %lld amlopidine, %lld timolol, %lld metformin, %lld rosuvastatin, %lld losartan, and %lld latanoprost." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Okay, you consumed %1$lld amlopidine, %2$lld timolol, %3$lld metformin, %4$lld rosuvastatin, %5$lld losartan, and %6$lld latanoprost."
-          }
-        }
-      }
-    },
-    "Okay, you consumed %lld amlopidine, %lld timolol, %lld rosuvastatin, and %lld losartan" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Okay, you consumed %1$lld amlopidine, %2$lld timolol, %3$lld rosuvastatin, and %4$lld losartan"
-          }
-        }
-      }
     },
     "PM" : {
 
@@ -198,6 +198,9 @@
     "Today" : {
 
     },
+    "Types count: %lld" : {
+
+    },
     "Unit" : {
 
     },
@@ -213,12 +216,12 @@
     "You added a 14 ounce glass of water" : {
 
     },
-    "You consumed %lld  glasses of water today and %lld smoothies." : {
+    "You consumed %lld glasses of water today and %lld smoothies." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "You consumed %1$lld  glasses of water today and %2$lld smoothies."
+            "value" : "You consumed %1$lld glasses of water today and %2$lld smoothies."
           }
         }
       }

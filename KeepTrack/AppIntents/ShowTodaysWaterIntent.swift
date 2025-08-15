@@ -14,19 +14,20 @@ struct ShowTodaysWaterIntent: AppIntent {
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "ShowTodaysWaterIntent")
     static let title: LocalizedStringResource = "Show Todays Liquid Intake"
     
+    @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog {
-         
-        let resultW = await KeepTrack.CommonStore().history.filter {
-            (Calendar.current.isDateInToday($0.date))
-        }.filter { $0.name.lowercased().contains("water")}
+        let history = KeepTrack.CommonStore().history.filter {
+            Calendar.current.isDateInToday($0.date)
+        }
         
-        let resultSm = await KeepTrack.CommonStore().history.filter {
-            (Calendar.current.isDateInToday($0.date))
-        }.filter { $0.name.lowercased().contains("smoothie")}
+        let resultW = history.filter { $0.name.lowercased().contains("water") }
+        let resultSm = history.filter { $0.name.lowercased().contains("smoothie") }
         
-        logger.info("water consumed in app history is \(resultW))")
-        logger.info("smoothies consumed in app history is \(resultSm))")
+        logger.info("water consumed in app history is \(resultW)")
+        logger.info("smoothies consumed in app history is \(resultSm)")
         
-        return .result(dialog: "You consumed \(resultW.count)  glasses of water today and \(resultSm.count) smoothies.")
+        return .result(
+            dialog: "You consumed \(resultW.count) glasses of water today and \(resultSm.count) smoothies."
+        )
     }
 }
