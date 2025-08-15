@@ -10,42 +10,30 @@ import SwiftUI
 import OSLog
 
 @MainActor
-@Observable final class CommonGoals: ObservableObject {
-    fileprivate let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "CommonGoals")
+@Observable final class CommonGoals {
+    // MARK: - Properties
+    private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "CommonGoals")
+    private static let goalsFilename = "goalsstore.json"
+    private let fileURL: URL
+
     var goals: [CommonGoal] = []
-    
-    let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-    
+
+    // MARK: - Init
     init() {
-        if let docDirUrl = urls.first {
-            let fileURL = docDirUrl.appendingPathComponent("goalsstore.json")
-            if FileManager.default.fileExists(atPath: fileURL.path) {
-                logger.info( "CGoals: fileURL for existing history \(fileURL)")
-                do {
-                    let temp = FileManager.default.contents(atPath: fileURL.path) ?? Data()
-                    if temp.count == 0 {
-                        goals = []
-                        logger.info("CGoals: goalsstore.json file is empty")
-                    } else {
-                        let tempContents: [CommonGoal] = try JSONDecoder().decode([CommonGoal].self, from: try Data(contentsOf: fileURL))
-                        goals = tempContents.filter { !$0.isCompleted == true }
-                        logger.info("CGoals:  \(self.goals)")
-                    }
-                } catch {
-                    fatalError( "Couldn't read goals")
-                }
-            } else {
-                FileManager.default.createFile(atPath: docDirUrl.path().appending("goalsstore.json"), contents: nil)
-                logger.info( "CGoals: Created file goalsstore.json")
-                goals = []
-            }
-        } else {
-            fatalError( "Failed to resolve document directory")
+        // Find the documents directory and file URL
+        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        guard let docDirUrl = urls.first else {
+            logger.fault("Failed to resolve document directory")
+            self.fileURL = URL(fileURLWithPath: "/dev/null") // fallback to avoid crashes
+            return
         }
+        self.fileURL = docDirUrl.appendingPathComponent(Self.goalsFilename)
+        loadGoals()
     }
-    
+
+    // MARK: - Goal CRUD
     func addGoal(goal: CommonGoal) {
-        // if goal exists, replace it
+        // If goal exists, replace it
         goals.removeAll { $0.id == goal.id }
         if goal.isActive {
             goals.append(goal)
@@ -53,36 +41,55 @@ import OSLog
         }
         save()
     }
-    
+
     func removeGoalAtId(uuid: UUID) {
         goals.removeAll { $0.id == uuid }
         logger.info("CGoals: Removed goal with id \(uuid)")
         save()
     }
-    
-    fileprivate func save() {
-        let fileURL = URL(fileURLWithPath: urls[0].appendingPathComponent("goalsstore.json").path)
-        logger.info( "CGoals: fileURL for existing history \(fileURL.lastPathComponent)")
-        
+
+    // MARK: - Persistence
+    private func loadGoals() {
         do {
-            let data = try JSONEncoder().encode(goals.sorted(by: ({$0.name < $1.name})))
-            try data.write(to: fileURL)
-            logger.info( "CGoals: Saved goalsstore json data to file")
-            self.goals = try JSONDecoder().decode([CommonGoal].self, from: data)
-            logger.info("CGoals: reloaded goals from data")
+            if FileManager.default.fileExists(atPath: fileURL.path) {
+                let data = try Data(contentsOf: fileURL)
+                if data.isEmpty {
+                    self.goals = []
+                    self.logger.info("CGoals: goalsstore.json file is empty")
+                } else {
+                    let loadedGoals = try JSONDecoder().decode([CommonGoal].self, from: data)
+                    self.goals = loadedGoals
+                    self.logger.info("CGoals: loaded \(self.goals.count) goals")
+                }
+            } else {
+                // Create the file if it doesn't exist
+                FileManager.default.createFile(atPath: fileURL.path, contents: nil)
+                self.logger.info("CGoals: Created file \(Self.goalsFilename)")
+                self.goals = []
+            }
         } catch {
-            fatalError( "Couldn't save goals file")
+            self.logger.error("CGoals: Couldn't read goals: \(error.localizedDescription)")
+            self.goals = []
         }
     }
-    
+
+    private func save() {
+        do {
+            let data = try JSONEncoder().encode(goals.sorted(by: { $0.name < $1.name }))
+            try data.write(to: fileURL, options: [.atomic])
+            logger.info("CGoals: Saved goalsstore json data to file")
+        } catch {
+            logger.error("CGoals: Couldn't save goals file: \(error.localizedDescription)")
+        }
+    }
+
+    // MARK: - Filtering
     func getTodaysGoals() -> [CommonGoal] {
-        let todays = goals.filter({$0.isActive == true }).sorted(by: ({$0.name < $1.name}))
-        return todays
-        
-     }
-    
+        goals.filter { $0.isActive }.sorted(by: { $0.name < $1.name })
+    }
+
     func getTodaysGoalForName(namez: String) -> CommonGoal? {
-        let todays = getTodaysGoals().filter({$0.name.lowercased().contains(namez.lowercased())}).first
-        return todays  // could be nil
+        getTodaysGoals().first { $0.name.lowercased().contains(namez.lowercased()) }
     }
 }
+

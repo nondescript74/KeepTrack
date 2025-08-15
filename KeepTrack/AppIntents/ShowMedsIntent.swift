@@ -15,38 +15,32 @@ struct ShowMedsIntent: AppIntent {
     static let meds: [String] = ["amlodipine", "metformin", "rosuvastatin", "losartan", "latanoprost", "timolol"]
     
     
+    @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog {
+        let history = KeepTrack.CommonStore().history.filter {
+            Calendar.current.isDateInToday($0.date)
+        }
         
-        let resultA = await KeepTrack.CommonStore().history.filter {
-            (Calendar.current.isDateInToday($0.date))
-        }.filter { $0.name.lowercased().contains("amlodipine")}
-        logger.info("resultA is \(resultA))")
+        let resultA = history.filter { $0.name.lowercased().contains("amlodipine") }
+        logger.info("resultA is \(resultA)")
         
-        let resultM = await KeepTrack.CommonStore().history.filter {
-            (Calendar.current.isDateInToday($0.date))
-        }.filter { $0.name.lowercased().contains("metformin")}
-        logger.info("resultM is \(resultM))")
+        let resultM = history.filter { $0.name.lowercased().contains("metformin") }
+        logger.info("resultM is \(resultM)")
         
-        let resultR = await KeepTrack.CommonStore().history.filter {
-            (Calendar.current.isDateInToday($0.date))
-        }.filter { $0.name.lowercased().contains("rosuvastatin")}
-        logger.info("resultR is (\(resultR))")
+        let resultR = history.filter { $0.name.lowercased().contains("rosuvastatin") }
+        logger.info("resultR is \(resultR)")
         
-        let resultL = await KeepTrack.CommonStore().history.filter {
-            (Calendar.current.isDateInToday($0.date))
-        }.filter { $0.name.lowercased().contains("losartan")}
-        logger.info("resultL is (\(resultL))")
+        let resultL = history.filter { $0.name.lowercased().contains("losartan") }
+        logger.info("resultL is \(resultL)")
         
-        let resultLa = await KeepTrack.CommonStore().history.filter {
-            (Calendar.current.isDateInToday($0.date))
-        }.filter { $0.name.lowercased().contains("latanoprost")}
-        logger.info("resultL is (\(resultLa))")
+        let resultLa = history.filter { $0.name.lowercased().contains("latanoprost") }
+        logger.info("resultLa is \(resultLa)")
         
-        let resultT = await KeepTrack.CommonStore().history.filter {
-            (Calendar.current.isDateInToday($0.date))
-        }.filter { $0.name.lowercased().contains("timolol")}
-        logger.info("resultT is (\(resultT))")
+        let resultT = history.filter { $0.name.lowercased().contains("timolol") }
+        logger.info("resultT is \(resultT)")
         
-        return .result(dialog: "Okay, you consumed \(resultA.count) amlopidine, \(resultT.count) timolol, \(resultM.count) metformin, \(resultR.count) rosuvastatin, \(resultL.count) losartan, and \(resultLa.count) latanoprost.")
+        return .result(
+            dialog: "Okay, you consumed \(resultA.count) amlodipine, \(resultT.count) timolol, \(resultM.count) metformin, \(resultR.count) rosuvastatin, \(resultL.count) losartan, and \(resultLa.count) latanoprost."
+        )
     }
 }

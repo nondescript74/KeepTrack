@@ -58,6 +58,7 @@ struct HistoryToday: View {
         VStack  {
             Text("Today")
                 .font(.title)
+            Text("Types count: \(cIntakeTypes.intakeTypeArray.count)")
             if getToday().isEmpty {
                 Text("Nothing taken today")
                     .foregroundColor(.red)
@@ -65,11 +66,12 @@ struct HistoryToday: View {
             VStack {
                 ScrollView {
                     ForEach(cIntakeTypes.intakeTypeArray.sorted(by: {$0.name < $1.name}), id: \.self) { type in
+//                        Text("Type: \(type.name), Entries today: \(sortTodayByName(name: type.name).count)")
                         if !sortTodayByName(name: type.name).isEmpty {
                             HStack {
-                                Text("\(type.name): ")
-                                    .foregroundStyle(getTypeColor(intakeType: type))
-                                    .font(.subheadline)
+//                                Text("\(type.name): ")
+//                                    .foregroundStyle(getTypeColor(intakeType: type))
+//                                    .font(.subheadline)
                                 ScrollView(.horizontal) {
                                     HStack {
                                         ForEach(getUniqueTodaysCommonEntriesUntilNow(name: type.name)) { entry in

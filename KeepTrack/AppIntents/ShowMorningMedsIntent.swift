@@ -15,30 +15,24 @@ struct ShowMorningMedsIntent: AppIntent {
     static let morningMeds: [String] = ["amlodipine", "timolol", "rosuvastatin", "losartan"]
     
     
+    @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog {
+        let history = KeepTrack.CommonStore().history.filter {
+            Calendar.current.isDateInToday($0.date)
+        }
         
-        let resultA = await KeepTrack.CommonStore().history.filter {
-            (Calendar.current.isDateInToday($0.date))
-        }.filter { $0.name.lowercased().contains("amlodipine")}
-        logger.info("resultA is \(resultA))")
+        let resultA = history.filter { $0.name.lowercased().contains("amlodipine") }
+        logger.info("resultA is \(resultA)")
         
-        let resultR = await KeepTrack.CommonStore().history.filter {
-            (Calendar.current.isDateInToday($0.date))
-        }.filter { $0.name.lowercased().contains("rosuvastatin")}
-        logger.info("resultR is (\(resultR))")
+        let resultR = history.filter { $0.name.lowercased().contains("rosuvastatin") }
+        logger.info("resultR is \(resultR)")
         
-        let resultL = await KeepTrack.CommonStore().history.filter {
-            (Calendar.current.isDateInToday($0.date))
-        }.filter { $0.name.lowercased().contains("losartan")}
-        logger.info("resultL is (\(resultL))")
+        let resultL = history.filter { $0.name.lowercased().contains("losartan") }
+        logger.info("resultL is \(resultL)")
         
-        let resultT = await KeepTrack.CommonStore().history.filter {
-            (Calendar.current.isDateInToday($0.date))
-        }.filter { $0.name.lowercased().contains("timolol")}
-        logger.info("resultT is (\(resultT))")
+        let resultT = history.filter { $0.name.lowercased().contains("timolol") }
+        logger.info("resultT is \(resultT)")
         
-        
-        
-        return .result(dialog: "Okay, you consumed \(resultA.count) amlopidine, \(resultT.count) timolol, \(resultR.count) rosuvastatin, and \(resultL.count) losartan")
+        return .result(dialog: "Okay, you consumed \(resultA.count) amlodipine, \(resultT.count) timolol, \(resultR.count) rosuvastatin, and \(resultL.count) losartan")
     }
 }
