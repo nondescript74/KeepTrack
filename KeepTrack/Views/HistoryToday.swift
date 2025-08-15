@@ -58,7 +58,7 @@ struct HistoryToday: View {
         VStack  {
             Text("Today")
                 .font(.title)
-            Text("Types count: \(cIntakeTypes.intakeTypeArray.count)")
+//            Text("Types count: \(cIntakeTypes.intakeTypeArray.count)")
             if getToday().isEmpty {
                 Text("Nothing taken today")
                     .foregroundColor(.red)

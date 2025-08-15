@@ -15,12 +15,12 @@ import OSLog
     private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "CurrentIntakeTypes")
     private static let intakeTypesFilename = "intakeTypes.json"
     private let fileURL: URL
-
+    
     var intakeTypeArray: [IntakeType] = []
     var intakeTypeNameArray: [String] {
         intakeTypeArray.map(\.name)
     }
-
+    
     // MARK: - Init
     init() {
         // Get documents directory for read/write
@@ -34,7 +34,7 @@ import OSLog
         // Load asynchronously after init
         Task { await self.loadIntakeTypes() }
     }
-
+    
     // MARK: - Persistence (concurrent)
     func loadIntakeTypes() async {
         let fileURL = self.fileURL
@@ -58,23 +58,43 @@ import OSLog
                         }
                     }
                 } else {
-                    Task { @MainActor in
-                        self.intakeTypeArray = []
-                        logger.info("No intake types file found")
-                        continuation.resume()
+                    // Read the file from the bundle
+                    if let bundleURL = Bundle.main.url(forResource: "intakeTypes", withExtension: "json") {
+                        do {
+                            let data = try Data(contentsOf: bundleURL)
+                            let types = try JSONDecoder().decode([IntakeType].self, from: data)
+                            Task { @MainActor in
+                                self.intakeTypeArray = types
+                                logger.info("Loaded intake types from bundle")
+                                continuation.resume()
+                            }
+                        } catch {
+                            Task { @MainActor in
+                                self.intakeTypeArray = []
+                                logger.error("Failed to load intake types from bundle: \(error.localizedDescription)")
+                                continuation.resume()
+                            }
+                        }
+                    } else {
+                        Task { @MainActor in
+                            self.intakeTypeArray = []
+                            logger.error("Bundle intake types file not found")
+                            continuation.resume()
+                        }
                     }
+                    
                 }
             }
         }
     }
-
+    
     func saveNewIntakeType(intakeType: IntakeType) {
         self.intakeTypeArray.append(intakeType)
         Task {
             await self.saveIntakeTypes()
         }
     }
-
+    
     /// Save the array to file off the main actor
     func saveIntakeTypes() async {
         let types = self.intakeTypeArray
@@ -93,7 +113,7 @@ import OSLog
             }
         }
     }
-
+    
     // MARK: - Helpers
     func getunits(typeName: String) -> String {
         switch typeName.lowercased() {
@@ -111,7 +131,7 @@ import OSLog
             return "mg"
         }
     }
-
+    
     func getamount(typeName: String) -> Double {
         switch typeName.lowercased() {
         case "amlodipine":
@@ -131,3 +151,4 @@ import OSLog
         }
     }
 }
+
