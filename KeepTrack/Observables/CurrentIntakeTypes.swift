@@ -37,23 +37,23 @@ import OSLog
     
     // MARK: - Persistence (concurrent)
     func loadIntakeTypes() async {
-        let fileURL = self.fileURL
-        let logger = self.logger
+//        let fileURL = self.fileURL
+//        let logger = self.logger
         await withCheckedContinuation { continuation in
             DispatchQueue.global(qos: .background).async {
-                if FileManager.default.fileExists(atPath: fileURL.path) {
+                if FileManager.default.fileExists(atPath: self.fileURL.path) {
                     do {
-                        let data = try Data(contentsOf: fileURL)
+                        let data = try Data(contentsOf: self.fileURL)
                         let types = try JSONDecoder().decode([IntakeType].self, from: data)
                         Task { @MainActor in
                             self.intakeTypeArray = types
-                            logger.info("Loaded \(types.count) intake types")
+                            self.logger.info("Loaded \(types.count) intake types")
                             continuation.resume()
                         }
                     } catch {
                         Task { @MainActor in
                             self.intakeTypeArray = []
-                            logger.error("Failed to load intake types: \(error.localizedDescription)")
+                            self.logger.error("Failed to load intake types: \(error.localizedDescription)")
                             continuation.resume()
                         }
                     }
@@ -65,20 +65,20 @@ import OSLog
                             let types = try JSONDecoder().decode([IntakeType].self, from: data)
                             Task { @MainActor in
                                 self.intakeTypeArray = types
-                                logger.info("Loaded intake types from bundle")
+                                self.logger.info("Loaded intake types from bundle")
                                 continuation.resume()
                             }
                         } catch {
                             Task { @MainActor in
                                 self.intakeTypeArray = []
-                                logger.error("Failed to load intake types from bundle: \(error.localizedDescription)")
+                                self.logger.error("Failed to load intake types from bundle: \(error.localizedDescription)")
                                 continuation.resume()
                             }
                         }
                     } else {
                         Task { @MainActor in
                             self.intakeTypeArray = []
-                            logger.error("Bundle intake types file not found")
+                            self.logger.error("Bundle intake types file not found")
                             continuation.resume()
                         }
                     }
@@ -98,16 +98,16 @@ import OSLog
     /// Save the array to file off the main actor
     func saveIntakeTypes() async {
         let types = self.intakeTypeArray
-        let fileURL = self.fileURL
-        let logger = self.logger
+//        let fileURL = self.fileURL
+//        let logger = self.logger
         await withCheckedContinuation { continuation in
             DispatchQueue.global(qos: .background).async {
                 do {
                     let data = try JSONEncoder().encode(types)
-                    try data.write(to: fileURL, options: [.atomic])
-                    logger.info("CurrentIntakeTypes: Saved intakeTypeArray to disk")
+                    try data.write(to: self.fileURL, options: [.atomic])
+                    self.logger.info("CurrentIntakeTypes: Saved intakeTypeArray to disk")
                 } catch {
-                    logger.error("CurrentIntakeTypes: cannot write to file: \(error.localizedDescription)")
+                    self.logger.error("CurrentIntakeTypes: cannot write to file: \(error.localizedDescription)")
                 }
                 continuation.resume()
             }

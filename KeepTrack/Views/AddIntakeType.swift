@@ -13,7 +13,7 @@ struct AddIntakeType: View {
     
     @Environment(CurrentIntakeTypes.self) private var intakeTypes
     
-    let formatter: NumberFormatter = NumberFormatter()
+//    let formatter: NumberFormatter = NumberFormatter()
 
     @State private var iTypeName: String = ""
     @State private var iTypeUnit: String = ""
