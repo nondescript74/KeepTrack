@@ -7,6 +7,9 @@
     "%@" : {
 
     },
+    "%@ added" : {
+
+    },
     "%@: " : {
 
     },
@@ -16,7 +19,13 @@
     "Active" : {
 
     },
+    "Add ${intakeType}" : {
+
+    },
     "Add a new intake type" : {
+
+    },
+    "Add a selected intake item to your history." : {
 
     },
     "Add evening meds" : {
@@ -38,6 +47,9 @@
 
     },
     "Add Sake" : {
+
+    },
+    "Add Something" : {
 
     },
     "Add water" : {
@@ -97,6 +109,9 @@
     "Is Active" : {
 
     },
+    "Item to Add" : {
+
+    },
     "Latanoprost added" : {
 
     },
@@ -119,6 +134,9 @@
 
     },
     "Okay one glass of sake added" : {
+
+    },
+    "Okay, added %@." : {
 
     },
     "Okay, you consumed %lld amlodipine, %lld timolol, %lld metformin, %lld rosuvastatin, %lld losartan, and %lld latanoprost." : {
@@ -148,6 +166,9 @@
 
     },
     "Select intake: " : {
+
+    },
+    "Select the intake to add to your log." : {
 
     },
     "Select Type" : {
@@ -231,6 +252,16 @@
     },
     "You have consumed your morning meds" : {
 
+    },
+    "You logged a %lf %@ serving of %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "You logged a %1$lf %2$@ serving of %3$@."
+          }
+        }
+      }
     }
   },
   "version" : "1.1"
