@@ -40,6 +40,7 @@ struct AddMorningMedsIntent: AppIntent {
     @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog & ShowsSnippetView {
         let currentIntakeTypes = CurrentIntakeTypes()
+        let store = CommonStore()
         
         var myName: String = "losartan"
         let commonEntryLosartan = CommonEntry(
@@ -50,7 +51,7 @@ struct AddMorningMedsIntent: AppIntent {
             name: myName,
             goalMet: localGoalMet(typeName: myName)
         )
-        KeepTrack.CommonStore().addEntry(entry: commonEntryLosartan)
+        store.addEntry(entry: commonEntryLosartan)
         
         myName = "rosuvastatin"
         let commonEntryRosuvastatin = CommonEntry(
@@ -61,7 +62,7 @@ struct AddMorningMedsIntent: AppIntent {
             name: myName,
             goalMet: localGoalMet(typeName: myName)
         )
-        KeepTrack.CommonStore().addEntry(entry: commonEntryRosuvastatin)
+        store.addEntry(entry: commonEntryRosuvastatin)
         
         myName = "timolol"
         let commonEntryTimolol = CommonEntry(
@@ -72,7 +73,7 @@ struct AddMorningMedsIntent: AppIntent {
             name: myName,
             goalMet: localGoalMet(typeName: myName)
         )
-        KeepTrack.CommonStore().addEntry(entry: commonEntryTimolol)
+        store.addEntry(entry: commonEntryTimolol)
         
         myName = "amlodipine"
         let commonEntryAmlodipine = CommonEntry(
@@ -83,7 +84,7 @@ struct AddMorningMedsIntent: AppIntent {
             name: myName,
             goalMet: localGoalMet(typeName: myName)
         )
-        KeepTrack.CommonStore().addEntry(entry: commonEntryAmlodipine)
+        store.addEntry(entry: commonEntryAmlodipine)
         
         let snippetView: some View = VStack {
             Text("Losartan, Rosuvastatin, Timolol, Amlodipine added")
