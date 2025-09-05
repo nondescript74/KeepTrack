@@ -14,7 +14,10 @@ struct ShowTodaysSakeIntent: AppIntent {
     
     @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog {
-        let resultS = KeepTrack.CommonStore().history.filter {
+        // Load the latest store asynchronously to ensure we have the most current data
+        let store = await KeepTrack.CommonStore.loadStore()
+        
+        let resultS = store.history.filter {
             Calendar.current.isDateInToday($0.date)
         }.filter { $0.name.lowercased().contains("sake") }
         logger.info("sake consumed is \(resultS)")

@@ -23,13 +23,13 @@ import OSLog
     
     // MARK: - Init
     init() {
-        // Get documents directory for read/write
-        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        if let docDirUrl = urls.first {
-            self.fileURL = docDirUrl.appendingPathComponent(Self.intakeTypesFilename)
+        // Use App Group container for shared storage between app and intents
+        let appGroupID = "group.com.headydiscy.keeptrack" // Replace with your real App Group identifier
+        if let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupID) {
+            self.fileURL = containerURL.appendingPathComponent(Self.intakeTypesFilename)
         } else {
             self.fileURL = URL(fileURLWithPath: "/dev/null")
-            logger.fault("Failed to resolve document directory")
+            logger.fault("Failed to resolve App Group container directory")
         }
         // Load asynchronously after init
         Task { await self.loadIntakeTypes() }

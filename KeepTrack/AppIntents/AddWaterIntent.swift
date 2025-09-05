@@ -16,8 +16,18 @@ struct AddWaterIntent: AppIntent {
     
     @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog & ShowsSnippetView {
-        let previous: Int = CommonStore().getTodaysIntake().count
-        let goal: CommonGoal? = CommonGoals().getTodaysGoalForName(namez: "Water") ?? nil
+        // Load the shared CommonStore asynchronously to ensure safe, correct data persistence
+        // Also get the shared CommonGoals instance to access today's goals
+        let store = await KeepTrack.CommonStore.loadStore()
+        let goals = KeepTrack.CommonGoals()
+        
+        // Use the loaded store instance for all data retrieval and mutation
+        let previous: Int = store.getTodaysIntake().count
+        
+        // Use the loaded goals instance to get today's goal for "Water"
+        let goal: CommonGoal? = goals.getTodaysGoalForName(namez: "Water") ?? nil
+        
+        // Create a new entry with goalMet evaluated using the loaded goal and previous intake count
         let commonEntry = CommonEntry(
             id: UUID(),
             date: Date(),
@@ -27,7 +37,9 @@ struct AddWaterIntent: AppIntent {
             goalMet: (goal == nil) ? true : isGoalMet(goal: goal!, previous: previous)
         )
         
-        KeepTrack.CommonStore().addEntry(entry: commonEntry)
+        // Add the new entry to the loaded store instance
+        store.addEntry(entry: commonEntry)
+        
         let snippetView: some View = VStack {
             Text("Intake added")
             Text("You added a 14 ounce glass of water")
@@ -39,4 +51,3 @@ struct AddWaterIntent: AppIntent {
         )
     }
 }
-

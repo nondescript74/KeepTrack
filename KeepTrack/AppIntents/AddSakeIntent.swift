@@ -15,6 +15,11 @@ struct AddSakeIntent: AppIntent {
     
     @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog & ShowsSnippetView {
+        // Load the shared persistent store asynchronously to ensure correct data saving and syncing
+        let store = await KeepTrack.CommonStore.loadStore()
+        // Initialize the common goals instance to check or update goals if needed
+        let goals = KeepTrack.CommonGoals()
+        
         let commonEntry = CommonEntry(
             id: UUID(),
             date: Date(),
@@ -23,7 +28,7 @@ struct AddSakeIntent: AppIntent {
             name: "Sake",
             goalMet: false
         )
-        KeepTrack.CommonStore().addEntry(entry: commonEntry)
+        store.addEntry(entry: commonEntry)
         let snippetView: some View = VStack {
             Text("Nihon-shu added")
             Text("You have consumed a 3.5 fluid ounce glass of sake")
