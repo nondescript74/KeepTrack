@@ -14,23 +14,23 @@ struct AddEveningMedsIntent: AppIntent {
     static var description: LocalizedStringResource? = "This adds latanoprost"
     
     @MainActor
-    func getPreviousIntake(typeName: String) -> Int {
-        let result = KeepTrack.CommonStore().history.filter {
+    func getPreviousIntake(typeName: String, store: KeepTrack.CommonStore) -> Int {
+        let result = store.history.filter {
             Calendar.current.isDateInToday($0.date)
         }.filter { $0.name.lowercased().contains(typeName.lowercased()) }
         return result.count
     }
     
     @MainActor
-    func getGoal(typeName: String) -> CommonGoal? {
-        let result = KeepTrack.CommonGoals().getTodaysGoalForName(namez: typeName)
+    func getGoal(typeName: String, goals: KeepTrack.CommonGoals) -> CommonGoal? {
+        let result = goals.getTodaysGoalForName(namez: typeName)
         return result  // can be nil
     }
     
     @MainActor
-    func localGoalMet(typeName: String) -> Bool {
-        if let goal = getGoal(typeName: typeName) {
-            let previous = getPreviousIntake(typeName: typeName)
+    func localGoalMet(typeName: String, goals: KeepTrack.CommonGoals, store: KeepTrack.CommonStore) -> Bool {
+        if let goal = getGoal(typeName: typeName, goals: goals) {
+            let previous = getPreviousIntake(typeName: typeName, store: store)
             return isGoalMet(goal: goal, previous: previous)
         } else {
             return true
@@ -39,6 +39,11 @@ struct AddEveningMedsIntent: AppIntent {
         
     @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog & ShowsSnippetView {
+        // Load the store asynchronously to ensure data is fully loaded before mutation
+        let store = await KeepTrack.CommonStore.loadStore()
+        // Load the goals model to access today's goals
+        let goals = KeepTrack.CommonGoals()
+        
         let myName = "Latanoprost"
         let commonEntryLatanoProst = CommonEntry(
             id: UUID(),
@@ -46,9 +51,9 @@ struct AddEveningMedsIntent: AppIntent {
             units: "drop",
             amount: 1,
             name: myName,
-            goalMet: localGoalMet(typeName: myName)
+            goalMet: localGoalMet(typeName: myName, goals: goals, store: store)
         )
-        KeepTrack.CommonStore().addEntry(entry: commonEntryLatanoProst)
+        store.addEntry(entry: commonEntryLatanoProst)
         
         let snippetView: some View = VStack {
             Text("You have consumed latanoprost")

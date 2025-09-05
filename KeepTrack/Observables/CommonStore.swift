@@ -9,8 +9,27 @@ import Foundation
 import OSLog
 import SwiftUI
 
+/// `CommonStore` is an observable store that loads and persists `CommonEntry` history.
+/// 
+/// IMPORTANT: Clients should use the async initializer `await CommonStore.loadStore()`
+/// to obtain a fully loaded instance before accessing or mutating `history`.
+///
+/// Example:
+/// ```swift
+/// let store = await CommonStore.loadStore()
+/// ```
+///
+/// Accessing or mutating `history` before calling `loadHistory()` will result in empty or incomplete data.
 @MainActor
 @Observable final class CommonStore {
+
+    // MARK: - Async initializer
+    /// Loads CommonStore and waits for history to finish loading before using.
+    static func loadStore() async -> CommonStore {
+        let store = CommonStore()
+        await store.loadHistory()
+        return store
+    }
 
     // MARK: - Properties
 
@@ -22,16 +41,22 @@ import SwiftUI
 
     // MARK: - Init
 
+    /// Internal use only. Use `await CommonStore.loadStore()` to get a fully loaded instance.
     init() {
-        // Find the documents directory and file URL
-        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        if let docDirUrl = urls.first {
-            self.fileURL = docDirUrl.appendingPathComponent(Self.storeFilename)
+        // Use App Group container for shared storage between app and intents
+        // TODO: Replace with your real App Group identifier
+        let appGroupID = "group.com.headydiscy.keeptrack"
+        if let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupID) {
+            self.fileURL = containerURL.appendingPathComponent(Self.storeFilename)
         } else {
             self.fileURL = URL(fileURLWithPath: "/dev/null")
-            logger.fault("Failed to resolve document directory")
+            logger.fault("Failed to resolve App Group container directory")
+            fatalError("can't resolve App Group container directory")
         }
 
+        // For SwiftUI Environment-based usage, trigger loading history here,
+        // but callers requiring strong load guarantees (e.g. intent/shortcut usages)
+        // should still use `await CommonStore.loadStore()`.
         Task { await self.loadHistory() }
     }
 
@@ -102,12 +127,14 @@ import SwiftUI
     // MARK: - CRUD
 
     func addEntry(entry: CommonEntry) {
+        // Make sure history is loaded before mutating.
         self.history.append(entry)
         self.logger.info("CStore: Added entry to CommonStore \(entry.name)")
         Task { await self.save() }
     }
 
     func removeEntryAtId(uuid: UUID) {
+        // Make sure history is loaded before mutating.
         self.history.removeAll { $0.id == uuid }
         self.logger.info("CStore: Removed entry with id \(uuid)")
         Task { await self.save() }
@@ -119,3 +146,4 @@ import SwiftUI
         return todays
     }
 }
+
