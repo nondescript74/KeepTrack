@@ -43,7 +43,7 @@ struct ChangeHistory: View {
             VStack {
                 HStack {
                     Picker("Select Type", selection: $name) {
-                        ForEach(intakeTypes.intakeTypeNameArray.sorted(by: {$0 < $1}), id: \.self) {
+                        ForEach(intakeTypes.sortedIntakeTypeNameArray, id: \.self) {
                             Text($0)
                         }
                     }
@@ -55,7 +55,7 @@ struct ChangeHistory: View {
                 }
                 
                 Button(action: ({
-                    let entry = CommonEntry(id: UUID(), date: selectedDate, units: intakeTypes.intakeTypeArray.first(where: {$0.name == name})?.unit ?? "no unit", amount: intakeTypes.intakeTypeArray.first(where: {$0.name == name})?.amount ?? 0, name: name, goalMet: false)
+                    let entry = CommonEntry(id: UUID(), date: selectedDate, units: intakeTypes.sortedIntakeTypeArray.first(where: {$0.name == name})?.unit ?? "no unit", amount: intakeTypes.sortedIntakeTypeArray.first(where: {$0.name == name})?.amount ?? 0, name: name, goalMet: false)
                     ChangeHistory.logger.info("Adding intake  \(name) with goalMet false")
                     store.addEntry(entry: entry)
                     

@@ -28,7 +28,7 @@ struct HistoryYesterday: View {
     }
     
     func getTypeColor(intakeType: IntakeType) -> Color {
-        let types = cIntakeTypes.intakeTypeArray.sorted(by: {$0.name < $1.name})
+        let types = cIntakeTypes.sortedIntakeTypeArray
         let index = types.firstIndex(of: intakeType)!
         return colors[index]
     }
@@ -48,7 +48,7 @@ struct HistoryYesterday: View {
                 .foregroundColor(.red)
             
             ScrollView {
-                ForEach(cIntakeTypes.intakeTypeArray.sorted(by: {$0.name < $1.name}), id: \.self) { type in
+                ForEach(cIntakeTypes.sortedIntakeTypeArray, id: \.self) { type in
                     if !sortYesterdayByName(name: type.name).isEmpty {
                         HStack {
                             Text("\(type.name): ")

@@ -35,7 +35,7 @@ struct EnterIntake: View {
         NavigationStack {
             HStack {
                 Picker("Select Type", selection: $name) {
-                    ForEach(cIntakeTypes.intakeTypeNameArray.sorted(by: {$0 < $1}), id: \.self) {
+                    ForEach(cIntakeTypes.sortedIntakeTypeNameArray, id: \.self) {
                         Text($0)
                     }
                 }
@@ -85,3 +85,4 @@ struct EnterIntake: View {
         .environment(CommonGoals())
         .environmentObject(CurrentIntakeTypes())
 }
+
