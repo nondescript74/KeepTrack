@@ -29,6 +29,26 @@ enum frequency: String, CaseIterable {
     case none
 }
 
+extension frequency {
+    var displayName: String {
+        switch self {
+        case .daily: return "Once Daily"
+        case .twiceADay: return "Twice a Day"
+        case .threeTimesADay: return "Three Times a Day"
+        case .fourTimesADay: return "Four Times a Day"
+        case .sixTimesADay: return "Six Times a Day"
+        case .weekly: return "Weekly"
+        case .twiceWeekly: return "Twice Weekly"
+        case .threeTimesWeekly: return "Three Times Weekly"
+        case .fourTimesWeekly: return "Four Times Weekly"
+        case .monthly: return "Monthly"
+        case .twiceMonthly: return "Twice Monthly"
+        case .threeTimesMonthly: return "Three Times Monthly"
+        case .none: return "None"
+        }
+    }
+}
+
 enum units: String, CaseIterable {
     case ml
     case tsp
@@ -42,6 +62,25 @@ enum units: String, CaseIterable {
     case killograms
     case IU
     case none
+}
+
+extension units {
+    var displayName: String {
+        switch self {
+        case .ml: return "Milliliters (ml)"
+        case .tsp: return "Teaspoon (tsp)"
+        case .tbsp: return "Tablespoon (tbsp)"
+        case .cups: return "Cups"
+        case .fluidOunces: return "Fluid Ounces (fl oz)"
+        case .grams: return "Grams (g)"
+        case .mg: return "Milligrams (mg)"
+        case .drop: return "Drop(s)"
+        case .pounds: return "Pounds (lb)"
+        case .killograms: return "Kilograms (kg)"
+        case .IU: return "International Units (IU)"
+        case .none: return "None"
+        }
+    }
 }
 
 public extension Array where Element: Hashable {
@@ -190,5 +229,3 @@ func matchingDateArray(name: String, startDate: Date) -> [Date] {
     
     return datesArray
 }
-
-
