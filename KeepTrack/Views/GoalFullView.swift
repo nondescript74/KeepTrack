@@ -12,7 +12,7 @@ struct GoalFullView: View {
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "GoalFullView")
     
     @Environment(CommonGoals.self) var goals
-    @Environment(CurrentIntakeTypes.self) var cIntakeTypes
+    @EnvironmentObject var cIntakeTypes: CurrentIntakeTypes
     @Environment(\.dismiss) var dismiss
     
     var goal:CommonGoal
@@ -99,7 +99,6 @@ struct GoalFullView: View {
             }
         }
         .environment(goals)
-        .environment(cIntakeTypes)
     }
 }
 
@@ -107,6 +106,5 @@ struct GoalFullView: View {
     let goal = CommonGoal(id: UUID(), name: "Metformin", description: "Sugar control", dates: [Date(), Date().addingTimeInterval(60 * 60 * 2)], isActive: true, isCompleted: false, dosage: 400, units: "mg", frequency: frequency.twiceADay.rawValue)
     GoalFullView(goal: goal)
         .environment(CommonGoals())
-        .environment(CurrentIntakeTypes())
+        .environmentObject(CurrentIntakeTypes())
 }
-

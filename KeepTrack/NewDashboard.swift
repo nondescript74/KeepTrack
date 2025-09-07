@@ -14,7 +14,6 @@ struct NewDashboard: View {
     
     @State private var store: CommonStore = CommonStore()
     @State private var goals: CommonGoals = CommonGoals()
-    @State private var cIntakeTypes = CurrentIntakeTypes()
     
     var body: some View {
         NavigationStack {
@@ -65,7 +64,6 @@ struct NewDashboard: View {
         .padding()
         .environment(store)
         .environment(goals)
-        .environment(cIntakeTypes)
     }
 }
 
@@ -73,5 +71,4 @@ struct NewDashboard: View {
     NewDashboard()
         .environment(CommonGoals())
         .environment(CommonStore())
-        .environment(CurrentIntakeTypes())
 }

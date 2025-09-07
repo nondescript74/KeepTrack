@@ -6,16 +6,16 @@
 //
 
 import Foundation
-import SwiftUI
 import OSLog
 
 @MainActor
-@Observable final class CurrentIntakeTypes {
+final class CurrentIntakeTypes: ObservableObject {
     // MARK: - Properties
     private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "CurrentIntakeTypes")
     private static let intakeTypesFilename = "intakeTypes.json"
     private let fileURL: URL
     
+    @Published
     var intakeTypeArray: [IntakeType] = []
     var intakeTypeNameArray: [String] {
         intakeTypeArray.map(\.name)
@@ -151,4 +151,3 @@ import OSLog
         }
     }
 }
-

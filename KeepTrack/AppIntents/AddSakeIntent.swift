@@ -18,7 +18,7 @@ struct AddSakeIntent: AppIntent {
         // Load the shared persistent store asynchronously to ensure correct data saving and syncing
         let store = await KeepTrack.CommonStore.loadStore()
         // Initialize the common goals instance to check or update goals if needed
-        let goals = KeepTrack.CommonGoals()
+        _ = KeepTrack.CommonGoals()
         
         let commonEntry = CommonEntry(
             id: UUID(),
