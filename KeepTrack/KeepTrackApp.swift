@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct KeepTrackApp: App {
+    @StateObject private var currentIntakeTypes = CurrentIntakeTypes()
     var body: some Scene {
         WindowGroup {
             NewDashboard()
+                .environmentObject(currentIntakeTypes)
         }
     }
 }

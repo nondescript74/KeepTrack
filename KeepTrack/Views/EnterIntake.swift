@@ -13,7 +13,7 @@ struct EnterIntake: View {
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "EnterIntake")
     @Environment(CommonStore.self) var store
     @Environment(CommonGoals.self) var goals
-    @Environment(CurrentIntakeTypes.self) var cIntakeTypes
+    @EnvironmentObject var cIntakeTypes: CurrentIntakeTypes
     @Environment(\.dismiss) var dismiss
     
     let dateFormatter = DateFormatter()
@@ -74,7 +74,7 @@ struct EnterIntake: View {
             .padding(.trailing)
             .environment(store)
             .environment(goals)
-            .environment(cIntakeTypes)
+//            .environment(cIntakeTypes)
         }
     }
 }
@@ -83,5 +83,5 @@ struct EnterIntake: View {
     EnterIntake()
         .environment(CommonStore())
         .environment(CommonGoals())
-        .environment(CurrentIntakeTypes())
+        .environmentObject(CurrentIntakeTypes())
 }

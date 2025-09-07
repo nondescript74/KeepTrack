@@ -11,10 +11,8 @@ import OSLog
 struct AddIntakeType: View {
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "AddIntakeType")
     
-    @Environment(CurrentIntakeTypes.self) private var intakeTypes
+    @EnvironmentObject private var intakeTypes: CurrentIntakeTypes
     
-//    let formatter: NumberFormatter = NumberFormatter()
-
     @State private var iTypeName: String = ""
     @State private var iTypeUnit: String = ""
     @State private var iTypeAmount: Double = 0.0
@@ -30,7 +28,7 @@ struct AddIntakeType: View {
             TextField("Amount", value: $iTypeAmount, format: .number)
             TextField("Description", text: $iTypeDescrip)
             TextField("Frequency", text: $iTypeFrequency)
-            Text(iTypeUUID.uuidString)
+//            Text(iTypeUUID.uuidString)
             
             Button(action: ({
                 if self.iTypeName.isEmpty  || self.iTypeUnit.isEmpty || self.iTypeAmount.isZero || self.iTypeDescrip.isEmpty || self.iTypeFrequency.isEmpty || self.iTypeDescrip.isEmpty || self.iTypeFrequency.isEmpty {
@@ -57,11 +55,10 @@ struct AddIntakeType: View {
             .foregroundStyle(.blue)
         }
         .padding(20)
-        .environment(intakeTypes)
     }
 }
 
 #Preview {
     AddIntakeType()
-        .environment(CurrentIntakeTypes())
+        .environmentObject(CurrentIntakeTypes())
 }

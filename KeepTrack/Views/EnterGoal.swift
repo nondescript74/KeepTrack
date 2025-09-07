@@ -12,7 +12,7 @@ struct EnterGoal: View {
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "EnterGoal")
     
     @Environment(CommonGoals.self) var goals
-    @Environment(CurrentIntakeTypes.self) var cIntakeTypes
+    @EnvironmentObject var cIntakeTypes: CurrentIntakeTypes
     @Environment(\.dismiss) var dismiss
     
     @State fileprivate var name: String = "Water"
@@ -146,13 +146,11 @@ struct EnterGoal: View {
         Spacer()
             .navigationTitle(Text("Enter Goal"))
             .environment(goals)
-            .environment(cIntakeTypes)
     }
 }
 
 #Preview {
     EnterGoal()
         .environment(CommonGoals())
-        .environment(CurrentIntakeTypes())
+        .environmentObject(CurrentIntakeTypes())
 }
-

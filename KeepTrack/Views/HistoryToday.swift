@@ -12,7 +12,7 @@ struct HistoryToday: View {
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "History")
     @Environment(CommonStore.self) private var store
     @Environment(CommonGoals.self) private var goals
-    @Environment(CurrentIntakeTypes.self) private var cIntakeTypes
+    @EnvironmentObject private var cIntakeTypes: CurrentIntakeTypes
     
     @State private var toggeled: Bool = false
     
@@ -94,7 +94,6 @@ struct HistoryToday: View {
         }
         .environment(store)
         .environment(goals)
-        .environment(cIntakeTypes)
     }
     
 }
@@ -103,5 +102,5 @@ struct HistoryToday: View {
     HistoryToday()
         .environment(CommonStore())
         .environment(CommonGoals())
-        .environment(CurrentIntakeTypes())
+        .environmentObject(CurrentIntakeTypes())
 }

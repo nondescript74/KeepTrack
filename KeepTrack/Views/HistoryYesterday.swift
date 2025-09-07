@@ -10,10 +10,10 @@ import OSLog
 
 struct HistoryYesterday: View {
     
-    let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "History")
+    private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "History")
     @Environment(CommonStore.self) private var store
     @Environment(CommonGoals.self) private var goals
-    @Environment(CurrentIntakeTypes.self) private var cIntakeTypes
+    @EnvironmentObject private var cIntakeTypes: CurrentIntakeTypes
     
     fileprivate func getYesterday() -> [CommonEntry] {
         let myReturn = store.history.filter { Calendar.current.isDateInYesterday($0.date) }
@@ -65,7 +65,6 @@ struct HistoryYesterday: View {
         }
         .environment(store)
         .environment(goals)
-        .environment(cIntakeTypes)
     }
 }
 
@@ -73,5 +72,5 @@ struct HistoryYesterday: View {
     HistoryYesterday()
         .environment(CommonStore())
         .environment(CommonGoals())
-        .environment(CurrentIntakeTypes())
+//        .environmentObject(CurrentIntakeTypes())
 }

@@ -12,7 +12,7 @@ struct EditGoals: View {
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "EditGoals")
     @Binding var items: [CommonGoal]
     @Environment(CommonGoals.self) var goals
-    @Environment(CurrentIntakeTypes.self) var cIntakeTypes
+    @EnvironmentObject var cIntakeTypes: CurrentIntakeTypes
     
     var body: some View {
         NavigationView {
@@ -24,7 +24,6 @@ struct EditGoals: View {
 //            .navigationTitle(Text("Edit Goals"))
         }
         .environment(goals)
-        .environment(cIntakeTypes)
 #if os(VisionOS)
         .glassBackgroundEffect()
 #endif
@@ -39,6 +38,5 @@ struct EditGoals: View {
     
     EditGoals(items: $items)
         .environment(CommonGoals())
-        .environment(CurrentIntakeTypes())
+        .environmentObject(CurrentIntakeTypes())
 }
-

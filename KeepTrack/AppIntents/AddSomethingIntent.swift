@@ -40,7 +40,7 @@ struct AddSomethingIntent: AppIntent {
         // Load the store asynchronously to ensure the latest state is loaded and changes persist correctly
         let store = await KeepTrack.CommonStore.loadStore()
         // Load goals for any goal-related logic
-        let goals = KeepTrack.CommonGoals()
+        _ = KeepTrack.CommonGoals()
 
         let cIntakeTypes = CurrentIntakeTypes()
         let name = intakeType
