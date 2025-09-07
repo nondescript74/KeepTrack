@@ -21,6 +21,14 @@ final class CurrentIntakeTypes: ObservableObject {
         intakeTypeArray.map(\.name)
     }
     
+    var sortedIntakeTypeArray: [IntakeType] {
+        intakeTypeArray.sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+    }
+    
+    var sortedIntakeTypeNameArray: [String] {
+        sortedIntakeTypeArray.map(\.name)
+    }
+    
     // MARK: - Init
     init() {
         // Use App Group container for shared storage between app and intents
@@ -45,9 +53,10 @@ final class CurrentIntakeTypes: ObservableObject {
                     do {
                         let data = try Data(contentsOf: self.fileURL)
                         let types = try JSONDecoder().decode([IntakeType].self, from: data)
+                        let sortedTypes = types.sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
                         Task { @MainActor in
-                            self.intakeTypeArray = types
-                            self.logger.info("Loaded \(types.count) intake types")
+                            self.intakeTypeArray = sortedTypes
+                            self.logger.info("Loaded \(sortedTypes.count) intake types")
                             continuation.resume()
                         }
                     } catch {
@@ -63,8 +72,9 @@ final class CurrentIntakeTypes: ObservableObject {
                         do {
                             let data = try Data(contentsOf: bundleURL)
                             let types = try JSONDecoder().decode([IntakeType].self, from: data)
+                            let sortedTypes = types.sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
                             Task { @MainActor in
-                                self.intakeTypeArray = types
+                                self.intakeTypeArray = sortedTypes
                                 self.logger.info("Loaded intake types from bundle")
                                 continuation.resume()
                             }
@@ -90,6 +100,7 @@ final class CurrentIntakeTypes: ObservableObject {
     
     func saveNewIntakeType(intakeType: IntakeType) {
         self.intakeTypeArray.append(intakeType)
+        self.intakeTypeArray.sort { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
         Task {
             await self.saveIntakeTypes()
         }
@@ -151,3 +162,4 @@ final class CurrentIntakeTypes: ObservableObject {
         }
     }
 }
+

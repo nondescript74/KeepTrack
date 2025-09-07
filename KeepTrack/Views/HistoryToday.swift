@@ -35,7 +35,7 @@ struct HistoryToday: View {
     }
     
     func getTypeColor(intakeType: IntakeType) -> Color {
-        let types = cIntakeTypes.intakeTypeArray.sorted(by: {$0.name < $1.name})
+        let types = cIntakeTypes.sortedIntakeTypeArray
         let index = types.firstIndex(of: intakeType)!
         return colors[index]
     }
@@ -58,14 +58,14 @@ struct HistoryToday: View {
         VStack  {
             Text("Today")
                 .font(.title)
-//            Text("Types count: \(cIntakeTypes.intakeTypeArray.count)")
+//            Text("Types count: \(cIntakeTypes.sortedIntakeTypeArray.count)")
             if getToday().isEmpty {
                 Text("Nothing taken today")
                     .foregroundColor(.red)
             }
             VStack {
                 ScrollView {
-                    ForEach(cIntakeTypes.intakeTypeArray.sorted(by: {$0.name < $1.name}), id: \.self) { type in
+                    ForEach(cIntakeTypes.sortedIntakeTypeArray, id: \.self) { type in
 //                        Text("Type: \(type.name), Entries today: \(sortTodayByName(name: type.name).count)")
                         if !sortTodayByName(name: type.name).isEmpty {
                             HStack {

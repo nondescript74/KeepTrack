@@ -36,6 +36,11 @@ struct AddIntakeType: View {
     var body: some View {
         VStack {
             Text("Add a new intake type")
+            
+            TextField("Name", text: $iTypeName)
+                .textFieldStyle(.roundedBorder)
+                .padding(.bottom, 4)
+            
             TextField("Search", text: $searchText)
                 .textFieldStyle(.roundedBorder)
                 .padding(.bottom, 4)
@@ -51,7 +56,7 @@ struct AddIntakeType: View {
                         }
                         .background(iTypeName == name ? Color.accentColor.opacity(0.15) : Color.clear)
                         .contentShape(Rectangle())
-                        .onTapGesture { self.iTypeName = name }
+                        .onTapGesture { self.iTypeName = name; self.searchText = "" }
                     }
                 }
                 .background(Color(uiColor: .systemGroupedBackground))
@@ -60,8 +65,8 @@ struct AddIntakeType: View {
                     RoundedRectangle(cornerRadius: 8, style: .continuous)
                         .stroke(Color.secondary.opacity(0.2))
                 )
-                .frame(maxHeight: 200)
             }
+            .frame(maxHeight: 200)
             
             Picker("Unit", selection: $selectedUnit) {
                 ForEach(units.allCases, id: \.self) { unit in
@@ -137,3 +142,4 @@ struct AddIntakeType: View {
     AddIntakeType()
         .environmentObject(CurrentIntakeTypes())
 }
+

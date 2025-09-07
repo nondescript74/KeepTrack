@@ -63,7 +63,7 @@ struct EnterGoal: View {
                 Spacer()
                 
                 Picker("Select Type", selection: $name) {
-                    ForEach(cIntakeTypes.intakeTypeNameArray.sorted(by: {$0 < $1}), id: \.self) {
+                    ForEach(cIntakeTypes.sortedIntakeTypeNameArray, id: \.self) {
                         Text($0)
                     }
                 }
@@ -154,3 +154,4 @@ struct EnterGoal: View {
         .environment(CommonGoals())
         .environmentObject(CurrentIntakeTypes())
 }
+
