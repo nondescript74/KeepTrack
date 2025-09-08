@@ -13,9 +13,6 @@
     "%@: " : {
 
     },
-    "14 ounces of water added" : {
-
-    },
     "Active" : {
 
     },
@@ -28,34 +25,13 @@
     "Add a selected intake item to your history." : {
 
     },
-    "Add evening meds" : {
-
-    },
     "Add History" : {
-
-    },
-    "Add morning meds" : {
 
     },
     "Add New" : {
 
     },
-    "Add one med" : {
-
-    },
-    "Add sake" : {
-
-    },
-    "Add Sake" : {
-
-    },
     "Add Something" : {
-
-    },
-    "Add water" : {
-
-    },
-    "Add Water" : {
 
     },
     "AM" : {
@@ -82,6 +58,9 @@
     "Edit this Goal" : {
 
     },
+    "Enter amount" : {
+
+    },
     "Enter Goal" : {
 
     },
@@ -100,13 +79,7 @@
     "Inactive" : {
 
     },
-    "Intake added" : {
-
-    },
     "Intake Goals For the Day" : {
-
-    },
-    "Intake types or store not loaded" : {
 
     },
     "Is Active" : {
@@ -115,16 +88,7 @@
     "Item to Add" : {
 
     },
-    "Latanoprost added" : {
-
-    },
-    "Losartan, Rosuvastatin, Timolol, Amlodipine added" : {
-
-    },
     "Name" : {
-
-    },
-    "Nihon-shu added" : {
 
     },
     "No entries yet" : {
@@ -136,39 +100,16 @@
     "Nothing taken today" : {
 
     },
-    "Okay one glass of sake added" : {
-
-    },
     "Okay, added %@." : {
-
-    },
-    "Okay, you consumed %lld amlodipine, %lld timolol, %lld metformin, %lld rosuvastatin, %lld losartan, and %lld latanoprost." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Okay, you consumed %1$lld amlodipine, %2$lld timolol, %3$lld metformin, %4$lld rosuvastatin, %5$lld losartan, and %6$lld latanoprost."
-          }
-        }
-      }
-    },
-    "Okay, you consumed %lld amlodipine, %lld timolol, %lld rosuvastatin, and %lld losartan" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Okay, you consumed %1$lld amlodipine, %2$lld timolol, %3$lld rosuvastatin, and %4$lld losartan"
-          }
-        }
-      }
-    },
-    "Okay, you consumed %lld glasses of sake today." : {
 
     },
     "PM" : {
 
     },
     "Search" : {
+
+    },
+    "Select an ingredient" : {
 
     },
     "Select intake: " : {
@@ -180,43 +121,10 @@
     "Select Type" : {
 
     },
-    "Show all meds taken today" : {
-
-    },
     "Show Goals" : {
 
     },
-    "show meds" : {
-
-    },
-    "Show morning meds" : {
-
-    },
-    "show sake" : {
-
-    },
-    "Show Todays Liquid Intake" : {
-
-    },
-    "Show Todays Sake" : {
-
-    },
-    "show water" : {
-
-    },
     "Start Date" : {
-
-    },
-    "This adds a 3.5 oz glass of sake" : {
-
-    },
-    "This adds a 14 oz glass of water" : {
-
-    },
-    "This adds Amlodipine, Losartan, Timolol and Rosuvastatin" : {
-
-    },
-    "This adds latanoprost" : {
 
     },
     "Times" : {
@@ -235,28 +143,6 @@
 
     },
     "Yesterday" : {
-
-    },
-    "You added a 14 ounce glass of water" : {
-
-    },
-    "You consumed %lld glasses of water today and %lld smoothies." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "You consumed %1$lld glasses of water today and %2$lld smoothies."
-          }
-        }
-      }
-    },
-    "You have consumed a 3.5 fluid ounce glass of sake" : {
-
-    },
-    "You have consumed latanoprost" : {
-
-    },
-    "You have consumed your morning meds" : {
 
     },
     "You logged a %lf %@ serving of %@." : {
