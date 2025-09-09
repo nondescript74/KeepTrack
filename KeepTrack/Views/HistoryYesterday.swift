@@ -53,12 +53,18 @@ struct HistoryYesterday: View {
                         HStack {
                             Text("\(type.name): ")
                                 .foregroundStyle(getTypeColor(intakeType: type))
-                            Spacer()
-                            Text(getUniqueYesterdayByNameCount(name: type.name).description)
+                                .font(.subheadline)
+                            ScrollView(.horizontal) {
+                                HStack {
+                                    ForEach(sortYesterdayByName(name: type.name), id: \.self) { entry in
+                                        Clock(hour: getHour(from: entry.date), minute: getMinute(from: entry.date), is12HourFormat: true, isAM: isItAM(date: entry.date), colorGreen: entry.goalMet)
+                                    }
+                                    .font(.caption)
+                                    .padding([.bottom, .top], 5)
+                                }
+                            }
+                            
                         }
-                        .font(.title2)
-                        .padding(.all)
-                        
                     }
                 }
             }
@@ -72,5 +78,5 @@ struct HistoryYesterday: View {
     HistoryYesterday()
         .environment(CommonStore())
         .environment(CommonGoals())
-//        .environmentObject(CurrentIntakeTypes())
 }
+

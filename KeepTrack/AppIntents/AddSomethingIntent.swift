@@ -7,6 +7,7 @@
 
 import AppIntents
 import SwiftUI
+import OSLog
 
 import AppIntents
 
@@ -15,6 +16,7 @@ struct IntakeTypeOptionsProvider: DynamicOptionsProvider {
         // Use MainActor to safely access CurrentIntakeTypes
         await MainActor.run {
             let types = CurrentIntakeTypes().intakeTypeNameArray
+            logger.info("Current intake types: \(types)")
             return types.isEmpty ? ["Water"] : types
         }
     }
@@ -32,18 +34,28 @@ struct AddSomethingIntent: AppIntent {
     var intakeType: String
 
     static var parameterSummary: some ParameterSummary {
-        Summary("Add \(\.$intakeType)")
+        Summary("Add \(\.$intakeType) (must specify intake type)")
     }
 
     @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog & ShowsSnippetView {
+        let cIntakeTypes = CurrentIntakeTypes()
+        let name = intakeType
+        let validTypes = cIntakeTypes.intakeTypeNameArray
+        
+        let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "AppIntents")
+        logger.info("Available intake types: \(validTypes.joined(separator: ", "))")
+        
+        guard validTypes.map({ $0.lowercased() }).contains(name.lowercased()) else {
+            let validList = validTypes.joined(separator: ", ")
+            return .result(dialog: "The intake type you specified (\(name)) is not valid. Valid types are: \(validList). Please try again with a valid type.")
+        }
+        
         // Load the store asynchronously to ensure the latest state is loaded and changes persist correctly
         let store = await KeepTrack.CommonStore.loadStore()
         // Load goals for any goal-related logic
         _ = KeepTrack.CommonGoals()
 
-        let cIntakeTypes = CurrentIntakeTypes()
-        let name = intakeType
         let units = cIntakeTypes.getunits(typeName: name)
         let amount = cIntakeTypes.getamount(typeName: name)
         
@@ -69,3 +81,4 @@ struct AddSomethingIntent: AppIntent {
         )
     }
 }
+

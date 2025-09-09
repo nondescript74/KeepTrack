@@ -41,12 +41,15 @@ final class CurrentIntakeTypes: ObservableObject {
         }
         // Load asynchronously after init
         Task { await self.loadIntakeTypes() }
+        
+        logger.info("CurrentIntakeTypes initialized with fileURL: \(self.fileURL.absoluteString, privacy: .public)")
     }
     
     // MARK: - Persistence (concurrent)
     func loadIntakeTypes() async {
 //        let fileURL = self.fileURL
 //        let logger = self.logger
+        logger.info("intakeTypes.json exists: \(FileManager.default.fileExists(atPath: self.fileURL.path), privacy: .public) at path: \(self.fileURL.path, privacy: .public)")
         await withCheckedContinuation { continuation in
             DispatchQueue.global(qos: .background).async {
                 if FileManager.default.fileExists(atPath: self.fileURL.path) {
@@ -162,4 +165,3 @@ final class CurrentIntakeTypes: ObservableObject {
         }
     }
 }
-

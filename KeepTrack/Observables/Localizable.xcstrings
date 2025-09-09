@@ -16,7 +16,7 @@
     "Active" : {
 
     },
-    "Add ${intakeType}" : {
+    "Add ${intakeType} (must specify intake type)" : {
 
     },
     "Add a new intake type" : {
@@ -26,6 +26,9 @@
 
     },
     "Add History" : {
+
+    },
+    "Add Intake" : {
 
     },
     "Add New" : {
@@ -40,7 +43,13 @@
     "Amount" : {
 
     },
+    "Cancel" : {
+
+    },
     "Change Goal" : {
+
+    },
+    "Confirm" : {
 
     },
     "Current goals are :" : {
@@ -48,6 +57,16 @@
     },
     "Description" : {
 
+    },
+    "Did you take your %@ at %@?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Did you take your %1$@ at %2$@?"
+          }
+        }
+      }
     },
     "Dosage: " : {
 
@@ -126,6 +145,16 @@
     },
     "Start Date" : {
 
+    },
+    "The intake type you specified (%@) is not valid. Valid types are: %@. Please try again with a valid type." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The intake type you specified (%1$@) is not valid. Valid types are: %2$@. Please try again with a valid type."
+          }
+        }
+      }
     },
     "Times" : {
 
