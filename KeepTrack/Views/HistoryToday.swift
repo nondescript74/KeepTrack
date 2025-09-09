@@ -39,20 +39,20 @@ struct HistoryToday: View {
         let index = types.firstIndex(of: intakeType)!
         return colors[index]
     }
-    
-    func getHour(from date: Date) -> Int {
-        var calendar = Calendar.current
-        calendar.timeZone = .current
-        let hour = calendar.component(.hour, from: date)
-        return hour
-    }
-    
-    func getMinute(from date: Date) -> Int {
-        var calendar = Calendar.current
-        calendar.timeZone = .current
-        let minute = calendar.component(.minute, from: date)
-        return minute
-    }
+//    
+//    func getHour(from date: Date) -> Int {
+//        var calendar = Calendar.current
+//        calendar.timeZone = .current
+//        let hour = calendar.component(.hour, from: date)
+//        return hour
+//    }
+//    
+//    func getMinute(from date: Date) -> Int {
+//        var calendar = Calendar.current
+//        calendar.timeZone = .current
+//        let minute = calendar.component(.minute, from: date)
+//        return minute
+//    }
     
     var body: some View {
         VStack  {
@@ -66,7 +66,6 @@ struct HistoryToday: View {
             VStack {
                 ScrollView {
                     ForEach(cIntakeTypes.sortedIntakeTypeArray, id: \.self) { type in
-//                        Text("Type: \(type.name), Entries today: \(sortTodayByName(name: type.name).count)")
                         if !sortTodayByName(name: type.name).isEmpty {
                             HStack {
                                 Text("\(type.name): ")
@@ -94,6 +93,12 @@ struct HistoryToday: View {
         }
         .environment(store)
         .environment(goals)
+        // Schedule notifications for today's goals when the view appears or updates
+        .task {
+            for goal in goals.getTodaysGoals() {
+                IntakeReminderManager.scheduleReminder(for: goal, store: store)
+            }
+        }
     }
     
 }

@@ -90,6 +90,20 @@ public extension Array where Element: Hashable {
     }
 }
 
+func getHour(from date: Date) -> Int {
+    var calendar = Calendar.current
+    calendar.timeZone = .current
+    let hour = calendar.component(.hour, from: date)
+    return hour
+}
+
+func getMinute(from date: Date) -> Int {
+    var calendar = Calendar.current
+    calendar.timeZone = .current
+    let minute = calendar.component(.minute, from: date)
+    return minute
+}
+
 func hourForDate(_ date: Date) -> Int {
     var calendar = Calendar.autoupdatingCurrent
     calendar.timeZone = .current
