@@ -68,6 +68,14 @@ struct AddSomethingIntent: AppIntent {
 
         let store = await KeepTrack.CommonStore.loadStore()
         _ = KeepTrack.CommonGoals()
+        
+        let formattedAmount: String = {
+            if matchedType.amount.truncatingRemainder(dividingBy: 1) == 0 {
+                return String(format: "%.0f", matchedType.amount)
+            } else {
+                return String(format: "%.2f", matchedType.amount)
+            }
+        }()
 
         let entry = CommonEntry(
             id: UUID(),
@@ -81,11 +89,11 @@ struct AddSomethingIntent: AppIntent {
         
         let snippetView: some View = VStack {
             Text("\(matchedType.name) added")
-            Text("You logged a \(matchedType.amount) \(matchedType.unit) serving of \(matchedType.name).")
+            Text("You logged a \(formattedAmount) \(matchedType.unit) serving of \(matchedType.name).")
         }
         
         return .result(
-            dialog: "Okay, added \\(matchedType.name).",
+            dialog: "Okay, added \(matchedType.name).",
             view: snippetView
         )
     }
@@ -111,4 +119,3 @@ struct AddSomethingIntent: AppIntent {
         }
     }
 }
-

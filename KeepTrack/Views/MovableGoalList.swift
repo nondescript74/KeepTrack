@@ -27,8 +27,13 @@ struct MovableGoalList<Element: Identifiable, Content: View>: View {
     }
     
     fileprivate func delete(at offsets: IndexSet) {
+        // Prevent crash when deleting last item
+        guard !data.isEmpty else { return }
+        
         for idx in offsets {
-            goals.removeGoalAtId(uuid: data[idx].id as! UUID)
+            if idx >= 0 && idx < data.count {
+                goals.removeGoalAtId(uuid: data[idx].id as! UUID)
+            }
         }
     }
     
@@ -42,3 +47,4 @@ struct MovableGoalList<Element: Identifiable, Content: View>: View {
         .environment(goals)
     }
 }
+
