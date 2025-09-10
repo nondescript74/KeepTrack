@@ -119,7 +119,7 @@
     "Nothing taken today" : {
 
     },
-    "Okay, added %@." : {
+    "Okay, added \\(matchedType.name)." : {
 
     },
     "PM" : {

@@ -9,15 +9,30 @@ import AppIntents
 import SwiftUI
 import OSLog
 
-import AppIntents
-
+// Direct-from-disk options provider (no dependency on app state)
 struct IntakeTypeOptionsProvider: DynamicOptionsProvider {
     func results() async throws -> [String] {
-        // Use MainActor to safely access CurrentIntakeTypes
-        await MainActor.run {
-            let types = CurrentIntakeTypes().intakeTypeNameArray
-            logger.info("Current intake types: \(types)")
-            return types.isEmpty ? ["Water"] : types
+        let appGroupID = "group.com.headydiscy.KeepTrack"
+        let fileName = "intakeTypes.json"
+
+        guard let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupID) else {
+            return ["Water"]
+        }
+        // let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.headydiscy.KeepTrack")
+
+        let fileURL = containerURL.appendingPathComponent(fileName)
+
+        if FileManager.default.fileExists(atPath: fileURL.path) {
+            do {
+                let data = try Data(contentsOf: fileURL)
+                let types = try JSONDecoder().decode([IntakeType].self, from: data)
+                let names = types.map { $0.name }.sorted()
+                return names.isEmpty ? ["Water"] : names
+            } catch {
+                return ["Water"]
+            }
+        } else {
+            return ["Water"]
         }
     }
 }
@@ -39,46 +54,61 @@ struct AddSomethingIntent: AppIntent {
 
     @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog & ShowsSnippetView {
-        let cIntakeTypes = CurrentIntakeTypes()
-        let name = intakeType
-        let validTypes = cIntakeTypes.intakeTypeNameArray
-        
+        let intakeTypes = loadIntakeTypesFromDisk()
+        let validNames = intakeTypes.map { $0.name }
         let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "AppIntents")
-        logger.info("Available intake types: \(validTypes.joined(separator: ", "))")
         
-        guard validTypes.map({ $0.lowercased() }).contains(name.lowercased()) else {
-            let validList = validTypes.joined(separator: ", ")
-            return .result(dialog: "The intake type you specified (\(name)) is not valid. Valid types are: \(validList). Please try again with a valid type.")
+        logger.info("Available intake types: \(validNames.joined(separator: ", "))")
+
+        // Lookup selected intake type, ignoring case
+        guard let matchedType = intakeTypes.first(where: { $0.name.caseInsensitiveCompare(intakeType) == .orderedSame }) else {
+            let validList = validNames.joined(separator: ", ")
+            return .result(dialog: "The intake type you specified (\(intakeType)) is not valid. Valid types are: \(validList). Please try again with a valid type.")
         }
-        
-        // Load the store asynchronously to ensure the latest state is loaded and changes persist correctly
+
         let store = await KeepTrack.CommonStore.loadStore()
-        // Load goals for any goal-related logic
         _ = KeepTrack.CommonGoals()
 
-        let units = cIntakeTypes.getunits(typeName: name)
-        let amount = cIntakeTypes.getamount(typeName: name)
-        
         let entry = CommonEntry(
             id: UUID(),
             date: Date(),
-            units: units,
-            amount: amount,
-            name: name,
+            units: matchedType.unit,
+            amount: matchedType.amount,
+            name: matchedType.name,
             goalMet: false // Optionally, calculate if the goal was met, using goals as needed
         )
-        // Add the entry to the asynchronously loaded store instance
         store.addEntry(entry: entry)
         
         let snippetView: some View = VStack {
-            Text("\(name) added")
-            Text("You logged a \(amount) \(units) serving of \(name).")
+            Text("\(matchedType.name) added")
+            Text("You logged a \(matchedType.amount) \(matchedType.unit) serving of \(matchedType.name).")
         }
         
         return .result(
-            dialog: "Okay, added \(name).",
+            dialog: "Okay, added \\(matchedType.name).",
             view: snippetView
         )
+    }
+
+    // Loads intake types directly from disk in the App Group container
+    private func loadIntakeTypesFromDisk() -> [IntakeType] {
+        let appGroupID = "group.com.headydiscy.KeepTrack"
+        let fileName = "intakeTypes.json"
+        guard let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupID) else {
+            return []
+        }
+        let fileURL = containerURL.appendingPathComponent(fileName)
+        if FileManager.default.fileExists(atPath: fileURL.path) {
+            do {
+                let data = try Data(contentsOf: fileURL)
+                let types = try JSONDecoder().decode([IntakeType].self, from: data)
+                return types
+            } catch {
+                return []
+            }
+        } else {
+            return []
+        }
     }
 }
 

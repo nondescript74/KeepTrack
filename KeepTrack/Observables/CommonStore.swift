@@ -45,7 +45,7 @@ import SwiftUI
     init() {
         // Use App Group container for shared storage between app and intents
         // TODO: Replace with your real App Group identifier
-        let appGroupID = "group.com.headydiscy.keeptrack"
+        let appGroupID = "group.com.headydiscy.KeepTrack"
         if let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupID) {
             self.fileURL = containerURL.appendingPathComponent(Self.storeFilename)
         } else {
