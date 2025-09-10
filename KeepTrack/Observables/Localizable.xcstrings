@@ -119,7 +119,7 @@
     "Nothing taken today" : {
 
     },
-    "Okay, added \\(matchedType.name)." : {
+    "Okay, added %@." : {
 
     },
     "PM" : {
@@ -174,12 +174,12 @@
     "Yesterday" : {
 
     },
-    "You logged a %lf %@ serving of %@." : {
+    "You logged a %@ %@ serving of %@." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "You logged a %1$lf %2$@ serving of %3$@."
+            "value" : "You logged a %1$@ %2$@ serving of %3$@."
           }
         }
       }
