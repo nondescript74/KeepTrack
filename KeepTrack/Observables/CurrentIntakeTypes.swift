@@ -32,23 +32,38 @@ final class CurrentIntakeTypes: ObservableObject {
     // MARK: - Init
     init() {
         // Use App Group container for shared storage between app and intents
-        let appGroupID = "group.com.headydiscy.keeptrack" // Replace with your real App Group identifier
+        let appGroupID = "group.com.headydiscy.KeepTrack" // Replace with your real App Group identifier
         if let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupID) {
             self.fileURL = containerURL.appendingPathComponent(Self.intakeTypesFilename)
         } else {
             self.fileURL = URL(fileURLWithPath: "/dev/null")
             logger.fault("Failed to resolve App Group container directory")
         }
+        // Ensure intakeTypes.json exists in the App Group container
+        let fileManager = FileManager.default
+        if !fileManager.fileExists(atPath: self.fileURL.path) {
+            if let bundleURL = Bundle.main.url(forResource: "intakeTypes", withExtension: "json") {
+                do {
+                    try fileManager.copyItem(at: bundleURL, to: self.fileURL)
+                    logger.info("Copied default intakeTypes.json to App Group container")
+                } catch {
+                    logger.error("Failed to copy intakeTypes.json: \(error.localizedDescription)")
+                }
+            } else {
+                logger.error("Default intakeTypes.json not found in bundle")
+            }
+        }
+        
         // Load asynchronously after init
         Task { await self.loadIntakeTypes() }
         
         logger.info("CurrentIntakeTypes initialized with fileURL: \(self.fileURL.absoluteString, privacy: .public)")
     }
     
+
+    
     // MARK: - Persistence (concurrent)
     func loadIntakeTypes() async {
-//        let fileURL = self.fileURL
-//        let logger = self.logger
         logger.info("intakeTypes.json exists: \(FileManager.default.fileExists(atPath: self.fileURL.path), privacy: .public) at path: \(self.fileURL.path, privacy: .public)")
         await withCheckedContinuation { continuation in
             DispatchQueue.global(qos: .background).async {

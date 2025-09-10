@@ -18,19 +18,19 @@ struct HistoryToday: View {
     
     fileprivate func getToday() -> [CommonEntry] {
         let myReturn = store.history.filter { Calendar.current.isDateInToday($0.date) }
-        logger.info("gT\(myReturn.count)")
+//        logger.info("gT\(myReturn.count)")
         return myReturn
     }
     
     fileprivate func sortTodayByName(name: String) -> [CommonEntry] {
         let myReturn  = getToday().filter { $0.name.lowercased() == name.lowercased() }.sorted { $0.date < $1.date }
-        logger.info("sTBN \(myReturn.count)")
+//        logger.info("sTBN \(myReturn.count)")
         return myReturn
     }
     
     fileprivate func getUniqueTodaysCommonEntriesUntilNow(name: String) -> [CommonEntry] {
         let myReturn: [CommonEntry] = sortTodayByName(name: name)
-        logger.info("gUTCEUN \(myReturn.debugDescription)")
+//        logger.info("gUTCEUN \(myReturn.debugDescription)")
         return myReturn
     }
     
@@ -39,26 +39,11 @@ struct HistoryToday: View {
         let index = types.firstIndex(of: intakeType)!
         return colors[index]
     }
-//    
-//    func getHour(from date: Date) -> Int {
-//        var calendar = Calendar.current
-//        calendar.timeZone = .current
-//        let hour = calendar.component(.hour, from: date)
-//        return hour
-//    }
-//    
-//    func getMinute(from date: Date) -> Int {
-//        var calendar = Calendar.current
-//        calendar.timeZone = .current
-//        let minute = calendar.component(.minute, from: date)
-//        return minute
-//    }
     
     var body: some View {
         VStack  {
             Text("Today")
                 .font(.title)
-//            Text("Types count: \(cIntakeTypes.sortedIntakeTypeArray.count)")
             if getToday().isEmpty {
                 Text("Nothing taken today")
                     .foregroundColor(.red)
