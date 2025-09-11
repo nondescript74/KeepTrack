@@ -40,33 +40,67 @@ struct HistoryYesterday: View {
     }
     
     var body: some View {
-        VStack {
-            Text("Yesterday")
-                .font(.title)
-            
-            Text(getYesterday().isEmpty ? "No entries yet" : "")
-                .foregroundColor(.red)
-            
-            ScrollView {
-                ForEach(cIntakeTypes.sortedIntakeTypeArray, id: \.self) { type in
-                    if !sortYesterdayByName(name: type.name).isEmpty {
-                        HStack {
-                            Text("\(type.name): ")
-                                .foregroundStyle(getTypeColor(intakeType: type))
-                                .font(.subheadline)
-                            ScrollView(.horizontal) {
-                                HStack {
-                                    ForEach(sortYesterdayByName(name: type.name), id: \.self) { entry in
-                                        Clock(hour: getHour(from: entry.date), minute: getMinute(from: entry.date), is12HourFormat: true, isAM: isItAM(date: entry.date), colorGreen: entry.goalMet)
+        ZStack {
+            LinearGradient(
+                gradient: Gradient(colors: [Color.purple.opacity(0.19), Color.blue.opacity(0.23), Color.white]),
+                startPoint: .top, endPoint: .bottom
+            )
+            .ignoresSafeArea()
+            .overlay(.ultraThinMaterial)
+
+            VStack(spacing: 20) {
+                Text("Yesterday")
+                    .font(.largeTitle).bold()
+                    .foregroundStyle(Color.blue)
+                    .shadow(color: .blue.opacity(0.18), radius: 4, x: 0, y: 2)
+                    .padding(.top, 10)
+
+                if getYesterday().isEmpty {
+                    Text("No entries yet")
+                        .foregroundColor(.red)
+                        .padding()
+                        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+                        .padding(.horizontal, 24)
+                        .padding(.top, 8)
+                }
+                // Intake list section with glassy card effect
+                RoundedRectangle(cornerRadius: 28, style: .continuous)
+                    .fill(LinearGradient(gradient: Gradient(colors: [Color.white.opacity(0.60), Color.purple.opacity(0.13)]), startPoint: .topLeading, endPoint: .bottomTrailing))
+                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 28))
+                    .shadow(radius: 2, y: 1)
+                    .overlay(
+                        ScrollView {
+                            VStack(spacing: 0) {
+                                ForEach(cIntakeTypes.sortedIntakeTypeArray, id: \.self) { type in
+                                    if !sortYesterdayByName(name: type.name).isEmpty {
+                                        HStack {
+                                            Text("\(type.name): ")
+                                                .foregroundStyle(getTypeColor(intakeType: type))
+                                                .font(.subheadline)
+                                            ScrollView(.horizontal, showsIndicators: false) {
+                                                HStack {
+                                                    ForEach(sortYesterdayByName(name: type.name), id: \.self) { entry in
+                                                        Clock(hour: getHour(from: entry.date), minute: getMinute(from: entry.date), is12HourFormat: true, isAM: isItAM(date: entry.date), colorGreen: entry.goalMet)
+                                                    }
+                                                    .font(.caption)
+                                                    .padding([.bottom, .top], 5)
+                                                }
+                                            }
+                                        }
+                                        .padding(.vertical, 6)
+                                        .padding(.horizontal, 14)
                                     }
-                                    .font(.caption)
-                                    .padding([.bottom, .top], 5)
                                 }
                             }
-                            
+                            .padding(.vertical, 8)
                         }
-                    }
-                }
+                        .clipShape(RoundedRectangle(cornerRadius: 28))
+                        .padding(.vertical, 2)
+                    )
+                    .padding(.horizontal, 14)
+                    .padding(.top, 2)
+
+                Spacer(minLength: 28)
             }
         }
         .environment(store)
@@ -78,5 +112,5 @@ struct HistoryYesterday: View {
     HistoryYesterday()
         .environment(CommonStore())
         .environment(CommonGoals())
+        .environmentObject(CurrentIntakeTypes())
 }
-
