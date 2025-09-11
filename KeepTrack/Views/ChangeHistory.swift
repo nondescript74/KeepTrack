@@ -36,9 +36,9 @@ struct ChangeHistory: View {
             Button(action: ({
                 let entry = CommonEntry(id: UUID(), date: selectedDate, units: intakeTypes.sortedIntakeTypeArray.first(where: {$0.name == name})?.unit ?? "no unit", amount: intakeTypes.sortedIntakeTypeArray.first(where: {$0.name == name})?.amount ?? 0, name: name, goalMet: false)
                 ChangeHistory.logger.info("Adding intake  \(name) with goalMet false")
-                store.addEntry(entry: entry)
-                
-                
+                Task {
+                    await store.addEntry(entry: entry)
+                }
             }), label: ({
                 Image(systemName: "plus.arrow.trianglehead.clockwise")
                     .padding(10)

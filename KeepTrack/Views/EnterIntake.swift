@@ -52,7 +52,7 @@ struct EnterIntake: View {
                     
                     if goalToUse == nil {
                         let entry = CommonEntry(id: UUID(), date: Date(), units: cIntakeTypes.intakeTypeArray.first(where: {$0.name == name})?.unit ?? "no unit", amount: cIntakeTypes.intakeTypeArray.first(where: {$0.name == name})?.amount ?? 0, name: name, goalMet: true)
-                        store.addEntry(entry: entry)
+                        Task { await store.addEntry(entry: entry) }
                         logger.info("CommonStore: Added intake  \(name) no goals for name")
                         
                     } else {
@@ -60,7 +60,7 @@ struct EnterIntake: View {
                         let result = isGoalMet(goal: goalToUse!, previous: store.getTodaysIntake().filter({$0.name == self.name}).count)
                         logger.info("todays intake \(result)")
                         let entry = CommonEntry(id: UUID(), date: Date(), units: cIntakeTypes.intakeTypeArray.first(where: {$0.name == name})?.unit ?? "no unit", amount: cIntakeTypes.intakeTypeArray.first(where: {$0.name == name})?.amount ?? 0, name: name, goalMet: result)
-                        store.addEntry(entry: entry)
+                        Task { await store.addEntry(entry: entry) }
                         logger.info("CommonStore: added intake \(name)")
                     }
                 }), label: ({

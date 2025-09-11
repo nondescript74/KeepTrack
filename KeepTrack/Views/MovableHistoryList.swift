@@ -24,12 +24,16 @@ struct MovableHistoryList<Element: Identifiable, Content: View>: View {
     }
     
     fileprivate func move(from source: IndexSet, to destination: Int) {
-        store.history.move(fromOffsets: source, toOffset: destination)
+        Task {
+            store.history.move(fromOffsets: source, toOffset: destination)
+        }
     }
     
     fileprivate func delete(at offsets: IndexSet) {
-        for idx in offsets {
-            store.removeEntryAtId(uuid: data[idx].id as! UUID)
+        Task {
+            for idx in offsets {
+                await store.removeEntryAtId(uuid: data[idx].id as! UUID)
+            }
         }
     }
     
@@ -44,3 +48,4 @@ struct MovableHistoryList<Element: Identifiable, Content: View>: View {
         .environment(store)
     }
 }
+

@@ -124,20 +124,24 @@ import SwiftUI
         }
     }
 
-    // MARK: - CRUD
-
-    func addEntry(entry: CommonEntry) {
-        // Make sure history is loaded before mutating.
-        self.history.append(entry)
-        self.logger.info("CStore: Added entry to CommonStore \(entry.name)")
-        Task { await self.save() }
+    @MainActor
+    func saveAndWait() async {
+        await self.save()
     }
 
-    func removeEntryAtId(uuid: UUID) {
-        // Make sure history is loaded before mutating.
+    // MARK: - CRUD
+    @MainActor
+    func addEntry(entry: CommonEntry) async {
+        self.history.append(entry)
+        self.logger.info("CStore: Added entry to CommonStore \(entry.name)")
+        await self.save()
+    }
+
+    @MainActor
+    func removeEntryAtId(uuid: UUID) async {
         self.history.removeAll { $0.id == uuid }
         self.logger.info("CStore: Removed entry with id \(uuid)")
-        Task { await self.save() }
+        await self.save()
     }
 
     func getTodaysIntake() -> [CommonEntry] {
