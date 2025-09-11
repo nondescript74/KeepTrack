@@ -21,6 +21,7 @@ struct NewDashboard: View {
     @State private var store: CommonStore = CommonStore()
     @State private var goals: CommonGoals = CommonGoals()
     @Binding var pendingNotification: PendingNotification?
+    @Environment(\.scenePhase) private var scenePhase
     @EnvironmentObject var cIntakeTypes: CurrentIntakeTypes
     
     var body: some View {
@@ -67,6 +68,13 @@ struct NewDashboard: View {
                 Text(Bundle.main.infoDictionary!["CFBundleVersion"] as! String)
             }
             .font(.subheadline)
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            if newPhase == .active {
+                Task {
+                    await store.loadHistory()
+                }
+            }
         }
         .sheet(item: $pendingNotification) { notification in
             VStack(spacing: 24) {
