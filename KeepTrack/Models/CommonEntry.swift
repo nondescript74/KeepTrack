@@ -16,7 +16,7 @@ struct CommonEntry: Codable, Identifiable, Hashable {
     var goalMet: Bool
     
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(name)
+        hasher.combine(name) // Only names!
     }
 }
 

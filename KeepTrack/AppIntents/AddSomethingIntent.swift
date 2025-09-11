@@ -85,7 +85,7 @@ struct AddSomethingIntent: AppIntent {
             name: matchedType.name,
             goalMet: false // Optionally, calculate if the goal was met, using goals as needed
         )
-        store.addEntry(entry: entry)
+        await store.addEntry(entry: entry)
         
         let snippetView: some View = VStack {
             Text("\(matchedType.name) added")
