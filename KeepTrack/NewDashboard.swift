@@ -28,12 +28,16 @@ struct NewDashboard: View {
         NavigationStack {
             TabView {
                 
-                Tab("Today", systemImage: "wineglass") {
-                    HistoryToday()
+                Tab("Intake", systemImage: "wineglass") {
+                    EnterIntake()
                 }
                 
-                Tab("Yesterday", systemImage: "wineglass") {
-                    HistoryYesterday()
+                Tab("Today", systemImage: "clipboard") {
+                    HistoryDayView(kind: .today)
+                }
+                
+                Tab("Yesterday", systemImage: "clipboard.fill") {
+                    HistoryDayView(kind: .yesterday)
                 }
                 
                 

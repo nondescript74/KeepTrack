@@ -45,25 +45,27 @@ struct EnterIntake: View {
                     )
                     .cornerRadius(18)
                     .shadow(color: Color.black.opacity(0.15), radius: 8, x: 0, y: 4)
+                    .padding(10)
                 
                 VStack(spacing: 10) {
                     Text("Log Intake")
                         .font(.title3.bold())
                         .foregroundStyle(Color.accentColor)
-                        .padding(.bottom, 6)
+//                        .padding(.bottom, 6)
                     
                     HStack(spacing: 16) {
                         Picker("Select Type", selection: $name) {
                             ForEach(cIntakeTypes.sortedIntakeTypeNameArray, id: \.self) {
                                 Text($0)
+                                    .padding(.horizontal, 10)
                             }
                         }
-                        .padding(8)
                         .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 12))
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
                                 .stroke(Color.accentColor.opacity(0.6), lineWidth: 1.5)
                         )
+                        .padding(.trailing)
                         
                         Spacer()
                         
@@ -91,11 +93,10 @@ struct EnterIntake: View {
                                 .shadow(color: .blue.opacity(0.6), radius: 5, x: 0, y: 3)
                         }
                     }
-                    .frame(maxHeight: 120)
+                    Spacer()
                 }
                 .padding(16)
             }
-            .padding(0)
             .environment(store)
             .environment(goals)
         }

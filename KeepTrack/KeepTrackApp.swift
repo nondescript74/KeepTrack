@@ -20,6 +20,7 @@ class PendingNotificationHolder: ObservableObject {
 struct KeepTrackApp: App {
     @StateObject private var currentIntakeTypes = CurrentIntakeTypes()
     @StateObject private var notificationHolder: PendingNotificationHolder
+    @State private var showLaunchScreen = true
 
     init() {
         let holder = PendingNotificationHolder()
@@ -35,8 +36,17 @@ struct KeepTrackApp: App {
 
     var body: some Scene {
         WindowGroup {
-            NewDashboard(pendingNotification: $notificationHolder.pendingNotification)
-                .environmentObject(currentIntakeTypes)
+            if showLaunchScreen {
+                LaunchScreen()
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                            withAnimation { showLaunchScreen = false }
+                        }
+                    }
+            } else {
+                NewDashboard(pendingNotification: $notificationHolder.pendingNotification)
+                    .environmentObject(currentIntakeTypes)
+            }
         }
     }
 }
