@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		F80FB4922E721543005835FA /* ingredients_list.json in Resources */ = {isa = PBXBuildFile; fileRef = F80FB4682E721543005835FA /* ingredients_list.json */; };
 		F80FB4932E721543005835FA /* intakeTypes.json in Resources */ = {isa = PBXBuildFile; fileRef = F80FB4692E721543005835FA /* intakeTypes.json */; };
+		F85AC2512E747DE300CA5AFB /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85AC2502E747DE300CA5AFB /* LaunchScreen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,6 +40,7 @@
 		F80FB4682E721543005835FA /* ingredients_list.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ingredients_list.json; sourceTree = "<group>"; };
 		F80FB4692E721543005835FA /* intakeTypes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = intakeTypes.json; sourceTree = "<group>"; };
 		F81C71D22D8A29280037FCCB /* KeepTrack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KeepTrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F85AC2502E747DE300CA5AFB /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -93,6 +95,7 @@
 		F81C71C92D8A29280037FCCB = {
 			isa = PBXGroup;
 			children = (
+				F85AC2502E747DE300CA5AFB /* LaunchScreen.swift */,
 				F81C71D42D8A29280037FCCB /* KeepTrack */,
 				F897BF432D95EC1600F7225B /* KeepTrackClip */,
 				F80813642E731E1F001FD09A /* KeepTrackTests */,
@@ -232,6 +235,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F85AC2512E747DE300CA5AFB /* LaunchScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -432,7 +436,7 @@
 				CODE_SIGN_ENTITLEMENTS = KeepTrack/KeepTrackDebug.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 145;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = YKHW2TJ32G;
 				ENABLE_APP_SANDBOX = YES;
@@ -453,6 +457,7 @@
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
@@ -484,7 +489,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = KeepTrack/KeepTrack.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 145;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = YKHW2TJ32G;
 				ENABLE_APP_SANDBOX = YES;
@@ -505,6 +510,7 @@
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;

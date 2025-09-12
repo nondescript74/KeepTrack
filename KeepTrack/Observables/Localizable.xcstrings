@@ -98,6 +98,9 @@
     "Inactive" : {
 
     },
+    "Intake" : {
+
+    },
     "Intake Goals For the Day" : {
 
     },
@@ -105,6 +108,9 @@
 
     },
     "Item to Add" : {
+
+    },
+    "KeepTrack" : {
 
     },
     "Log Intake" : {
@@ -170,6 +176,16 @@
     },
     "Units: " : {
 
+    },
+    "Version %@ (%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Version %1$@ (%2$@)"
+          }
+        }
+      }
     },
     "Welcome to KeepTrack!" : {
 
