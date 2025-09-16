@@ -47,19 +47,19 @@ struct HistoryDayView: View {
     var body: some View {
         ZStack {
             // Dynamic gradient/background depending on kind
-            if kind == .today {
-                LinearGradient(
-                    gradient: Gradient(colors: [Color.blue.opacity(0.25), Color.purple.opacity(0.18), Color.white]),
-                    startPoint: .top, endPoint: .bottom
-                )
-                .overlay(.ultraThinMaterial)
-            } else {
-                LinearGradient(
-                    gradient: Gradient(colors: [Color.purple.opacity(0.19), Color.blue.opacity(0.23), Color.white]),
-                    startPoint: .top, endPoint: .bottom
-                )
-                .overlay(.ultraThinMaterial)
-            }
+//            if kind == .today {
+//                LinearGradient(
+//                    gradient: Gradient(colors: [Color.blue.opacity(0.25), Color.purple.opacity(0.18), Color.white]),
+//                    startPoint: .top, endPoint: .bottom
+//                )
+//                .overlay(.ultraThinMaterial)
+//            } else {
+//                LinearGradient(
+//                    gradient: Gradient(colors: [Color.purple.opacity(0.19), Color.blue.opacity(0.23), Color.white]),
+//                    startPoint: .top, endPoint: .bottom
+//                )
+//                .overlay(.ultraThinMaterial)
+//            }
         
             VStack(spacing: kind == .today ? 18 : 20) {
                 Text(kind == .today ? "Today" : "Yesterday")
@@ -77,21 +77,21 @@ struct HistoryDayView: View {
                 }
                 
                 // Intake list section with glassy card effect
-                RoundedRectangle(cornerRadius: 28, style: .continuous)
-                    .fill(
-                        LinearGradient(
-                            gradient: Gradient(colors: [
-                                Color.white.opacity(kind == .today ? 0.65 : 0.60),
-                                (kind == .today ? Color.blue.opacity(0.12) : Color.purple.opacity(0.13))
-                            ]),
-                            startPoint: .topLeading, endPoint: .bottomTrailing
-                        )
-                    )
-                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 28))
-                    .shadow(radius: 3, y: 2)
-                    .overlay(
+//                RoundedRectangle(cornerRadius: 28, style: .continuous)
+//                    .fill(
+//                        LinearGradient(
+//                            gradient: Gradient(colors: [
+//                                Color.white.opacity(kind == .today ? 0.65 : 0.60),
+//                                (kind == .today ? Color.blue.opacity(0.12) : Color.purple.opacity(0.13))
+//                            ]),
+//                            startPoint: .topLeading, endPoint: .bottomTrailing
+//                        )
+//                    )
+//                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 28))
+//                    .shadow(radius: 3, y: 2)
+//                    .overlay(
                         ScrollView {
-                            VStack(spacing: 0) {
+                            VStack(spacing: 10) {
                                 ForEach(cIntakeTypes.sortedIntakeTypeArray, id: \.self) { type in
                                     if !sortEntriesByName(name: type.name).isEmpty {
                                         HStack {
@@ -101,7 +101,7 @@ struct HistoryDayView: View {
                                             ScrollView(.horizontal, showsIndicators: false) {
                                                 HStack {
                                                     ForEach(getUniqueEntriesForName(name: type.name)) { entry in
-                                                        Clock(hour: getHour(from: entry.date), minute: getMinute(from: entry.date), is12HourFormat: true, isAM: isItAM(date: entry.date), colorGreen: entry.goalMet)
+                                                        DigitalClockView(hour: getHour(from: entry.date), minute: getMinute(from: entry.date), is12HourFormat: true, isAM: isItAM(date: entry.date), colorGreen: entry.goalMet)
                                                     }
                                                     .font(.caption2)
 //                                                    .padding([.bottom, .top], 1)
@@ -114,8 +114,8 @@ struct HistoryDayView: View {
                             }
                         }
                         .clipShape(RoundedRectangle(cornerRadius: 28))
-                    )
-                    .padding(.horizontal, 14)
+//                    )
+//                    .padding(.horizontal, 14)
 
                 if kind == .today {
                     // Today also schedules reminders

@@ -8,6 +8,7 @@
 import SwiftUI
 import OSLog
 
+
 struct GoalDisplayByName: View {
     
     @Environment(\.colorScheme) var colorScheme
@@ -66,7 +67,7 @@ struct GoalDisplayByName: View {
                                                 HStack(alignment: .center) {
                                                     ForEach(goal.dates, id: \.self) { date in
                                                         HStack {
-                                                            Clock(hour: hourForDate(date), minute: minuteForDate(date), is12HourFormat: true, isAM: self.isItAM(date), colorGreen: false)
+                                                            DigitalClockView(hour: hourForDate(date), minute: minuteForDate(date), is12HourFormat: true, isAM: self.isItAM(date), colorGreen: false)
                                                         }
                                                         .padding(.all, 10)
                                                     }
