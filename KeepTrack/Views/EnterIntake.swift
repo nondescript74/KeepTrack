@@ -34,18 +34,18 @@ struct EnterIntake: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                RoundedRectangle(cornerRadius: 18)
-                    .fill(.ultraThinMaterial)
-                    .background(
-                        LinearGradient(
-                            colors: [.accentColor.opacity(0.2), .clear],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .cornerRadius(18)
-                    .shadow(color: Color.black.opacity(0.15), radius: 8, x: 0, y: 4)
-                    .padding(10)
+//                RoundedRectangle(cornerRadius: 18)
+//                    .fill(.ultraThinMaterial)
+//                    .background(
+//                        LinearGradient(
+//                            colors: [.accentColor.opacity(0.2), .clear],
+//                            startPoint: .topLeading,
+//                            endPoint: .bottomTrailing
+//                        )
+//                    )
+//                    .cornerRadius(18)
+//                    .shadow(color: Color.black.opacity(0.15), radius: 8, x: 0, y: 4)
+//                    .padding(10)
                 
                 VStack(spacing: 10) {
                     Text("Log Intake")
@@ -57,7 +57,7 @@ struct EnterIntake: View {
                         Picker("Select Type", selection: $name) {
                             ForEach(cIntakeTypes.sortedIntakeTypeNameArray, id: \.self) {
                                 Text($0)
-                                    .padding(.horizontal, 10)
+                                    .padding(.trailing)
                             }
                         }
                         .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 12))
@@ -65,9 +65,9 @@ struct EnterIntake: View {
                             RoundedRectangle(cornerRadius: 12)
                                 .stroke(Color.accentColor.opacity(0.6), lineWidth: 1.5)
                         )
-                        .padding(.trailing)
-                        
                         Spacer()
+                        
+                        
                         
                         Button {
                             let goalToUse = goals.getTodaysGoalForName(namez: self.name)
@@ -95,7 +95,7 @@ struct EnterIntake: View {
                     }
                     Spacer()
                 }
-                .padding(16)
+                .padding(.horizontal)
             }
             .environment(store)
             .environment(goals)

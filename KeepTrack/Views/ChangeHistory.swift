@@ -21,7 +21,7 @@ struct ChangeHistory: View {
     var body: some View {
         ZStack {
             LinearGradient(
-                gradient: Gradient(colors: [Color.blue.opacity(0.6), Color.purple.opacity(0.5)]),
+                gradient: Gradient(colors: [Color.blue.opacity(0.1), Color.purple.opacity(0.3)]),
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
@@ -57,11 +57,11 @@ struct ChangeHistory: View {
                     .foregroundStyle(.blue)
                 }
                 .padding(30)
-                .background(
-                    Capsule()
-                        .fill(Color.white.opacity(0.15))
-                        .shadow(color: Color.black.opacity(0.15), radius: 10, x: 0, y: 6)
-                )
+//                .background(
+//                    Capsule()
+//                        .fill(Color.white.opacity(0.15))
+//                        .shadow(color: Color.black.opacity(0.15), radius: 10, x: 0, y: 6)
+//                )
                 .padding(.horizontal, 32)
                 .padding(.top, 24)
                 
