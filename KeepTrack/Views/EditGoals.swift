@@ -21,12 +21,9 @@ struct EditGoals: View {
                     Text("\(item.name.wrappedValue)")
                 }
             }
-//            .navigationTitle(Text("Edit Goals"))
         }
         .environment(goals)
-#if os(VisionOS)
-        .glassBackgroundEffect()
-#endif
+
     }
     
 }

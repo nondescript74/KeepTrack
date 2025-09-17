@@ -29,7 +29,7 @@
     "Add ${intakeType} (must specify intake type)" : {
 
     },
-    "Add a new intake type" : {
+    "Add A New Intake Type" : {
 
     },
     "Add a selected intake item to your history." : {
@@ -50,9 +50,6 @@
     "Add Something" : {
 
     },
-    "AM" : {
-
-    },
     "Amount" : {
 
     },
@@ -65,7 +62,7 @@
     "Confirm" : {
 
     },
-    "Current goals are :" : {
+    "Current Goals Are:" : {
 
     },
     "Description" : {
@@ -93,10 +90,7 @@
     "Enter amount" : {
 
     },
-    "Enter Goal" : {
-
-    },
-    "Enter goal details" : {
+    "Enter Goals" : {
 
     },
     "Frequency" : {
@@ -111,10 +105,13 @@
     "Inactive" : {
 
     },
+    "Ingredient" : {
+
+    },
     "Intake" : {
 
     },
-    "Intake Goals For the Day" : {
+    "Intake Goals" : {
 
     },
     "Is Active" : {
@@ -147,13 +144,10 @@
     "Okay, added %@." : {
 
     },
-    "PM" : {
-
-    },
     "Search" : {
 
     },
-    "Select an ingredient" : {
+    "Select Ingredient" : {
 
     },
     "Select intake: " : {
@@ -188,6 +182,9 @@
 
     },
     "Unit" : {
+
+    },
+    "Unit of Measure" : {
 
     },
     "Units: " : {

@@ -14,21 +14,19 @@ struct Ingredient: Codable, Hashable {
 
 struct AddIntakeType: View {
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "AddIntakeType")
-    
     @EnvironmentObject private var intakeTypes: CurrentIntakeTypes
-    
     @State private var iTypeName: String = ""
     @State private var iTypeUnit: String = ""
     @State private var iTypeAmount: Double = 0.0
-    @State private var iTypeDescrip: String = ""
+    @State private var iTypeDescrip: String = "Enter A Description"
     @State private var iTypeFrequency: String = ""
     @State private var iTypeUUID: UUID = UUID()
     @State private var ingredientNames: [String] = []
     @State private var searchText: String = ""
     @State private var hasEditedAmountField = false
-    
     @State private var selectedUnit: units = .none
     @State private var selectedFrequency: frequency = .none
+    @FocusState private var descFieldIsFocused: Bool
     
     var filteredIngredientNames: [String] {
         searchText.isEmpty ? ingredientNames : ingredientNames.filter { $0.localizedCaseInsensitiveContains(searchText) }
@@ -36,42 +34,64 @@ struct AddIntakeType: View {
     
     var body: some View {
         VStack {
-            Text("Add a new intake type")
+            Text("Add A New Intake Type")
+                .font(.title).bold()
+                .foregroundStyle(Color.blue)
+                .shadow(color: .blue.opacity(0.18), radius: 4, x: 0, y: 2)
             
-            TextField("Name", text: $iTypeName)
-                .textFieldStyle(.roundedBorder)
-                .padding(.bottom, 4)
-            
-            TextField("Search", text: $searchText)
-                .textFieldStyle(.roundedBorder)
-                .padding(.bottom, 4)
-            
-            Picker("Unit", selection: $selectedUnit) {
-                ForEach(units.allCases, id: \.self) { unit in
-                    Text(unit.displayName).tag(unit)
-                }
+            HStack {
+                TextField("Search", text: $searchText)
+                    .textFieldStyle(.roundedBorder)
+                TextField("Name", text: $iTypeName)
+                    .textFieldStyle(.roundedBorder)
+                    .foregroundStyle(Color.blue)
             }
-            .pickerStyle(.menu)
-            
-            LabeledContent("Amount") {
-                TextField("Enter amount", value: $iTypeAmount, format: .number)
-                    .onTapGesture {
-                        if !hasEditedAmountField {
-                            iTypeAmount = Double.nan
-                            hasEditedAmountField = true
+            HStack {
+                LabeledContent("Amount") {
+                    Spacer()
+                    TextField("Enter amount", value: $iTypeAmount, format: .number)
+                        .onTapGesture {
+                            if !hasEditedAmountField {
+                                iTypeAmount = Double.nan
+                                hasEditedAmountField = true
+                            }
                         }
-                    }
-                    .keyboardType(.decimalPad)
-            }
-            
-            TextField("Description", text: $iTypeDescrip)
-            
-            Picker("Frequency", selection: $selectedFrequency) {
-                ForEach(frequency.allCases, id: \.self) { freq in
-                    Text(freq.displayName).tag(freq)
+                        .keyboardType(.decimalPad)
+                        .foregroundStyle(Color.blue)
                 }
+                Text("Unit of Measure")
+                Spacer()
+                Picker("Unit", selection: $selectedUnit) {
+                    ForEach(units.allCases, id: \.self) { unit in
+                        Text(unit.displayName).tag(unit)
+                    }
+                }
+                .pickerStyle(.menu)
             }
-            .pickerStyle(.menu)
+
+            TextField("Description", text: $iTypeDescrip)
+                .focused($descFieldIsFocused)
+                .onChange(of: descFieldIsFocused) { oldValue, newValue in
+                    if newValue && iTypeDescrip == "Enter A Description" {
+                        iTypeDescrip = ""
+                    }
+                }
+                .onChange(of: iTypeDescrip) { oldValue, newValue in
+                    if newValue == "Enter A Description" {
+                        iTypeDescrip = ""
+                    }
+                }
+            
+            HStack {
+                Text("Frequency")
+                Spacer()
+                Picker("Frequency", selection: $selectedFrequency) {
+                    ForEach(frequency.allCases, id: \.self) { freq in
+                        Text(freq.displayName).tag(freq)
+                    }
+                }
+                .pickerStyle(.menu)
+            }
             
             Button(action: ({
                 if self.iTypeName.isEmpty || self.selectedUnit == .none || self.iTypeAmount.isZero || self.iTypeDescrip.isEmpty || self.selectedFrequency == .none {
@@ -100,34 +120,17 @@ struct AddIntakeType: View {
             .padding()
             .foregroundStyle(.blue)
             
-            Text("Select an ingredient")
+            Text("Ingredient")
                 .font(.headline)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.top, 4)
                 .padding(.bottom, 2)
-
-            ScrollView {
-                VStack(alignment: .leading, spacing: 0) {
-                    ForEach(filteredIngredientNames, id: \.self) { name in
-                        HStack {
-                            Text(name)
-                                .padding(.vertical, 8)
-                                .padding(.horizontal, 12)
-                            Spacer()
-                        }
-                        .background(iTypeName == name ? Color.accentColor.opacity(0.15) : Color.clear)
-                        .contentShape(Rectangle())
-                        .onTapGesture { self.iTypeName = name; self.searchText = "" }
-                    }
+            Picker("Select Ingredient", selection: $iTypeName) {
+                ForEach(filteredIngredientNames, id: \.self) { name in
+                    Text(name).tag(name)
                 }
-                .cornerRadius(8)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8, style: .continuous)
-                        .stroke(Color.secondary.opacity(0.2))
-                )
             }
-            .frame(maxHeight: 260)
-            .padding(.bottom, 8)
+            .pickerStyle(.wheel)
         }
         .padding(20)
         .task {

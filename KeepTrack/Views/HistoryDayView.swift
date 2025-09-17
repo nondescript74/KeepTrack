@@ -45,28 +45,12 @@ struct HistoryDayView: View {
     }
 
     var body: some View {
-        ZStack {
-            // Dynamic gradient/background depending on kind
-//            if kind == .today {
-//                LinearGradient(
-//                    gradient: Gradient(colors: [Color.blue.opacity(0.25), Color.purple.opacity(0.18), Color.white]),
-//                    startPoint: .top, endPoint: .bottom
-//                )
-//                .overlay(.ultraThinMaterial)
-//            } else {
-//                LinearGradient(
-//                    gradient: Gradient(colors: [Color.purple.opacity(0.19), Color.blue.opacity(0.23), Color.white]),
-//                    startPoint: .top, endPoint: .bottom
-//                )
-//                .overlay(.ultraThinMaterial)
-//            }
         
             VStack(spacing: kind == .today ? 18 : 20) {
                 Text(kind == .today ? "Today" : "Yesterday")
                     .font(.title).bold()
                     .foregroundStyle(Color.blue)
                     .shadow(color: .blue.opacity(kind == .today ? 0.2 : 0.18), radius: 4, x: 0, y: 2)
-                    //.padding(.top, kind == .today ? 0 : 10)
                 
                 if getEntries().isEmpty {
                     Text(kind == .today ? "Nothing taken today" : "No entries yet")
@@ -75,21 +59,6 @@ struct HistoryDayView: View {
                         .padding(.horizontal, 24)
                         //.padding(.top, kind == .today ? 0 : 8)
                 }
-                
-                // Intake list section with glassy card effect
-//                RoundedRectangle(cornerRadius: 28, style: .continuous)
-//                    .fill(
-//                        LinearGradient(
-//                            gradient: Gradient(colors: [
-//                                Color.white.opacity(kind == .today ? 0.65 : 0.60),
-//                                (kind == .today ? Color.blue.opacity(0.12) : Color.purple.opacity(0.13))
-//                            ]),
-//                            startPoint: .topLeading, endPoint: .bottomTrailing
-//                        )
-//                    )
-//                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 28))
-//                    .shadow(radius: 3, y: 2)
-//                    .overlay(
                         ScrollView {
                             VStack(spacing: 10) {
                                 ForEach(cIntakeTypes.sortedIntakeTypeArray, id: \.self) { type in
@@ -125,7 +94,7 @@ struct HistoryDayView: View {
                     Spacer(minLength: 28)
                 }
             }
-        }
+//        }
         .environment(store)
         .environment(goals)
         .task {
