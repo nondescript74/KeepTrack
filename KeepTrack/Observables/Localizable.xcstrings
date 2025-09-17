@@ -13,6 +13,16 @@
     "%@: " : {
 
     },
+    "%@: %@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@: %2$@ %3$@"
+          }
+        }
+      }
+    },
     "Active" : {
 
     },
@@ -29,6 +39,9 @@
 
     },
     "Add Intake" : {
+
+    },
+    "Add Morning Meds" : {
 
     },
     "Add New" : {
@@ -114,6 +127,9 @@
 
     },
     "Log Intake" : {
+
+    },
+    "Morning Meds Added:" : {
 
     },
     "Name" : {
