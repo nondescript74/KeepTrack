@@ -119,3 +119,89 @@ struct AddSomethingIntent: AppIntent {
         }
     }
 }
+
+/// Logs four specified morning medications in a single step.
+/// Adds entries for amplodine, losartan, rosuvastatin, and timolol if found in intake types on disk.
+struct AddMorningMedsIntent: AppIntent {
+    static let title: LocalizedStringResource = "Add Morning Meds"
+    static let openAppWhenRun: Bool = false
+    static let shortcutPhrase: String? = "add morning meds"
+
+    @MainActor
+    func perform() async throws -> some IntentResult & ProvidesDialog & ShowsSnippetView {
+        // Load intake types from disk
+        let intakeTypes = loadIntakeTypesFromDisk()
+        let medNames = ["amlodipine", "losartan", "rosuvastatin", "timolol"]
+        
+        let store = await KeepTrack.CommonStore.loadStore()
+        _ = KeepTrack.CommonGoals()
+        
+        var addedEntries: [CommonEntry] = []
+        var notFoundMeds: [String] = []
+        
+        for medName in medNames {
+            if let matchedType = intakeTypes.first(where: { $0.name.caseInsensitiveCompare(medName) == .orderedSame }) {
+                let entry = CommonEntry(
+                    id: UUID(),
+                    date: Date(),
+                    units: matchedType.unit,
+                    amount: matchedType.amount,
+                    name: matchedType.name,
+                    goalMet: false
+                )
+                await store.addEntry(entry: entry)
+                addedEntries.append(entry)
+            } else {
+                notFoundMeds.append(medName)
+            }
+        }
+        
+        let addedCount = addedEntries.count
+        
+        var dialog = "Added \(addedCount) morning medication"
+        dialog += (addedCount == 1) ? "." : "s."
+        if !notFoundMeds.isEmpty {
+            let missingList = notFoundMeds.joined(separator: ", ")
+            dialog += " The following medications were not found and were skipped: \(missingList)."
+        }
+        
+        let snippetView: some View = VStack(alignment: .leading) {
+            Text("Morning Meds Added:")
+                .font(.headline)
+            ForEach(addedEntries, id: \.id) { entry in
+                let formattedAmount: String = {
+                    if entry.amount.truncatingRemainder(dividingBy: 1) == 0 {
+                        return String(format: "%.0f", entry.amount)
+                    } else {
+                        return String(format: "%.2f", entry.amount)
+                    }
+                }()
+                Text("\(entry.name): \(formattedAmount) \(entry.units)")
+            }
+        }
+        .padding()
+        
+        return .result(dialog: IntentDialog(stringLiteral: dialog), view: snippetView)
+    }
+    
+    // Loads intake types directly from disk in the App Group container
+    private func loadIntakeTypesFromDisk() -> [IntakeType] {
+        let appGroupID = "group.com.headydiscy.KeepTrack"
+        let fileName = "intakeTypes.json"
+        guard let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupID) else {
+            return []
+        }
+        let fileURL = containerURL.appendingPathComponent(fileName)
+        if FileManager.default.fileExists(atPath: fileURL.path) {
+            do {
+                let data = try Data(contentsOf: fileURL)
+                let types = try JSONDecoder().decode([IntakeType].self, from: data)
+                return types
+            } catch {
+                return []
+            }
+        } else {
+            return []
+        }
+    }
+}
