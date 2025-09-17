@@ -37,12 +37,13 @@ struct MovableHistoryList<Element: Identifiable, Content: View>: View {
         }
     }
     
-    
     var body: some View {
-        List {
-            ForEach($data, content: content)
-                .onMove(perform: move)
-                .onDelete(perform: delete)
+        VStack {
+            List {
+                ForEach($data, content: content)
+                    .onMove(perform: move)
+                    .onDelete(perform: delete)
+            }
         }
         .toolbar { EditButton() }
         .environment(store)

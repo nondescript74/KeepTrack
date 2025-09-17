@@ -62,6 +62,7 @@ enum units: String, CaseIterable {
     case killograms
     case IU
     case none
+    case piece
 }
 
 extension units {
@@ -78,6 +79,7 @@ extension units {
         case .pounds: return "Pounds (lb)"
         case .killograms: return "Kilograms (kg)"
         case .IU: return "International Units (IU)"
+        case .piece: return "Piece(s)"
         case .none: return "None"
         }
     }

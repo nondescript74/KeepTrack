@@ -52,29 +52,25 @@ struct EnterGoal: View {
     
     
     var body: some View {
-        ScrollView {
-            Text("Enter goal details")
-                .font(.headline)
-                .fontWeight(.bold)
-            
+        VStack {
+            Text("Enter Goals")
+                .font(.largeTitle).bold()
+                .foregroundStyle(Color.blue)
+                .shadow(color: .blue.opacity(0.2), radius: 4, x: 0, y: 2)
+                .padding()
             
             HStack {
                 Text("Select intake: ")
                 Spacer()
-                
                 Picker("Select Type", selection: $name) {
                     ForEach(cIntakeTypes.sortedIntakeTypeNameArray, id: \.self) {
                         Text($0)
                     }
                 }
-                
-            }.padding(.horizontal)
-            
-            HStack {
                 Text(getMatchingDesription())
                     .foregroundStyle(.purple)
             }
-            .padding([.trailing, .bottom])
+            .padding()
             
             HStack {
                 Text("Dosage: ")
@@ -82,8 +78,7 @@ struct EnterGoal: View {
                 Text(getMatchingUnits())
                 Text(getMatchingFrequency())
             }
-            .padding(.horizontal)
-            .foregroundStyle(.blue)
+            .padding()
             
             HStack {
                 DatePicker(
@@ -91,61 +86,54 @@ struct EnterGoal: View {
                     selection: $startDate,
                     displayedComponents: [.date, .hourAndMinute]
                 )
-            }
-            .padding(.horizontal)
-            
-            Button(action: ({
-                if self.name.isEmpty {
-                    return
-                }
                 
-                if goals.goals.contains(where: { $0.name == self.name }) {
-                    
-                    let remain = goals.goals.filter( { $0.name == self.name } )
-                    if remain.count > 1 {
-                        fatalError( "Too many goals with same name: \(self.name)" )
+                Button(action: ({
+                    if self.name.isEmpty {
+                        return
                     }
-                    var newDates = remain[0].dates
-                    newDates.append(startDate)
-                    let goal = CommonGoal(id: remain[0].id, name: name, description: getMatchingDesription(), dates: newDates, isActive: true, isCompleted: false, dosage: getMatchingAmounts(), units: getMatchingUnits(), frequency: getMatchingFrequency() )
-                    
-                    goals.addGoal(goal: goal)
-                    
-                } else {
-                    let dateArrayForGoal: [Date] = matchingDateArray(name: self.name, startDate: startDate)
-                    
-                    logger.info( "name: \(self.name)" )
-                    logger.info( "dateArrayForGoal: \(dateArrayForGoal)" )
-                    
-                    let goal = CommonGoal(id: UUID(), name: self.name, description: getMatchingDesription(), dates: dateArrayForGoal, isActive: true, isCompleted: false, dosage: getMatchingAmounts(), units: getMatchingUnits(), frequency: getMatchingFrequency() )
-                    
-                    goals.addGoal(goal: goal)
-                    logger.info("added a new goal")
-                }
-                
-                self.name = cIntakeTypes.intakeTypeArray.sorted(by: {$0.name < $1.name})[0].name
-                
-                
-            }), label: ({
-                Image(systemName: "plus.arrow.trianglehead.clockwise")
-                    .padding(10)
-                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(style: StrokeStyle(lineWidth: 2)))
-            }))
+                    if goals.goals.contains(where: { $0.name == self.name }) {
+                        let remain = goals.goals.filter( { $0.name == self.name } )
+                        if remain.count > 1 {
+                            fatalError( "Too many goals with same name: \(self.name)" )
+                        }
+                        var newDates = remain[0].dates
+                        newDates.append(startDate)
+                        let goal = CommonGoal(id: remain[0].id, name: name, description: getMatchingDesription(), dates: newDates, isActive: true, isCompleted: false, dosage: getMatchingAmounts(), units: getMatchingUnits(), frequency: getMatchingFrequency() )
+                        
+                        goals.addGoal(goal: goal)
+                    } else {
+                        let dateArrayForGoal: [Date] = matchingDateArray(name: self.name, startDate: startDate)
+                        
+                        logger.info( "name: \(self.name)" )
+                        logger.info( "dateArrayForGoal: \(dateArrayForGoal)" )
+                        let goal = CommonGoal(id: UUID(), name: self.name, description: getMatchingDesription(), dates: dateArrayForGoal, isActive: true, isCompleted: false, dosage: getMatchingAmounts(), units: getMatchingUnits(), frequency: getMatchingFrequency() )
+                        goals.addGoal(goal: goal)
+                        logger.info("added a new goal")
+                    }
+                    self.name = cIntakeTypes.intakeTypeArray.sorted(by: {$0.name < $1.name})[0].name
+                }), label: ({
+                    Image(systemName: "plus.arrow.trianglehead.clockwise")
+                        .padding(10)
+                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(style: StrokeStyle(lineWidth: 2)))
+                }))
+                .foregroundStyle(.blue)
+            }
             .padding()
-            .foregroundStyle(.blue)
             
-            Text("Current goals are :")
-                .font(.subheadline)
-            
+            Text("Current Goals Are:")
+                .font(.largeTitle).bold()
+                .foregroundStyle(Color.green)
+                .shadow(color: .blue.opacity(0.2), radius: 4, x: 0, y: 2)
+                .padding()
             ForEach(goals.goals, id: \.id) { goal in
                 Text(goal.name)
-                    .font(.caption)
+                    .font(.title)
                     .foregroundStyle(stateFul ? .green : .orange)
             }
+            Spacer()
         }
-        Spacer()
-            .navigationTitle(Text("Enter Goal"))
-            .environment(goals)
+        .environment(goals)
+        .environmentObject(cIntakeTypes)
     }
 }
 
