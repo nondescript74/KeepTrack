@@ -39,7 +39,7 @@ struct KeepTrackApp: App {
             if showLaunchScreen {
                 LaunchScreen()
                     .onAppear {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                             withAnimation { showLaunchScreen = false }
                         }
                     }

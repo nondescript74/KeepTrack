@@ -34,24 +34,10 @@ struct EnterIntake: View {
     var body: some View {
         NavigationStack {
             ZStack {
-//                RoundedRectangle(cornerRadius: 18)
-//                    .fill(.ultraThinMaterial)
-//                    .background(
-//                        LinearGradient(
-//                            colors: [.accentColor.opacity(0.2), .clear],
-//                            startPoint: .topLeading,
-//                            endPoint: .bottomTrailing
-//                        )
-//                    )
-//                    .cornerRadius(18)
-//                    .shadow(color: Color.black.opacity(0.15), radius: 8, x: 0, y: 4)
-//                    .padding(10)
-                
                 VStack(spacing: 10) {
                     Text("Log Intake")
                         .font(.title3.bold())
                         .foregroundStyle(Color.accentColor)
-//                        .padding(.bottom, 6)
                     
                     HStack(spacing: 16) {
                         Picker("Select Type", selection: $name) {
@@ -60,6 +46,8 @@ struct EnterIntake: View {
                                     .padding(.trailing)
                             }
                         }
+                        .fixedSize(horizontal: true, vertical: false)
+                        .layoutPriority(1)
                         .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 12))
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)

@@ -52,41 +52,68 @@ struct EnterGoal: View {
     
     
     var body: some View {
-        VStack {
-            Text("Enter Goals")
-                .font(.largeTitle).bold()
-                .foregroundStyle(Color.blue)
-                .shadow(color: .blue.opacity(0.2), radius: 4, x: 0, y: 2)
-                .padding()
-            
-            HStack {
-                Text("Select intake: ")
-                Spacer()
-                Picker("Select Type", selection: $name) {
-                    ForEach(cIntakeTypes.sortedIntakeTypeNameArray, id: \.self) {
-                        Text($0)
+        VStack(spacing: 24) {
+            // Header
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Enter Goal")
+                    .font(.largeTitle.bold())
+                    .foregroundStyle(Color.blue)
+                Text("Create or update your goals below.")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding()
+            .background(.thinMaterial)
+            .cornerRadius(12)
+
+            // Intake Picker and Description
+            VStack(alignment: .leading, spacing: 12) {
+                HStack {
+                    Text("Select intake:")
+                    Spacer()
+                    Picker("Select Type", selection: $name) {
+                        ForEach(cIntakeTypes.sortedIntakeTypeNameArray, id: \.self) {
+                            Text($0)
+                        }
                     }
+                    .fixedSize(horizontal: true, vertical: false)
+                    .layoutPriority(1)
                 }
                 Text(getMatchingDesription())
+                    .font(.caption)
                     .foregroundStyle(.purple)
             }
             .padding()
-            
-            HStack {
-                Text("Dosage: ")
-                Text(getMatchingAmounts().description)
-                Text(getMatchingUnits())
-                Text(getMatchingFrequency())
+            .background(.thinMaterial)
+            .cornerRadius(12)
+
+            // Dosage/Units/Frequency
+            VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                    Text("Dosage:").font(.subheadline)
+                    Spacer()
+                    Text("\(getMatchingAmounts(), specifier: "%.2f")")
+                        .bold()
+                    Text(getMatchingUnits()).bold()
+                }
+                HStack {
+                    Text("Frequency:").font(.subheadline)
+                    Spacer()
+                    Text(getMatchingFrequency()).bold()
+                }
             }
             .padding()
-            
-            HStack {
+            .background(.ultraThinMaterial)
+            .cornerRadius(12)
+
+            // Date Picker & Add Button (changed to HStack with compact button)
+            HStack(spacing: 10) {
                 DatePicker(
                     "Start Date",
                     selection: $startDate,
                     displayedComponents: [.date, .hourAndMinute]
                 )
-                
                 Button(action: ({
                     if self.name.isEmpty {
                         return
@@ -99,11 +126,11 @@ struct EnterGoal: View {
                         var newDates = remain[0].dates
                         newDates.append(startDate)
                         let goal = CommonGoal(id: remain[0].id, name: name, description: getMatchingDesription(), dates: newDates, isActive: true, isCompleted: false, dosage: getMatchingAmounts(), units: getMatchingUnits(), frequency: getMatchingFrequency() )
-                        
+
                         goals.addGoal(goal: goal)
                     } else {
                         let dateArrayForGoal: [Date] = matchingDateArray(name: self.name, startDate: startDate)
-                        
+
                         logger.info( "name: \(self.name)" )
                         logger.info( "dateArrayForGoal: \(dateArrayForGoal)" )
                         let goal = CommonGoal(id: UUID(), name: self.name, description: getMatchingDesription(), dates: dateArrayForGoal, isActive: true, isCompleted: false, dosage: getMatchingAmounts(), units: getMatchingUnits(), frequency: getMatchingFrequency() )
@@ -113,25 +140,39 @@ struct EnterGoal: View {
                     self.name = cIntakeTypes.intakeTypeArray.sorted(by: {$0.name < $1.name})[0].name
                 }), label: ({
                     Image(systemName: "plus.arrow.trianglehead.clockwise")
-                        .padding(10)
-                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(style: StrokeStyle(lineWidth: 2)))
+                        .padding(7)
+                        .background(Color.blue.gradient, in: Capsule())
+                        .foregroundColor(.white)
                 }))
-                .foregroundStyle(.blue)
+                .buttonStyle(.bordered)
             }
-            .padding()
-            
-            Text("Current Goals Are:")
-                .font(.largeTitle).bold()
-                .foregroundStyle(Color.green)
-                .shadow(color: .blue.opacity(0.2), radius: 4, x: 0, y: 2)
-                .padding()
-            ForEach(goals.goals, id: \.id) { goal in
-                Text(goal.name)
-                    .font(.title)
-                    .foregroundStyle(stateFul ? .green : .orange)
+            .padding(8)
+            .background(.thinMaterial)
+            .cornerRadius(12)
+
+            // Current Goals List
+            VStack(alignment: .leading, spacing: 6) {
+                Text("Current Goals:")
+                    .font(.headline)
+                    .foregroundStyle(Color.green)
+                ScrollView {
+                    VStack(spacing: 6) {
+                        ForEach(goals.goals, id: \.id) { goal in
+                            Text(goal.name)
+                                .font(.body.bold())
+                                .foregroundStyle(.primary)
+                                .padding(6)
+                                .background(RoundedRectangle(cornerRadius: 8).fill(Color.green.opacity(0.07)))
+                        }
+                    }
+                    .padding(.vertical, 4)
+                }
+                .frame(maxHeight: 120)
             }
+            .padding(.horizontal)
             Spacer()
         }
+        .padding()
         .environment(goals)
         .environmentObject(cIntakeTypes)
     }
@@ -142,4 +183,3 @@ struct EnterGoal: View {
         .environment(CommonGoals())
         .environmentObject(CurrentIntakeTypes())
 }
-

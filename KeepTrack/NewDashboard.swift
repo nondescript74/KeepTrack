@@ -28,9 +28,9 @@ struct NewDashboard: View {
         NavigationStack {
             TabView {
                 
-                Tab("Intake", systemImage: "wineglass") {
-                    EnterIntake()
-                }
+//                Tab("Intake", systemImage: "wineglass") {
+//                    EnterIntake()
+//                }
                 
                 Tab("Today", systemImage: "clipboard") {
                     HistoryDayView(kind: .today)

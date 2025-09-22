@@ -4,6 +4,22 @@
     "" : {
 
     },
+    "%.1f %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$.1f %2$@"
+          }
+        }
+      }
+    },
+    "%.2f" : {
+
+    },
+    "%.2f " : {
+
+    },
     "%@" : {
 
     },
@@ -56,13 +72,13 @@
     "Cancel" : {
 
     },
-    "Change Goal" : {
-
-    },
     "Confirm" : {
 
     },
-    "Current Goals Are:" : {
+    "Create or update your goals below." : {
+
+    },
+    "Current Goals:" : {
 
     },
     "Description" : {
@@ -78,22 +94,22 @@
         }
       }
     },
-    "Dosage: " : {
+    "Dosage:" : {
 
     },
     "Edit Goals" : {
 
     },
-    "Edit this Goal" : {
-
-    },
     "Enter amount" : {
 
     },
-    "Enter Goals" : {
+    "Enter Goal" : {
 
     },
     "Frequency" : {
+
+    },
+    "Frequency:" : {
 
     },
     "Goal" : {
@@ -108,13 +124,7 @@
     "Ingredient" : {
 
     },
-    "Intake" : {
-
-    },
     "Intake Goals" : {
-
-    },
-    "Is Active" : {
 
     },
     "Item to Add" : {
@@ -144,13 +154,16 @@
     "Okay, added %@." : {
 
     },
+    "Save Changes" : {
+
+    },
     "Search" : {
 
     },
     "Select Ingredient" : {
 
     },
-    "Select intake: " : {
+    "Select intake:" : {
 
     },
     "Select the intake to add to your log." : {
@@ -175,7 +188,7 @@
         }
       }
     },
-    "Times" : {
+    "Times:" : {
 
     },
     "Today" : {
@@ -185,9 +198,6 @@
 
     },
     "Unit of Measure" : {
-
-    },
-    "Units: " : {
 
     },
     "Version %@ (%@)" : {
