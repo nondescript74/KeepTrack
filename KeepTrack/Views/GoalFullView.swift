@@ -35,69 +35,80 @@ struct GoalFullView: View {
     }
     
     var body: some View {
-        VStack {
-            Text("Edit this Goal")
-                .font(.title)
-                .foregroundStyle(Color.black)
-            
-            Text(goal.name)
-                .font(.subheadline)
-            HStack {
-                Text(cIntakeTypes.intakeTypeArray.first(where: {$0.name == self.goal.name})?.amount.description ?? 0.description)
-                Text(cIntakeTypes.intakeTypeArray.first(where: {$0.name == self.goal.name})?.unit ?? "unit")
-                Text(cIntakeTypes.intakeTypeArray.first(where: {$0.name == self.goal.name})?.frequency ?? frequency.none.rawValue)
+        VStack(spacing: 24) {
+            // Header
+            VStack(alignment: .leading, spacing: 8) {
+                Text(goal.name)
+                    .font(.title.bold())
+                Text(goal.isActive ? "Active" : "Inactive")
+                    .font(.caption)
+                    .foregroundColor(goal.isActive ? .green : .secondary)
             }
-            
-            Text(goal.isActive ? "Active" : "Inactive")
-                .padding(.bottom)
-            
-            VStack {
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding()
+            .background(.thinMaterial)
+            .cornerRadius(12)
+
+            // Details Section
+            VStack(alignment: .leading, spacing: 10) {
                 HStack {
-                    Text("Name")
-                    Text(self.goal.name)
-                }
-                .padding(.horizontal)
-                
-                HStack {
-                    Text("Dosage: ")
-                    Text(cIntakeTypes.intakeTypeArray.first(where: {$0.name == self.goal.name})?.amount.description ?? 0.description)
+                    Text("Dosage:").font(.subheadline)
                     Spacer()
-                    Text("Units: ")
-                    Text(cIntakeTypes.intakeTypeArray.first(where: {$0.name == self.goal.name})?.unit ?? "unit")
+                    Text("\(cIntakeTypes.intakeTypeArray.first(where: { $0.name == self.goal.name })?.amount ?? 0, specifier: "%.2f") ")
+                        .bold()
+                    Text(cIntakeTypes.intakeTypeArray.first(where: { $0.name == self.goal.name })?.unit ?? "unit")
+                        .bold()
                 }
-                .padding(.horizontal)
-                
                 HStack {
-                    Text("Times")
-                    
-                    ForEach(goal.dates, id: \.self) { adate in
-                        Text(getFormattedDate(adate))
+                    Text("Frequency:").font(.subheadline)
+                    Spacer()
+                    Text(cIntakeTypes.intakeTypeArray.first(where: { $0.name == self.goal.name })?.frequency ?? frequency.none.rawValue)
+                        .bold()
+                }
+                VStack(alignment: .leading) {
+                    Text("Times:").font(.subheadline)
+                    HStack {
+                        ForEach(goal.dates, id: \.self) { adate in
+                            Text(getFormattedDate(adate))
+                                .font(.caption)
+                                .padding(.trailing, 4)
+                        }
                     }
                 }
-                .padding(.horizontal)
-                
-                HStack {
-                    Toggle("Is Active", isOn: $isActive)
-                }
-                .padding([.horizontal, .bottom])
-                
-                
-                
-                Button("Change Goal", action: {
+            }
+            .padding()
+            .background(.ultraThinMaterial)
+            .cornerRadius(12)
+
+            // Edit Controls Section
+            VStack(spacing: 12) {
+                Toggle("Active", isOn: $isActive)
+                Button("Save Changes") {
                     let savedUUID = self.goal.id
-                    
-                    let goal = CommonGoal(id: savedUUID, name: self.goal.name, description: cIntakeTypes.intakeTypeArray.first(where: {$0.name == self.goal.name})?.descrip ?? "no description", dates: self.dates, isActive: self.isActive, isCompleted: self.isCompleted, dosage: cIntakeTypes.intakeTypeArray.first(where: {$0.name == self.goal.name})?.amount ?? 0, units: cIntakeTypes.intakeTypeArray.first(where: {$0.name == self.goal.name})?.unit ?? "no unit", frequency: cIntakeTypes.intakeTypeArray.first(where: {$0.name == self.goal.name})?.frequency ?? frequency.none.rawValue)
-                    
+                    let goal = CommonGoal(
+                        id: savedUUID,
+                        name: self.goal.name,
+                        description: cIntakeTypes.intakeTypeArray.first(where: { $0.name == self.goal.name })?.descrip ?? "no description",
+                        dates: self.dates,
+                        isActive: self.isActive,
+                        isCompleted: self.isCompleted,
+                        dosage: cIntakeTypes.intakeTypeArray.first(where: { $0.name == self.goal.name })?.amount ?? 0,
+                        units: cIntakeTypes.intakeTypeArray.first(where: { $0.name == self.goal.name })?.unit ?? "no unit",
+                        frequency: cIntakeTypes.intakeTypeArray.first(where: { $0.name == self.goal.name })?.frequency ?? frequency.none.rawValue
+                    )
                     goals.addGoal(goal: goal)
                     logger.info("added new goal")
                     dismiss()
-                })
-                .foregroundStyle(Color.blue)
-                .padding()
-                .overlay(RoundedRectangle(cornerRadius: 5).stroke(style: StrokeStyle(lineWidth: 2)))
-                Spacer()
+                }
+                .buttonStyle(.borderedProminent)
+                .frame(maxWidth: .infinity)
             }
+            .padding()
+            .background(.thinMaterial)
+            .cornerRadius(12)
+            Spacer()
         }
+        .padding()
         .environment(goals)
     }
 }

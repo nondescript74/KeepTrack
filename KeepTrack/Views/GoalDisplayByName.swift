@@ -44,39 +44,44 @@ struct GoalDisplayByName: View {
                     .padding(.horizontal, 24)
                     .padding(.top, 8)
             } else {
-                RoundedRectangle(cornerRadius: 28, style: .continuous)
-                    .fill(LinearGradient(gradient: Gradient(colors: [Color.white.opacity(0.62), Color.purple.opacity(0.11)]), startPoint: .topLeading, endPoint: .bottomTrailing))
-                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 28))
-                    .shadow(radius: 2, y: 1)
-                    .overlay(
-                        ScrollView {
-                            VStack(spacing: 0) {
-                                ForEach(myGoals.sorted(by: {$0.name < $1.name}).indices, id: \.self) { index in
-                                    let goal = myGoals[index]
-                                    HStack(alignment: .center) {
-                                        Text(goal.name)
-                                            .padding(.horizontal)
-                                        ScrollView(.horizontal, showsIndicators: false) {
-                                            HStack(alignment: .center) {
-                                                ForEach(goal.dates, id: \.self) { date in
-                                                    HStack {
-                                                        DigitalClockView(hour: hourForDate(date), minute: minuteForDate(date), is12HourFormat: true, isAM: self.isItAM(date), colorGreen: false)
-                                                    }
-                                                    .padding(.all, 10)
-                                                }
+                ScrollView {
+                    VStack(spacing: 12) {
+                        ForEach(myGoals) { goal in
+                            VStack(alignment: .leading, spacing: 8) {
+                                HStack {
+                                    Text(goal.name)
+                                        .font(.headline)
+                                        .foregroundStyle(.blue)
+                                    Spacer()
+                                    Text(goal.isActive ? "Active" : "Inactive")
+                                        .font(.caption)
+                                        .foregroundColor(goal.isActive ? .green : .secondary)
+                                }
+                                HStack(alignment: .center, spacing: 4) {
+                                    Text("Times:")
+                                        .font(.caption)
+                                    ScrollView(.horizontal, showsIndicators: false) {
+                                        HStack(spacing: 6) {
+                                            ForEach(goal.dates, id: \.self) { date in
+                                                DigitalClockView(hour: hourForDate(date), minute: minuteForDate(date), is12HourFormat: true, isAM: self.isItAM(date), colorGreen: false)
+                                                    .padding(6)
                                             }
                                         }
                                     }
-                                    .font(.caption)
                                 }
                             }
-                            .padding(.vertical, 8)
+                            .padding(12)
+                            .background(RoundedRectangle(cornerRadius: 16).fill(Color(.systemBackground)))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 16).stroke(Color.accentColor.opacity(0.18), lineWidth: 1.2)
+                            )
+                            .shadow(color: .black.opacity(0.04), radius: 1, y: 1)
+                            .padding(.horizontal, 6)
                         }
-                            .clipShape(RoundedRectangle(cornerRadius: 28))
-                            .padding(.vertical, 2)
-                    )
-                    .padding(.horizontal, 14)
-                    .padding(.top, 2)
+                    }
+                    .padding(.top, 4)
+                }
+                .padding(.horizontal, 4)
             }
             Spacer(minLength: 28)
         }

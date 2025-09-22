@@ -45,56 +45,55 @@ struct HistoryDayView: View {
     }
 
     var body: some View {
-        
-            VStack(spacing: kind == .today ? 18 : 20) {
-                Text(kind == .today ? "Today" : "Yesterday")
-                    .font(.title).bold()
-                    .foregroundStyle(Color.blue)
-                    .shadow(color: .blue.opacity(kind == .today ? 0.2 : 0.18), radius: 4, x: 0, y: 2)
-                
-                if getEntries().isEmpty {
-                    Text(kind == .today ? "Nothing taken today" : "No entries yet")
-                        .foregroundColor(.red)
-                        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
-                        .padding(.horizontal, 24)
-                        //.padding(.top, kind == .today ? 0 : 8)
-                }
-                        ScrollView {
-                            VStack(spacing: 10) {
-                                ForEach(cIntakeTypes.sortedIntakeTypeArray, id: \.self) { type in
-                                    if !sortEntriesByName(name: type.name).isEmpty {
+        VStack(spacing: 0) {
+            EnterIntake()
+                .padding(.bottom, 8)
+                .frame(maxWidth: .infinity, maxHeight: 100, alignment: .top)
+                .background(Color.blue.opacity(0.05))
+
+            Text(kind == .today ? "Today" : "Yesterday")
+                .font(.title).bold()
+                .foregroundStyle(Color.blue)
+                .shadow(color: .blue.opacity(kind == .today ? 0.2 : 0.18), radius: 4, x: 0, y: 2)
+                .padding(.bottom, kind == .today ? 18 : 20)
+
+            if getEntries().isEmpty {
+                Text(kind == .today ? "Nothing taken today" : "No entries yet")
+                    .foregroundColor(.red)
+                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+                    .padding(.horizontal, 24)
+            }
+            ScrollView {
+                VStack(spacing: 10) {
+                    Group {
+                        ForEach(cIntakeTypes.sortedIntakeTypeArray, id: \.self) { type in
+                            if !sortEntriesByName(name: type.name).isEmpty {
+                                HStack {
+                                    Text("\(type.name): ")
+                                        .foregroundStyle(getTypeColor(intakeType: type))
+                                        .font(.headline)
+                                    ScrollView(.horizontal, showsIndicators: false) {
                                         HStack {
-                                            Text("\(type.name): ")
-                                                .foregroundStyle(getTypeColor(intakeType: type))
-                                                .font(.headline)
-                                            ScrollView(.horizontal, showsIndicators: false) {
-                                                HStack {
-                                                    ForEach(getUniqueEntriesForName(name: type.name)) { entry in
-                                                        DigitalClockView(hour: getHour(from: entry.date), minute: getMinute(from: entry.date), is12HourFormat: true, isAM: isItAM(date: entry.date), colorGreen: entry.goalMet)
-                                                    }
-                                                    .font(.caption2)
-//                                                    .padding([.bottom, .top], 1)
-                                                }
+                                            ForEach(getUniqueEntriesForName(name: type.name)) { entry in
+                                                DigitalClockView(hour: getHour(from: entry.date), minute: getMinute(from: entry.date), is12HourFormat: true, isAM: isItAM(date: entry.date), colorGreen: entry.goalMet)
+                                                    .transition(.move(edge: .top).combined(with: .opacity))
                                             }
+                                            .font(.caption2)
                                         }
-                                        .padding(.horizontal, 8)
                                     }
                                 }
+                                .padding(.horizontal)
                             }
                         }
-                        .clipShape(RoundedRectangle(cornerRadius: 28))
-//                    )
-//                    .padding(.horizontal, 14)
-
-                if kind == .today {
-                    // Today also schedules reminders
-                    // Schedule notifications for today's goals when the view appears or updates
-                    EmptyView()
-                } else {
-                    Spacer(minLength: 28)
+                    }
+                    .animation(kind == .today ? .default : nil, value: getEntries())
                 }
+                .padding(.bottom, 8)
             }
-//        }
+            .clipShape(RoundedRectangle(cornerRadius: 28))
+            .padding(.top, 16)
+            .background(Color.green.opacity(0.1))
+        }
         .environment(store)
         .environment(goals)
         .task {
@@ -104,6 +103,7 @@ struct HistoryDayView: View {
                 }
             }
         }
+        .ignoresSafeArea(.keyboard, edges: .bottom)
     }
 }
 

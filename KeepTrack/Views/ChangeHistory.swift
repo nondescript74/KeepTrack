@@ -19,42 +19,73 @@ struct ChangeHistory: View {
     @State private var name: String = "Water"
     
     var body: some View {
-        VStack(spacing: 20) {
+        VStack {
             Text("Add History")
                 .font(.title).bold()
                 .foregroundStyle(Color.blue)
                 .shadow(color: .blue.opacity(0.18), radius: 4, x: 0, y: 2)
             
-            HStack {
-                Picker("Select Type", selection: $name) {
-                    ForEach(intakeTypes.sortedIntakeTypeNameArray, id: \.self) {
-                        Text($0)
+            ZStack {
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color.accentColor.opacity(0.35), lineWidth: 2)
+                    .background(RoundedRectangle(cornerRadius: 10).fill(Color.yellow.opacity(0.1)))
+                    
+                HStack {
+                    Picker("Select Type", selection: $name) {
+                        ForEach(intakeTypes.sortedIntakeTypeNameArray, id: \.self) {
+                            Text($0)
+                        }
                     }
+//                    .fixedSize(horizontal: true, vertical: false)
+//                    .layoutPriority(1)
+                    DatePicker(
+                        "",
+                        selection: $selectedDate,
+                        displayedComponents: [.date, .hourAndMinute]
+                    )
+                    Button(action: ({
+                        let entry = CommonEntry(id: UUID(), date: selectedDate, units: intakeTypes.sortedIntakeTypeArray.first(where: {$0.name == name})?.unit ?? "no unit", amount: intakeTypes.sortedIntakeTypeArray.first(where: {$0.name == name})?.amount ?? 0, name: name, goalMet: false)
+                        ChangeHistory.logger.info("Adding intake  \(name) with goalMet false")
+                        Task {
+                            await store.addEntry(entry: entry)
+                        }
+                    }), label: ({
+                        Image(systemName: "plus.arrow.trianglehead.clockwise")
+                            .padding(7)
+                            .background(Color.blue.gradient, in: Capsule())
+                            .foregroundColor(.white)
+                    }))
+                    .buttonStyle(.bordered)
                 }
-                DatePicker(
-                    "",
-                    selection: $selectedDate,
-                    displayedComponents: [.date, .hourAndMinute]
-                )
+                
             }
+            .padding(.horizontal, 16)
+            .frame(maxWidth: .infinity, alignment: .center)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .frame(maxHeight: 80)
             
-            Button(action: ({
-                let entry = CommonEntry(id: UUID(), date: selectedDate, units: intakeTypes.sortedIntakeTypeArray.first(where: {$0.name == name})?.unit ?? "no unit", amount: intakeTypes.sortedIntakeTypeArray.first(where: {$0.name == name})?.amount ?? 0, name: name, goalMet: false)
-                ChangeHistory.logger.info("Adding intake  \(name) with goalMet false")
-                Task {
-                    await store.addEntry(entry: entry)
+            // Show a list of history entries for this intake type (or show all, as you prefer)
+            ScrollView {
+                VStack {
+                    ForEach(store.history.filter { $0.name == name }.sorted { $0.date > $1.date }) { entry in
+                        HStack {
+                            Text(entry.name)
+                                .font(.headline)
+                            Spacer()
+                            Text(entry.date.formatted(date: .abbreviated, time: .shortened))
+                                .font(.caption)
+                            Text("\(entry.amount, specifier: "%.1f") \(entry.units)")
+                                .font(.caption2)
+                        }
+                        .padding(8)
+                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.blue.opacity(0.1)))
+                        .transition(.move(edge: .top).combined(with: .opacity))
+                    }
+                    .animation(.default, value: store.history)
                 }
-            }), label: ({
-                Image(systemName: "plus.arrow.trianglehead.clockwise")
-                    .padding(10)
-                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(style: StrokeStyle(lineWidth: 2)))
-            }))
-            .padding()
-            .foregroundStyle(.blue)
-            
-            .padding(30)
-            .padding(.horizontal, 32)
-            .padding(.top, 24)
+                .padding(.horizontal)
+            }
+            .frame(maxHeight: .infinity)
             
             Spacer()
         }
