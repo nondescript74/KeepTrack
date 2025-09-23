@@ -16,17 +16,39 @@ struct EditHistory: View {
     
     
     var body: some View {
-   
-            VStack {
-                MovableHistoryList($items) { item in
-                    HStack {
-                        Text("\(item.date.wrappedValue.formatted(date: .abbreviated, time: .standard))")
-                        Text("\(item.name.wrappedValue)")
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Edit History")
+                .font(.title2.bold())
+                .foregroundColor(.accentColor)
+            
+            MovableHistoryList($items) { item in
+                HStack {
+                    if item.goalMet.wrappedValue {
+                        Image(systemName: "checkmark.seal.fill")
+                            .foregroundColor(.green)
                     }
-                    .font(.caption)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(item.name.wrappedValue)
+                            .fontWeight(.semibold)
+                        Text(item.date.wrappedValue.formatted(date: .abbreviated, time: .standard))
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        Text("\(item.amount.wrappedValue, specifier: "%.1f") \(item.units.wrappedValue)")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                    }
+                    Spacer()
                 }
+                .padding(10)
+                .background(RoundedRectangle(cornerRadius: 12).fill(Color.blue.opacity(0.08)))
+                .shadow(color: Color.black.opacity(0.04), radius: 2, x: 0, y: 1)
+                .padding(.vertical, 4)
+                .transition(.move(edge: .trailing).combined(with: .opacity))
             }
-        
+            .animation(.default, value: items)
+        }
+        .padding()
+        .background(Color(.systemGroupedBackground))
         .environment(store)
     }
 }
@@ -36,4 +58,3 @@ struct EditHistory: View {
     EditHistory(items: $items)
         .environment(CommonStore())
 }
-

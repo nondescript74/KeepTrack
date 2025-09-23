@@ -52,9 +52,9 @@ struct EnterGoal: View {
     
     
     var body: some View {
-        VStack(spacing: 24) {
+        VStack {
             // Header
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading) {
                 Text("Enter Goal")
                     .font(.largeTitle.bold())
                     .foregroundStyle(Color.blue)
@@ -63,12 +63,11 @@ struct EnterGoal: View {
                     .foregroundColor(.secondary)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding()
             .background(.thinMaterial)
             .cornerRadius(12)
 
             // Intake Picker and Description
-            VStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .leading) {
                 HStack {
                     Text("Select intake:")
                     Spacer()
@@ -89,7 +88,7 @@ struct EnterGoal: View {
             .cornerRadius(12)
 
             // Dosage/Units/Frequency
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading) {
                 HStack {
                     Text("Dosage:").font(.subheadline)
                     Spacer()
@@ -103,16 +102,15 @@ struct EnterGoal: View {
                     Text(getMatchingFrequency()).bold()
                 }
             }
-            .padding()
             .background(.ultraThinMaterial)
             .cornerRadius(12)
 
             // Date Picker & Add Button (changed to HStack with compact button)
-            HStack(spacing: 10) {
+            HStack {
                 DatePicker(
-                    "Start Date",
+                    "Start Time",
                     selection: $startDate,
-                    displayedComponents: [.date, .hourAndMinute]
+                    displayedComponents: [.hourAndMinute]
                 )
                 Button(action: ({
                     if self.name.isEmpty {
@@ -146,7 +144,6 @@ struct EnterGoal: View {
                 }))
                 .buttonStyle(.bordered)
             }
-            .padding(8)
             .background(.thinMaterial)
             .cornerRadius(12)
 
@@ -161,18 +158,13 @@ struct EnterGoal: View {
                             Text(goal.name)
                                 .font(.body.bold())
                                 .foregroundStyle(.primary)
-                                .padding(6)
                                 .background(RoundedRectangle(cornerRadius: 8).fill(Color.green.opacity(0.07)))
                         }
                     }
-                    .padding(.vertical, 4)
                 }
-                .frame(maxHeight: 120)
+                .frame(maxHeight: .infinity)
             }
-            .padding(.horizontal)
-            Spacer()
         }
-        .padding()
         .environment(goals)
         .environmentObject(cIntakeTypes)
     }

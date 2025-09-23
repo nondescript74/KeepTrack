@@ -46,10 +46,12 @@ struct HistoryDayView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            EnterIntake()
-                .padding(.bottom, 8)
-                .frame(maxWidth: .infinity, maxHeight: 100, alignment: .top)
-                .background(Color.blue.opacity(0.05))
+            if kind == .today {
+                EnterIntake()
+                    .padding(.bottom, 8)
+                    .frame(maxWidth: .infinity, maxHeight: 100, alignment: .top)
+                    .background(Color.blue.opacity(0.05))
+            }
 
             Text(kind == .today ? "Today" : "Yesterday")
                 .font(.title).bold()

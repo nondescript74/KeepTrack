@@ -28,6 +28,10 @@ struct AddIntakeType: View {
     @State private var selectedFrequency: frequency = .none
     @FocusState private var descFieldIsFocused: Bool
     
+    // Confirmation message and color for feedback to user
+    @State private var confirmationMessage: String = ""
+    @State private var confirmationColor: Color = .green
+    
     var filteredIngredientNames: [String] {
         searchText.isEmpty ? ingredientNames : ingredientNames.filter { $0.localizedCaseInsensitiveContains(searchText) }
     }
@@ -39,13 +43,17 @@ struct AddIntakeType: View {
                 .foregroundStyle(Color.blue)
                 .shadow(color: .blue.opacity(0.18), radius: 4, x: 0, y: 2)
             
-            HStack {
-                TextField("Search", text: $searchText)
-                    .textFieldStyle(.roundedBorder)
-                TextField("Name", text: $iTypeName)
-                    .textFieldStyle(.roundedBorder)
-                    .foregroundStyle(Color.blue)
+            TextField("Name", text: $iTypeName)
+                .textFieldStyle(.roundedBorder)
+                .foregroundStyle(Color.blue)
+            
+            Picker("Select Ingredient", selection: $iTypeName) {
+                ForEach(filteredIngredientNames, id: \.self) { name in
+                    Text(name).tag(name)
+                }
             }
+            .pickerStyle(.automatic)
+            
             HStack {
                 LabeledContent("Amount") {
                     Spacer()
@@ -68,7 +76,7 @@ struct AddIntakeType: View {
                 }
                 .pickerStyle(.menu)
             }
-
+            
             TextField("Description", text: $iTypeDescrip)
                 .focused($descFieldIsFocused)
                 .onChange(of: descFieldIsFocused) { oldValue, newValue in
@@ -93,23 +101,31 @@ struct AddIntakeType: View {
                 .pickerStyle(.menu)
             }
             
+            // Add button to add a new intake type
             Button(action: ({
-                if self.iTypeName.isEmpty || self.selectedUnit == .none || self.iTypeAmount.isZero || self.iTypeDescrip.isEmpty || self.selectedFrequency == .none {
-                    
+                if self.iTypeName.isEmpty || self.selectedUnit == .none || self.iTypeAmount.isZero || self.iTypeDescrip.isEmpty {
+                    // Failure: required fields missing
                     logger.info("Empty fields")
+                    self.confirmationMessage = "Please fill all required fields before adding."
+                    self.confirmationColor = .red
                     return
                 } else {
                     let myIntakeType: IntakeType = IntakeType(id: self.iTypeUUID, name: self.iTypeName, unit: self.selectedUnit.rawValue, amount: self.iTypeAmount, descrip: self.iTypeDescrip, frequency: self.selectedFrequency.rawValue)
                     intakeTypes.saveNewIntakeType(intakeType: myIntakeType)
                     
+                    // Clear fields after successful addition
                     self.iTypeName = ""
                     self.iTypeUnit = ""
                     self.selectedUnit = .none
-                    self.iTypeAmount = Double.nan
+                    self.iTypeAmount = 0
                     self.hasEditedAmountField = false
                     self.iTypeDescrip = ""
                     self.iTypeFrequency = ""
                     self.selectedFrequency = .none
+                    
+                    // Success confirmation message
+                    self.confirmationMessage = "Successfully added intake type \(myIntakeType.name)."
+                    self.confirmationColor = .green
                 }
                 
             }), label: ({
@@ -117,22 +133,56 @@ struct AddIntakeType: View {
                     .padding(10)
                     .overlay(RoundedRectangle(cornerRadius: 10).stroke(style: StrokeStyle(lineWidth: 2)))
             }))
-            .padding()
             .foregroundStyle(.blue)
             
-            Text("Ingredient")
-                .font(.headline)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, 4)
-                .padding(.bottom, 2)
-            Picker("Select Ingredient", selection: $iTypeName) {
-                ForEach(filteredIngredientNames, id: \.self) { name in
-                    Text(name).tag(name)
+            // MARK: - Button to remove an intake type by name
+            Button(action: {
+                // Attempt to find intake type by case-insensitive name
+                if let idx = intakeTypes.intakeTypeArray.firstIndex(where: { $0.name.caseInsensitiveCompare(iTypeName) == .orderedSame }) {
+                    let removedType = intakeTypes.intakeTypeArray[idx]
+                    intakeTypes.intakeTypeArray.remove(at: idx)
+                    Task { await intakeTypes.saveIntakeTypes() }
+                    logger.info("Removed intake type: \(removedType.name)")
+                    
+                    // Clear input fields after removal
+                    self.iTypeName = ""
+                    self.iTypeUnit = ""
+                    self.selectedUnit = .none
+                    self.iTypeAmount = 0
+                    self.hasEditedAmountField = false
+                    self.iTypeDescrip = ""
+                    self.iTypeFrequency = ""
+                    self.selectedFrequency = .none
+                    
+                    // Success confirmation message
+                    self.confirmationMessage = "Successfully removed intake type \(removedType.name)."
+                    self.confirmationColor = .green
+                } else {
+                    // Failure confirmation message
+                    logger.warning("Could not find intake type to remove: \(iTypeName)")
+                    self.confirmationMessage = "Could not find intake type named \(iTypeName) to remove."
+                    self.confirmationColor = .red
                 }
+            }, label: {
+                Label("Remove This Intake Type", systemImage: "trash")
+                    .padding(10)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(style: StrokeStyle(lineWidth: 2))
+                            .foregroundColor(.red)
+                    )
+            })
+            .foregroundStyle(.red)
+            
+            // Confirmation message display below buttons
+            if !confirmationMessage.isEmpty {
+                Text(confirmationMessage)
+                    .foregroundStyle(confirmationColor)
+                    .font(.callout.bold())
+                    .padding(.top, 6)
             }
-            .pickerStyle(.wheel)
+            
         }
-        .padding(20)
         .task {
             if let url = Bundle.main.url(forResource: "ingredients_list", withExtension: "json") {
                 do {

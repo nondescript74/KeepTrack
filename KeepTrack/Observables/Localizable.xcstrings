@@ -20,9 +20,6 @@
     "%.2f " : {
 
     },
-    "%@" : {
-
-    },
     "%@ added" : {
 
     },
@@ -100,6 +97,9 @@
     "Edit Goals" : {
 
     },
+    "Edit History" : {
+
+    },
     "Enter amount" : {
 
     },
@@ -119,9 +119,6 @@
 
     },
     "Inactive" : {
-
-    },
-    "Ingredient" : {
 
     },
     "Intake Goals" : {
@@ -154,10 +151,10 @@
     "Okay, added %@." : {
 
     },
-    "Save Changes" : {
+    "Remove This Intake Type" : {
 
     },
-    "Search" : {
+    "Save Changes" : {
 
     },
     "Select Ingredient" : {
@@ -175,7 +172,7 @@
     "Show Goals" : {
 
     },
-    "Start Date" : {
+    "Start Time" : {
 
     },
     "The intake type you specified (%@) is not valid. Valid types are: %@. Please try again with a valid type." : {

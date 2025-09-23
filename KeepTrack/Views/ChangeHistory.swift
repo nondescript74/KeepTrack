@@ -26,23 +26,19 @@ struct ChangeHistory: View {
                 .shadow(color: .blue.opacity(0.18), radius: 4, x: 0, y: 2)
             
             ZStack {
-                RoundedRectangle(cornerRadius: 10)
-                    .stroke(Color.accentColor.opacity(0.35), lineWidth: 2)
-                    .background(RoundedRectangle(cornerRadius: 10).fill(Color.yellow.opacity(0.1)))
-                    
                 HStack {
                     Picker("Select Type", selection: $name) {
                         ForEach(intakeTypes.sortedIntakeTypeNameArray, id: \.self) {
-                            Text($0)
+                            Text($0).font(.caption)
                         }
                     }
-//                    .fixedSize(horizontal: true, vertical: false)
-//                    .layoutPriority(1)
+                    .font(.caption)
                     DatePicker(
                         "",
                         selection: $selectedDate,
                         displayedComponents: [.date, .hourAndMinute]
                     )
+                    .font(.caption)
                     Button(action: ({
                         let entry = CommonEntry(id: UUID(), date: selectedDate, units: intakeTypes.sortedIntakeTypeArray.first(where: {$0.name == name})?.unit ?? "no unit", amount: intakeTypes.sortedIntakeTypeArray.first(where: {$0.name == name})?.amount ?? 0, name: name, goalMet: false)
                         ChangeHistory.logger.info("Adding intake  \(name) with goalMet false")
@@ -57,12 +53,18 @@ struct ChangeHistory: View {
                     }))
                     .buttonStyle(.bordered)
                 }
-                
             }
-            .padding(.horizontal, 16)
-            .frame(maxWidth: .infinity, alignment: .center)
-            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(Color.yellow.opacity(0.1))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.accentColor.opacity(0.35), lineWidth: 2)
+                    )
+            )
             .frame(maxHeight: 80)
+            .frame(maxWidth: .infinity, alignment: .center)
+         
             
             // Show a list of history entries for this intake type (or show all, as you prefer)
             ScrollView {
@@ -83,7 +85,7 @@ struct ChangeHistory: View {
                     }
                     .animation(.default, value: store.history)
                 }
-                .padding(.horizontal)
+//                .padding(.horizontal)
             }
             .frame(maxHeight: .infinity)
             
