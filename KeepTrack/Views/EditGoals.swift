@@ -17,10 +17,47 @@ struct EditGoals: View {
     var body: some View {
         NavigationView {
             VStack {
+                Text("Edit Goals")
+                    .font(.title2.bold())
+                    .foregroundColor(.accentColor)
+                
                 MovableGoalList(self.$items) { item in
-                    Text("\(item.name.wrappedValue)")
+                    HStack {
+                        if item.isCompleted.wrappedValue {
+                            Image(systemName: "checkmark.circle.fill")
+                                .foregroundColor(.green)
+                        } else if item.isActive.wrappedValue {
+                            Image(systemName: "circle.fill")
+                                .foregroundColor(.blue)
+                        } else {
+                            Image(systemName: "circle")
+                                .foregroundColor(.gray)
+                        }
+                        
+                        let dosageString = String(format: "%.0f %@", item.dosage.wrappedValue, item.units.wrappedValue)
+                        VStack(alignment: .leading) {
+                            Text(item.name.wrappedValue)
+                                .fontWeight(.semibold)
+                            Text(item.description.wrappedValue)
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                            Text(dosageString)
+                                .font(.caption2)
+                        }
+                        Spacer()
+                    }
+                    .padding(10)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color.blue.opacity(0.08))
+                    )
+                    .shadow(color: Color.black.opacity(0.04), radius: 1, x: 0, y: 1)
+                    .transition(.move(edge: .trailing).combined(with: .opacity))
                 }
+                .animation(.default, value: items)
             }
+            .padding()
+            .background(Color(.systemGroupedBackground))
         }
         .environment(goals)
 
@@ -37,3 +74,4 @@ struct EditGoals: View {
         .environment(CommonGoals())
         .environmentObject(CurrentIntakeTypes())
 }
+
