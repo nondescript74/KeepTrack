@@ -67,11 +67,6 @@
 			path = KeepTrack;
 			sourceTree = "<group>";
 		};
-		F897BF432D95EC1600F7225B /* KeepTrackClip */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = KeepTrackClip;
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,7 +92,6 @@
 			children = (
 				F85AC2502E747DE300CA5AFB /* LaunchScreen.swift */,
 				F81C71D42D8A29280037FCCB /* KeepTrack */,
-				F897BF432D95EC1600F7225B /* KeepTrackClip */,
 				F80813642E731E1F001FD09A /* KeepTrackTests */,
 				F81C71D32D8A29280037FCCB /* Products */,
 				F80FB4682E721543005835FA /* ingredients_list.json */,
