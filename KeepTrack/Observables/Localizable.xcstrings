@@ -4,6 +4,9 @@
     "" : {
 
     },
+    "%.1f" : {
+
+    },
     "%.1f %@" : {
       "localizations" : {
         "en" : {
@@ -18,6 +21,9 @@
 
     },
     "%.2f " : {
+
+    },
+    "%@" : {
 
     },
     "%@ added" : {
@@ -66,16 +72,25 @@
     "Amount" : {
 
     },
+    "By Day & Time" : {
+
+    },
     "Cancel" : {
 
     },
     "Confirm" : {
 
     },
+    "Count" : {
+
+    },
     "Create or update your goals below." : {
 
     },
     "Current Goals:" : {
+
+    },
+    "Day" : {
 
     },
     "Description" : {
@@ -189,6 +204,9 @@
 
     },
     "Today" : {
+
+    },
+    "Type" : {
 
     },
     "Unit" : {
