@@ -90,12 +90,11 @@
 		F81C71C92D8A29280037FCCB = {
 			isa = PBXGroup;
 			children = (
+				F83E6F402E84392E00B17E48 /* Shared */,
 				F85AC2502E747DE300CA5AFB /* LaunchScreen.swift */,
 				F81C71D42D8A29280037FCCB /* KeepTrack */,
 				F80813642E731E1F001FD09A /* KeepTrackTests */,
 				F81C71D32D8A29280037FCCB /* Products */,
-				F80FB4682E721543005835FA /* ingredients_list.json */,
-				F80FB4692E721543005835FA /* intakeTypes.json */,
 			);
 			sourceTree = "<group>";
 		};
@@ -106,6 +105,15 @@
 				F80813632E731E1F001FD09A /* KeepTrackTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		F83E6F402E84392E00B17E48 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				F80FB4682E721543005835FA /* ingredients_list.json */,
+				F80FB4692E721543005835FA /* intakeTypes.json */,
+			);
+			path = Shared;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -430,7 +438,7 @@
 				CODE_SIGN_ENTITLEMENTS = KeepTrack/KeepTrackDebug.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 151;
+				CURRENT_PROJECT_VERSION = 153;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = YKHW2TJ32G;
 				ENABLE_APP_SANDBOX = YES;
@@ -483,7 +491,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = KeepTrack/KeepTrack.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 151;
+				CURRENT_PROJECT_VERSION = 153;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = YKHW2TJ32G;
 				ENABLE_APP_SANDBOX = YES;

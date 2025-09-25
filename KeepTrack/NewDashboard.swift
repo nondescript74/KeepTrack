@@ -27,11 +27,7 @@ struct NewDashboard: View {
     var body: some View {
         NavigationStack {
             TabView {
-                
-//                Tab("Intake", systemImage: "wineglass") {
-//                    EnterIntake()
-//                }
-                
+
                 Tab("Today", systemImage: "clipboard") {
                     HistoryDayView(kind: .today)
                 }
@@ -40,6 +36,9 @@ struct NewDashboard: View {
                     HistoryDayView(kind: .yesterday)
                 }
                 
+                Tab("By Day & Time", systemImage: "calendar.badge.clock") {
+                    ConsumptionByDayAndTimeView()
+                }
                 
                 Tab("Add History", systemImage: "heart.text.clipboard") {
                     ChangeHistory()
