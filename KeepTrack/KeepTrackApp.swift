@@ -21,6 +21,7 @@ struct KeepTrackApp: App {
     @StateObject private var currentIntakeTypes = CurrentIntakeTypes()
     @StateObject private var notificationHolder: PendingNotificationHolder
     @State private var showLaunchScreen = true
+    @State private var licenseManager = LicenseManager()
 
     init() {
         let holder = PendingNotificationHolder()
@@ -36,16 +37,26 @@ struct KeepTrackApp: App {
 
     var body: some Scene {
         WindowGroup {
-            if showLaunchScreen {
-                LaunchScreen()
-                    .onAppear {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
-                            withAnimation { showLaunchScreen = false }
+            ZStack {
+                if showLaunchScreen {
+                    LaunchScreen()
+                        .onAppear {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                                withAnimation { showLaunchScreen = false }
+                            }
                         }
+                } else {
+                    NewDashboard(pendingNotification: $notificationHolder.pendingNotification)
+                        .environmentObject(currentIntakeTypes)
+                }
+                
+                // Show license on top of everything if not accepted
+                if !licenseManager.isCheckingLicense && !licenseManager.hasAcceptedCurrentVersion {
+                    LicenseView(licenseManager: licenseManager) {
+                        licenseManager.acceptLicense()
                     }
-            } else {
-                NewDashboard(pendingNotification: $notificationHolder.pendingNotification)
-                    .environmentObject(currentIntakeTypes)
+                    .transition(.opacity)
+                }
             }
         }
     }

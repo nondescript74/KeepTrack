@@ -63,9 +63,6 @@ struct ConsumptionByDayAndTimeView: View {
                 GeometryReader { geometry in
                     ZStack {
                         ScrollView(.horizontal, showsIndicators: true) {
-                            let uniqueNames = Array(NSOrderedSet(array: model.chartData.map(\.name)).array as! [String])
-//                            let colorMap: KeyValuePairs<String, Color> = KeyValuePairs(dictionaryLiteral: uniqueNames.enumerated().map { ($1, Self.palette[$0 % Self.palette.count]) })
-                            
                             Chart(model.chartData, id: \.id) { data in
                                 BarMark(
                                     x: .value("Amount", data.total),
@@ -74,7 +71,6 @@ struct ConsumptionByDayAndTimeView: View {
                                 .foregroundStyle(by: .value("Type", data.name))
                                 .position(by: .value("Type", data.name))
                             }
-//                            .chartForegroundStyleScale(colorMap)
                             .frame(width: max(CGFloat(model.groupedEntries.count) * 70, geometry.size.width), height: 420)
                             .padding(.horizontal)
                             .chartOverlay { proxy in

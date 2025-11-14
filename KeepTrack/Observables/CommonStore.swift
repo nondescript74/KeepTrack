@@ -25,8 +25,9 @@ import SwiftUI
 
     // MARK: - Async initializer
     /// Loads CommonStore and waits for history to finish loading before using.
-    static func loadStore() async -> CommonStore {
-        let store = CommonStore()
+    /// - Parameter storage: Optional storage backend. Defaults to AppGroupStorage for production use.
+    static func loadStore(storage: CommonStoreStorage? = nil) async -> CommonStore {
+        let store = CommonStore(storage: storage)
         await store.loadHistory()
         return store
     }
@@ -34,24 +35,25 @@ import SwiftUI
     // MARK: - Properties
 
     private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "CommonStore")
-    private static let storeFilename = "entrystore.json"
-    private let fileURL: URL
+    private let storage: CommonStoreStorage
 
     var history: [CommonEntry] = []
 
     // MARK: - Init
 
     /// Internal use only. Use `await CommonStore.loadStore()` to get a fully loaded instance.
-    init() {
-        // Use App Group container for shared storage between app and intents
-        // TODO: Replace with your real App Group identifier
-        let appGroupID = "group.com.headydiscy.KeepTrack"
-        if let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupID) {
-            self.fileURL = containerURL.appendingPathComponent(Self.storeFilename)
+    /// - Parameter storage: Optional storage backend. Defaults to AppGroupStorage for production use.
+    init(storage: CommonStoreStorage? = nil) {
+        if let storage = storage {
+            self.storage = storage
         } else {
-            self.fileURL = URL(fileURLWithPath: "/dev/null")
-            logger.fault("Failed to resolve App Group container directory")
-            fatalError("can't resolve App Group container directory")
+            // Production default: use App Group storage
+            do {
+                self.storage = try AppGroupStorage()
+            } catch {
+                logger.fault("Failed to initialize AppGroupStorage: \(error.localizedDescription)")
+                fatalError("Failed to initialize AppGroupStorage: \(error)")
+            }
         }
 
         // For SwiftUI Environment-based usage, trigger loading history here,
@@ -63,64 +65,24 @@ import SwiftUI
     // MARK: - Persistence (async)
 
     func loadHistory() async {
-        await withCheckedContinuation { continuation in
-            DispatchQueue.global(qos: .background).async {
-                if FileManager.default.fileExists(atPath: self.fileURL.path) {
-                    do {
-                        let data = try Data(contentsOf: self.fileURL)
-                        if data.isEmpty {
-                            Task { @MainActor in
-                                self.history = []
-                                self.logger.info("CStore: entrystore.json file is empty")
-                                continuation.resume()
-                            }
-                        } else {
-                            let loadedHistory = try JSONDecoder().decode([CommonEntry].self, from: data)
-                            Task { @MainActor in
-                                self.history = loadedHistory.sorted { $0.date > $1.date }
-                                self.logger.info("CStore: loaded \(self.history.count) entries")
-                                continuation.resume()
-                            }
-                        }
-                    } catch {
-                        Task { @MainActor in
-                            self.logger.error("CStore: Couldn't read history: \(error.localizedDescription)")
-                            self.history = []
-                            continuation.resume()
-                        }
-                    }
-                } else {
-                    // Create the file if it doesn't exist
-                    FileManager.default.createFile(atPath: self.fileURL.path, contents: nil)
-                    Task { @MainActor in
-                        self.logger.info("CStore: Created file \(Self.storeFilename)")
-                        self.history = []
-                        continuation.resume()
-                    }
-                }
-            }
+        do {
+            let loadedEntries = try await storage.load()
+            self.history = loadedEntries.sorted { $0.date > $1.date }
+            logger.info("CStore: loaded \(self.history.count) entries")
+        } catch {
+            logger.error("CStore: Couldn't read history: \(error.localizedDescription)")
+            self.history = []
         }
     }
 
     func save() async {
         let entries = self.history.sorted { $0.date > $1.date }
-        await withCheckedContinuation { continuation in
-            DispatchQueue.global(qos: .background).async {
-                do {
-                    let data = try JSONEncoder().encode(entries)
-                    try data.write(to: self.fileURL, options: [.atomic])
-                    Task { @MainActor in
-                        self.logger.info("CStore: Saved history to file")
-                        self.history = entries
-                        continuation.resume()
-                    }
-                } catch {
-                    Task { @MainActor in
-                        self.logger.error("CStore: Couldn't save history file: \(error.localizedDescription)")
-                        continuation.resume()
-                    }
-                }
-            }
+        do {
+            try await storage.save(entries)
+            self.history = entries
+            logger.info("CStore: Saved history")
+        } catch {
+            logger.error("CStore: Couldn't save history: \(error.localizedDescription)")
         }
     }
 

@@ -81,9 +81,6 @@
     "Confirm" : {
 
     },
-    "Count" : {
-
-    },
     "Create or update your goals below." : {
 
     },
@@ -133,6 +130,9 @@
     "History" : {
 
     },
+    "I Accept" : {
+
+    },
     "Inactive" : {
 
     },
@@ -143,6 +143,9 @@
 
     },
     "KeepTrack" : {
+
+    },
+    "License Agreement" : {
 
     },
     "Log Intake" : {
@@ -164,6 +167,9 @@
 
     },
     "Okay, added %@." : {
+
+    },
+    "Please scroll to the bottom to continue" : {
 
     },
     "Remove This Intake Type" : {
@@ -213,6 +219,9 @@
 
     },
     "Unit of Measure" : {
+
+    },
+    "Version %@" : {
 
     },
     "Version %@ (%@)" : {
