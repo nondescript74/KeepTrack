@@ -33,6 +33,8 @@ struct KeepTrackApp: App {
         KeepTrackAppState.notificationDelegate = delegate
         UNUserNotificationCenter.current().delegate = delegate
         _notificationHolder = StateObject(wrappedValue: holder)
+        
+        // UserDefaults.standard.removeObject(forKey: "AcceptedLicenseVersion")
     }
 
     var body: some Scene {
@@ -48,14 +50,11 @@ struct KeepTrackApp: App {
                 } else {
                     NewDashboard(pendingNotification: $notificationHolder.pendingNotification)
                         .environmentObject(currentIntakeTypes)
-                }
-                
-                // Show license on top of everything if not accepted
-                if !licenseManager.isCheckingLicense && !licenseManager.hasAcceptedCurrentVersion {
-                    LicenseView(licenseManager: licenseManager) {
-                        licenseManager.acceptLicense()
-                    }
-                    .transition(.opacity)
+                        .fullScreenCover(isPresented: .constant(!licenseManager.isCheckingLicense && !licenseManager.hasAcceptedCurrentVersion)) {
+                            LicenseView(licenseManager: licenseManager) {
+                                licenseManager.acceptLicense()
+                            }
+                        }
                 }
             }
         }

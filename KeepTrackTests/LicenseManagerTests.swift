@@ -92,4 +92,88 @@ struct LicenseManagerTests {
             #expect(manager.hasAcceptedCurrentVersion == false)
         }
     }
+    
+    @Test("Acceptance date should be stored when license is accepted")
+    func acceptanceDateStored() async throws {
+        let userDefaults = UserDefaults(suiteName: #function)!
+        userDefaults.removePersistentDomain(forName: #function)
+        
+        let manager = LicenseManager(userDefaults: userDefaults)
+        
+        #expect(manager.acceptedDate == nil)
+        
+        let beforeAcceptance = Date()
+        manager.acceptLicense()
+        let afterAcceptance = Date()
+        
+        #expect(manager.acceptedDate != nil)
+        
+        if let acceptedDate = manager.acceptedDate {
+            #expect(acceptedDate >= beforeAcceptance)
+            #expect(acceptedDate <= afterAcceptance)
+        }
+    }
+    
+    @Test("Acceptance date should persist across instances")
+    func acceptanceDatePersists() async throws {
+        let suiteName = #function
+        let userDefaults = UserDefaults(suiteName: suiteName)!
+        userDefaults.removePersistentDomain(forName: suiteName)
+        
+        let firstManager = LicenseManager(userDefaults: userDefaults)
+        firstManager.acceptLicense()
+        
+        let acceptedDate = firstManager.acceptedDate
+        
+        let secondManager = LicenseManager(userDefaults: userDefaults)
+        
+        #expect(secondManager.acceptedDate == acceptedDate)
+    }
+    
+    @Test("Accepted version should be stored")
+    func acceptedVersionStored() async throws {
+        let userDefaults = UserDefaults(suiteName: #function)!
+        userDefaults.removePersistentDomain(forName: #function)
+        
+        let manager = LicenseManager(userDefaults: userDefaults)
+        
+        #expect(manager.acceptedVersion == nil)
+        
+        manager.acceptLicense()
+        
+        #expect(manager.acceptedVersion == manager.currentAppVersion)
+    }
+    
+    @Test("Acceptance info should be formatted correctly")
+    func acceptanceInfoFormatted() async throws {
+        let userDefaults = UserDefaults(suiteName: #function)!
+        userDefaults.removePersistentDomain(forName: #function)
+        
+        let manager = LicenseManager(userDefaults: userDefaults)
+        
+        #expect(manager.acceptanceInfo == nil)
+        
+        manager.acceptLicense()
+        
+        #expect(manager.acceptanceInfo != nil)
+        #expect(manager.acceptanceInfo?.contains(manager.currentAppVersion) == true)
+        #expect(manager.acceptanceInfo?.contains("accepted on") == true)
+    }
+    
+    @Test("Resetting should clear both version and date")
+    func resetClearsAll() async throws {
+        let userDefaults = UserDefaults(suiteName: #function)!
+        userDefaults.removePersistentDomain(forName: #function)
+        
+        let manager = LicenseManager(userDefaults: userDefaults)
+        manager.acceptLicense()
+        
+        #expect(manager.acceptedVersion != nil)
+        #expect(manager.acceptedDate != nil)
+        
+        manager.resetLicenseAcceptance()
+        
+        #expect(manager.acceptedVersion == nil)
+        #expect(manager.acceptedDate == nil)
+    }
 }

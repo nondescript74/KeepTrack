@@ -58,10 +58,6 @@ struct NewDashboard: View {
                         HistoryDayView(kind: .yesterday)
                     }
                     
-//                    Tab("By Day & Time", systemImage: "calendar.badge.clock", value: .byDayTime) {
-//                        ConsumptionByDayAndTimeView()
-//                    }
-                    
                     Tab("Add History", systemImage: "heart.text.clipboard", value: .addHistory) {
                         ChangeHistory()
                     }
