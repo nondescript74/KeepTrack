@@ -4,13 +4,4 @@
    <FileRef
       location = "self:">
    </FileRef>
-   <FileRef
-      location = "group:LicenseManager.swift">
-   </FileRef>
-   <FileRef
-      location = "group:LicenseView.swift">
-   </FileRef>
-   <FileRef
-      location = "group:License.md">
-   </FileRef>
 </Workspace>
