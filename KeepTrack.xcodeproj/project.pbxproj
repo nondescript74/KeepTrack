@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		F80FB4922E721543005835FA /* ingredients_list.json in Resources */ = {isa = PBXBuildFile; fileRef = F80FB4682E721543005835FA /* ingredients_list.json */; };
 		F80FB4932E721543005835FA /* intakeTypes.json in Resources */ = {isa = PBXBuildFile; fileRef = F80FB4692E721543005835FA /* intakeTypes.json */; };
+		F850BC752EC699120006DFBB /* License.md in Resources */ = {isa = PBXBuildFile; fileRef = F850BC742EC699120006DFBB /* License.md */; };
 		F85AC2512E747DE300CA5AFB /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85AC2502E747DE300CA5AFB /* LaunchScreen.swift */; };
 /* End PBXBuildFile section */
 
@@ -40,6 +41,7 @@
 		F80FB4682E721543005835FA /* ingredients_list.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ingredients_list.json; sourceTree = "<group>"; };
 		F80FB4692E721543005835FA /* intakeTypes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = intakeTypes.json; sourceTree = "<group>"; };
 		F81C71D22D8A29280037FCCB /* KeepTrack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KeepTrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F850BC742EC699120006DFBB /* License.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = License.md; sourceTree = "<group>"; };
 		F85AC2502E747DE300CA5AFB /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -51,11 +53,29 @@
 			);
 			target = F81C71D12D8A29280037FCCB /* KeepTrack */;
 		};
+		F850BCDF2EC6A4F50006DFBB /* Exceptions for "KeepTrackTests" folder in "KeepTrack" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				CommonStoreProtocol.swift,
+			);
+			target = F81C71D12D8A29280037FCCB /* KeepTrack */;
+		};
+		F850BCE02EC6A5040006DFBB /* Exceptions for "KeepTrackTests" folder in "KeepTrackTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				CommonStoreProtocol.swift,
+			);
+			target = F80813622E731E1F001FD09A /* KeepTrackTests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		F80813642E731E1F001FD09A /* KeepTrackTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				F850BCDF2EC6A4F50006DFBB /* Exceptions for "KeepTrackTests" folder in "KeepTrack" target */,
+				F850BCE02EC6A5040006DFBB /* Exceptions for "KeepTrackTests" folder in "KeepTrackTests" target */,
+			);
 			path = KeepTrackTests;
 			sourceTree = "<group>";
 		};
@@ -90,6 +110,7 @@
 		F81C71C92D8A29280037FCCB = {
 			isa = PBXGroup;
 			children = (
+				F850BC742EC699120006DFBB /* License.md */,
 				F83E6F402E84392E00B17E48 /* Shared */,
 				F85AC2502E747DE300CA5AFB /* LaunchScreen.swift */,
 				F81C71D42D8A29280037FCCB /* KeepTrack */,
@@ -220,6 +241,7 @@
 			files = (
 				F80FB4922E721543005835FA /* ingredients_list.json in Resources */,
 				F80FB4932E721543005835FA /* intakeTypes.json in Resources */,
+				F850BC752EC699120006DFBB /* License.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -438,7 +460,7 @@
 				CODE_SIGN_ENTITLEMENTS = KeepTrack/KeepTrackDebug.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 153;
+				CURRENT_PROJECT_VERSION = 154;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = YKHW2TJ32G;
 				ENABLE_APP_SANDBOX = YES;
@@ -491,7 +513,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = KeepTrack/KeepTrack.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 153;
+				CURRENT_PROJECT_VERSION = 154;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = YKHW2TJ32G;
 				ENABLE_APP_SANDBOX = YES;
