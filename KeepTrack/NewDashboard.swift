@@ -30,38 +30,47 @@ struct NewDashboard: View {
 
                 Tab("Today", systemImage: "clipboard") {
                     HistoryDayView(kind: .today)
+                        .helpButton(for: .today)
                 }
                 
                 Tab("Yesterday", systemImage: "clipboard.fill") {
                     HistoryDayView(kind: .yesterday)
+                        .helpButton(for: .yesterday)
                 }
                 
                 Tab("By Day & Time", systemImage: "calendar.badge.clock") {
                     ConsumptionByDayAndTimeView()
+                        .helpButton(for: .consumptionByDayAndTime)
                 }
                 
                 Tab("Add History", systemImage: "heart.text.clipboard") {
                     ChangeHistory()
+                        .helpButton(for: .addHistory)
                 }
                 
                 Tab("Show Goals", systemImage: "wineglass") {
                     GoalDisplayByName()
+                        .helpButton(for: .showGoals)
                 }
                 
                 Tab("Goal", systemImage: "microphone.badge.plus") {
                     EnterGoal()
+                        .helpButton(for: .enterGoal)
                 }
                 
                 Tab("History", systemImage: "heart.text.clipboard") {
                     EditHistory(items: $store.history)
+                        .helpButton(for: .editHistory)
                 }
                 
                 Tab("Edit Goals", systemImage: "figure.hockey") {
                     EditGoals(items: $goals.goals)
+                        .helpButton(for: .editGoals)
                 }
                 
                 Tab("Add New", systemImage: "person") {
                     AddIntakeType()
+                        .helpButton(for: .addIntakeType)
                 }
             }
             .padding(10)
@@ -71,6 +80,7 @@ struct NewDashboard: View {
                 Text(Bundle.main.infoDictionary!["CFBundleVersion"] as! String)
             }
             .font(.subheadline)
+            .helpButton(for: .dashboard)
         }
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {

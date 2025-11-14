@@ -42,6 +42,18 @@
         }
       }
     },
+    "1. Add '.helpButton(for: .yourView)' to any view" : {
+
+    },
+    "2. Define help content in HelpContent.swift" : {
+
+    },
+    "3. Add your view identifier to HelpViewIdentifier enum" : {
+
+    },
+    "11 help topics available" : {
+
+    },
     "Active" : {
 
     },
@@ -72,7 +84,13 @@
     "Add Something" : {
 
     },
+    "All views have contextual help implemented" : {
+
+    },
     "Amount" : {
+
+    },
+    "App Views" : {
 
     },
     "By Day & Time" : {
@@ -91,6 +109,9 @@
 
     },
     "Day" : {
+
+    },
+    "Demo View" : {
 
     },
     "Description" : {
@@ -130,10 +151,31 @@
     "Goal" : {
 
     },
+    "Goals" : {
+
+    },
+    "Help & Guidance" : {
+
+    },
+    "Help System" : {
+
+    },
+    "Help System Preview" : {
+
+    },
     "History" : {
 
     },
+    "History & Tracking" : {
+
+    },
+    "How to Add Help to Your Views:" : {
+
+    },
     "I Accept" : {
+
+    },
+    "If you have additional questions, please refer to the app documentation or contact support." : {
 
     },
     "Inactive" : {
@@ -199,10 +241,31 @@
     "Select Type" : {
 
     },
+    "Settings" : {
+
+    },
     "Show Goals" : {
 
     },
+    "Show help for License" : {
+
+    },
+    "Show help for this screen" : {
+
+    },
     "Start Time" : {
+
+    },
+    "Statistics" : {
+
+    },
+    "Still need help?" : {
+
+    },
+    "Tap the '?' button in the top-right corner to see the help content." : {
+
+    },
+    "Tap to preview help" : {
 
     },
     "The intake type you specified (%@) is not valid. Valid types are: %@. Please try again with a valid type." : {
@@ -215,10 +278,19 @@
         }
       }
     },
+    "This is an example of how to add help to any view." : {
+
+    },
     "Times:" : {
 
     },
+    "Tips" : {
+
+    },
     "Today" : {
+
+    },
+    "Total Help Topics" : {
 
     },
     "Type" : {

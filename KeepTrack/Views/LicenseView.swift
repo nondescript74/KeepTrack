@@ -14,6 +14,7 @@ struct LicenseView: View {
     @State private var hasScrolledToBottom = false
     @State private var licenseText: String = ""
     @State private var scrollPosition = ScrollPosition(edge: .top)
+    @State private var showingHelp = false
     
     var body: some View {
         NavigationStack {
@@ -27,6 +28,18 @@ struct LicenseView: View {
                         .foregroundStyle(.secondary)
                 }
                 .padding()
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            showingHelp = true
+                        } label: {
+                            Image(systemName: "questionmark.circle")
+                                .symbolRenderingMode(.hierarchical)
+                                .foregroundStyle(.blue)
+                        }
+                        .accessibilityLabel("Show help for License")
+                    }
+                }
                 
                 Divider()
                 
@@ -91,6 +104,9 @@ struct LicenseView: View {
         .interactiveDismissDisabled()
         .onAppear {
             loadLicense()
+        }
+        .sheet(isPresented: $showingHelp) {
+            HelpView(topic: HelpContentManager.getHelpTopic(for: .license))
         }
     }
     
