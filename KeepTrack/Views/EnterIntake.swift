@@ -34,12 +34,11 @@ struct EnterIntake: View {
     @State private var showingTypePicker: Bool = false
     
     var body: some View {
-        NavigationStack {
-            ZStack {
-                VStack(spacing: 10) {
-                    Text("Log Intake")
-                        .font(.title3.bold())
-                        .foregroundStyle(Color.accentColor)
+        ZStack {
+            VStack(spacing: 10) {
+                Text("Log Intake")
+                    .font(.title3.bold())
+                    .foregroundStyle(Color.accentColor)
                     
                     HStack(spacing: 16) {
                         // Custom picker button that shows a sheet instead of context menu
@@ -138,10 +137,9 @@ struct EnterIntake: View {
                     Spacer()
                 }
                 .padding(.horizontal)
-            }
-            .environment(store)
-            .environment(goals)
         }
+        .environment(store)
+        .environment(goals)
     }
 }
 

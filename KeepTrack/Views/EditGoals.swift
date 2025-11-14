@@ -15,8 +15,7 @@ struct EditGoals: View {
     @EnvironmentObject var cIntakeTypes: CurrentIntakeTypes
     
     var body: some View {
-        NavigationView {
-            VStack {
+        VStack {
                 Text("Edit Goals")
                     .font(.title2.bold())
                     .foregroundColor(.accentColor)
@@ -58,7 +57,6 @@ struct EditGoals: View {
             }
             .padding()
             .background(Color(.systemGroupedBackground))
-        }
         .environment(goals)
 
     }

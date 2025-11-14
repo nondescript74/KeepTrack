@@ -39,13 +39,41 @@
  ### Modified Files:
  
  1. **NewDashboard.swift**
-    - Added .helpButton(for:) to all 9 tab views
-    - Added dashboard help button to NavigationStack
+    - Added single help button to NavigationStack toolbar
+    - Tracks selected tab to show context-appropriate help
+    - Help content dynamically changes based on current tab
  
  2. **LicenseView.swift**
     - Added help button with manual implementation
     - Added @State for showingHelp
     - Added sheet presentation for help
+ 
+ 3. **EnterIntake.swift**
+    - Removed nested NavigationStack (was causing double help buttons on iPhone)
+    - Now properly uses parent NavigationStack from HistoryDayView
+ 
+ 4. **EditGoals.swift**
+    - Removed NavigationView wrapper
+    - Now properly uses parent NavigationStack from NewDashboard
+ 
+ ## Important Architecture Note
+ 
+ ### Why One Help Button Instead of Multiple
+ 
+ The app uses a TabView inside a NavigationStack. On iPhone, all tabs share the same
+ toolbar, which caused duplicate help buttons when each tab view tried to add its own.
+ 
+ **Solution**: 
+ - Single "?" button in the NavigationStack toolbar
+ - Button shows help for the currently selected tab
+ - Tab selection tracked via @State binding
+ - Help content switches automatically when user changes tabs
+ 
+ This approach:
+ ✓ Works correctly on iPhone (no duplicates)
+ ✓ Works correctly on iPad (proper toolbar placement)
+ ✓ Provides context-sensitive help based on active tab
+ ✓ Maintains clean, consistent UI
  
  ## Features
  
