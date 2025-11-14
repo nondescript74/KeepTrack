@@ -67,6 +67,20 @@
 			);
 			target = F80813622E731E1F001FD09A /* KeepTrackTests */;
 		};
+		F87668BF2EC7DE6000293948 /* Exceptions for "Docs" folder in "KeepTrack" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				TESTING_GUIDE.md,
+			);
+			target = F81C71D12D8A29280037FCCB /* KeepTrack */;
+		};
+		F87668C02EC7DE6000293948 /* Exceptions for "Docs" folder in "KeepTrackTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				TESTING_GUIDE.md,
+			);
+			target = F80813622E731E1F001FD09A /* KeepTrackTests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -85,6 +99,15 @@
 				F83CA1462D907B010067DBDB /* Exceptions for "KeepTrack" folder in "KeepTrack" target */,
 			);
 			path = KeepTrack;
+			sourceTree = "<group>";
+		};
+		F87668BE2EC7DE5F00293948 /* Docs */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				F87668BF2EC7DE6000293948 /* Exceptions for "Docs" folder in "KeepTrack" target */,
+				F87668C02EC7DE6000293948 /* Exceptions for "Docs" folder in "KeepTrackTests" target */,
+			);
+			path = Docs;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -110,6 +133,7 @@
 		F81C71C92D8A29280037FCCB = {
 			isa = PBXGroup;
 			children = (
+				F87668BE2EC7DE5F00293948 /* Docs */,
 				F850BC742EC699120006DFBB /* License.md */,
 				F83E6F402E84392E00B17E48 /* Shared */,
 				F85AC2502E747DE300CA5AFB /* LaunchScreen.swift */,
@@ -178,6 +202,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				F81C71D42D8A29280037FCCB /* KeepTrack */,
+				F87668BE2EC7DE5F00293948 /* Docs */,
 			);
 			name = KeepTrack;
 			packageProductDependencies = (
@@ -460,7 +485,7 @@
 				CODE_SIGN_ENTITLEMENTS = KeepTrack/KeepTrackDebug.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 157;
+				CURRENT_PROJECT_VERSION = 158;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = YKHW2TJ32G;
 				ENABLE_APP_SANDBOX = YES;
@@ -513,7 +538,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = KeepTrack/KeepTrack.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 157;
+				CURRENT_PROJECT_VERSION = 158;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = YKHW2TJ32G;
 				ENABLE_APP_SANDBOX = YES;
