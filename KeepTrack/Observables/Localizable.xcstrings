@@ -60,6 +60,9 @@
     "Add Intake" : {
 
     },
+    "Add Intake Type" : {
+
+    },
     "Add Morning Meds" : {
 
     },
@@ -136,6 +139,9 @@
     "Inactive" : {
 
     },
+    "Ingredient Name" : {
+
+    },
     "Intake Goals" : {
 
     },
@@ -176,6 +182,9 @@
 
     },
     "Save Changes" : {
+
+    },
+    "Search ingredients" : {
 
     },
     "Select Ingredient" : {
