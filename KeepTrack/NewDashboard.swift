@@ -47,46 +47,53 @@ struct NewDashboard: View {
     
     var body: some View {
         NavigationStack {
-            VStack(spacing: 0) {
-                TabView(selection: $selectedTab) {
+            TabView(selection: $selectedTab) {
 
-                    Tab("Today", systemImage: "clipboard", value: .today) {
-                        HistoryDayView(kind: .today)
-                    }
-                    
-                    Tab("Yesterday", systemImage: "clipboard.fill", value: .yesterday) {
-                        HistoryDayView(kind: .yesterday)
-                    }
-                    
-                    Tab("Add History", systemImage: "heart.text.clipboard", value: .addHistory) {
-                        ChangeHistory()
-                    }
-                    
-                    Tab("Show Goals", systemImage: "wineglass", value: .showGoals) {
-                        GoalDisplayByName()
-                    }
-                    
-                    Tab("Goal", systemImage: "microphone.badge.plus", value: .enterGoal) {
-                        EnterGoal()
-                    }
-                    
-                    Tab("History", systemImage: "heart.text.clipboard", value: .editHistory) {
-                        EditHistory(items: $store.history)
-                    }
-                    
-                    Tab("Edit Goals", systemImage: "figure.hockey", value: .editGoals) {
-                        EditGoals(items: $goals.goals)
-                    }
-                    
-                    Tab("Add New", systemImage: "person", value: .addNew) {
-                        AddIntakeType()
-                    }
-                }
-                .padding(10)
-                .onChange(of: selectedTab) { oldValue, newValue in
-                    logger.debug("Tab changed from \(String(describing: oldValue)) to \(String(describing: newValue))")
+                Tab("Today", systemImage: "clipboard", value: .today) {
+                    HistoryDayView(kind: .today)
+                        .onAppear { selectedTab = .today }
                 }
                 
+                Tab("Yesterday", systemImage: "clipboard.fill", value: .yesterday) {
+                    HistoryDayView(kind: .yesterday)
+                        .onAppear { selectedTab = .yesterday }
+                }
+                
+                Tab("Add History", systemImage: "heart.text.clipboard", value: .addHistory) {
+                    ChangeHistory()
+                        .onAppear { selectedTab = .addHistory }
+                }
+                
+                Tab("Show Goals", systemImage: "wineglass", value: .showGoals) {
+                    GoalDisplayByName()
+                        .onAppear { selectedTab = .showGoals }
+                }
+                
+                Tab("Goal", systemImage: "microphone.badge.plus", value: .enterGoal) {
+                    EnterGoal()
+                        .onAppear { selectedTab = .enterGoal }
+                }
+                
+                Tab("History", systemImage: "heart.text.clipboard", value: .editHistory) {
+                    EditHistory(items: $store.history)
+                        .onAppear { selectedTab = .editHistory }
+                }
+                
+                Tab("Edit Goals", systemImage: "figure.hockey", value: .editGoals) {
+                    EditGoals(items: $goals.goals)
+                        .onAppear { selectedTab = .editGoals }
+                }
+                
+                Tab("Add New", systemImage: "person", value: .addNew) {
+                    AddIntakeType()
+                        .onAppear { selectedTab = .addNew }
+                }
+            }
+            .padding(10)
+            .onChange(of: selectedTab) { oldValue, newValue in
+                logger.debug("Tab changed from \(String(describing: oldValue)) to \(String(describing: newValue))")
+            }
+            .safeAreaInset(edge: .bottom, spacing: 0) {
                 HStack {
                     Text("Welcome to KeepTrack!")
                     Text(Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String)
@@ -94,6 +101,8 @@ struct NewDashboard: View {
                 }
                 .font(.subheadline)
                 .padding(.bottom, 4)
+                .frame(maxWidth: .infinity)
+                .background(Color(.systemBackground))
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
