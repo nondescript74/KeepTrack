@@ -11,7 +11,7 @@ import OSLog
 
 let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "Helper")
 
-let colors: [Color] = [.orange, .yellow, .blue, .indigo, .purple, .pink, .cyan, .black, .brown, .green, .gray, .red, .teal, .mint, .accentColor, .primary, .secondary, .black, .orange, .pink, .red, .blue, .yellow, .green, .indigo, .purple, .cyan, .black, .brown, .gray, .teal, .mint, .accentColor, .primary, .secondary, .black, .black, .blue, .orange, .yellow, .blue, .indigo, .purple, .pink, .cyan, .black, .brown, .green, .gray, .red, .teal, .mint, .accentColor, .primary, .secondary, .black, .orange, .pink, .red, .blue, .yellow, .green, .indigo, .purple, .cyan, .black, .brown, .gray, .teal, .mint, .accentColor, .primary, .secondary, .black, .black, .blue]
+let colors: [Color] = [.orange, .yellow, .cyan, .indigo, .purple, .pink, .teal, .mint, .brown, .green, .red, .blue, .orange, .pink, .red, .blue, .yellow, .green, .indigo, .purple, .cyan, .mint, .brown, .teal, .orange, .yellow, .cyan, .indigo, .purple, .pink, .teal, .mint, .brown, .green, .red, .blue, .orange, .pink, .red, .blue, .yellow, .green, .indigo, .purple, .cyan, .mint, .brown, .teal, .orange, .yellow, .cyan, .indigo, .purple, .pink, .teal, .mint, .brown, .green, .red, .blue, .orange, .pink, .red, .blue, .yellow, .green, .indigo, .purple, .cyan, .mint, .brown, .teal]
 
 enum frequency: String, CaseIterable {
     case daily

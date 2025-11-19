@@ -50,12 +50,12 @@ struct HistoryDayView: View {
                 EnterIntake()
                     .padding(.bottom, 8)
                     .frame(maxWidth: .infinity, maxHeight: 100, alignment: .top)
-                    .background(Color.blue.opacity(0.05))
+                    .background(.thinMaterial)
             }
 
             Text(kind == .today ? "Today" : "Yesterday")
                 .font(.title).bold()
-                .foregroundStyle(Color.blue)
+                .foregroundStyle(.blue)
                 .shadow(color: .blue.opacity(kind == .today ? 0.2 : 0.18), radius: 4, x: 0, y: 2)
                 .padding(.bottom, kind == .today ? 18 : 20)
 
@@ -94,7 +94,7 @@ struct HistoryDayView: View {
             }
             .clipShape(RoundedRectangle(cornerRadius: 28))
             .padding(.top, 16)
-            .background(Color.green.opacity(0.1))
+            .background(.ultraThinMaterial)
         }
         .environment(store)
         .environment(goals)
