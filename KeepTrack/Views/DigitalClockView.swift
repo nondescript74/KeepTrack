@@ -34,12 +34,12 @@ struct DigitalClockView: View {
             .padding(.vertical, 3)
             .background(
                 Capsule()
-                    .fill(colorGreen ? Color.green.opacity(0.15) : Color.gray.opacity(0.09))
+                    .fill(colorGreen ? Color.green.opacity(0.2) : Color.secondary.opacity(0.15))
             )
             .overlay(
-                Capsule().stroke(colorGreen ? Color.green : Color.gray.opacity(0.3), lineWidth: colorGreen ? 1.5 : 1)
+                Capsule().stroke(colorGreen ? Color.green : Color.secondary.opacity(0.4), lineWidth: colorGreen ? 1.5 : 1)
             )
-            .foregroundColor(.black)
+            .foregroundStyle(colorGreen ? .primary : .secondary)
             .minimumScaleFactor(0.8)
     }
 }
