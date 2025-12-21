@@ -89,6 +89,15 @@ struct EnterIntake: View {
                                             showingTypePicker = false
                                         }
                                     }
+                                    ToolbarItem(placement: .primaryAction) {
+                                        Button {
+                                            Task {
+                                                await cIntakeTypes.reloadFromBundle()
+                                            }
+                                        } label: {
+                                            Image(systemName: "arrow.clockwise")
+                                        }
+                                    }
                                 }
                             }
                             .presentationDetents([.medium, .large])
@@ -140,6 +149,10 @@ struct EnterIntake: View {
         }
         .environment(store)
         .environment(goals)
+        .task {
+            // Reload from bundle every time this view appears to pick up any JSON changes
+            await cIntakeTypes.reloadFromBundle()
+        }
     }
 }
 

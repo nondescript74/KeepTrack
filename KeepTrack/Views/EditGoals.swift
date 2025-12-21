@@ -66,7 +66,7 @@ struct EditGoals: View {
 #Preview {
     @Previewable @State var items: [CommonGoal] =
     [CommonGoal(id: UUID(), name: "Losartan", description: "Blood pressure", dates: [Date()], isActive: true, isCompleted: false, dosage: 25.0, units: "mg", frequency: frequency.daily.rawValue),
-     CommonGoal(id: UUID(), name: "Metformin", description: "Sugar control", dates: [Date(), Date().addingTimeInterval(60 * 60 * 2)], isActive: true, isCompleted: false, dosage: 400, units: "mgs", frequency: frequency.twiceADay.rawValue)]
+     CommonGoal(id: UUID(), name: "Metformin", description: "Sugar control", dates: [Date(), Date().addingTimeInterval(60 * 60 * 2)], isActive: true, isCompleted: false, dosage: 500, units: "mgs", frequency: frequency.twiceADay.rawValue)]
     
     EditGoals(items: $items)
         .environment(CommonGoals())
