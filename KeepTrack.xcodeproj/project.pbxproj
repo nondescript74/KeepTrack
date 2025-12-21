@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		F80FB4922E721543005835FA /* ingredients_list.json in Resources */ = {isa = PBXBuildFile; fileRef = F80FB4682E721543005835FA /* ingredients_list.json */; };
 		F80FB4932E721543005835FA /* intakeTypes.json in Resources */ = {isa = PBXBuildFile; fileRef = F80FB4692E721543005835FA /* intakeTypes.json */; };
+		F8425F012EF83D3A00092382 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8425ED22EF83D3A00092382 /* Assets.xcassets */; };
 		F850BC752EC699120006DFBB /* License.md in Resources */ = {isa = PBXBuildFile; fileRef = F850BC742EC699120006DFBB /* License.md */; };
-		F85AC2512E747DE300CA5AFB /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85AC2502E747DE300CA5AFB /* LaunchScreen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,12 +41,12 @@
 		F80FB4682E721543005835FA /* ingredients_list.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ingredients_list.json; sourceTree = "<group>"; };
 		F80FB4692E721543005835FA /* intakeTypes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = intakeTypes.json; sourceTree = "<group>"; };
 		F81C71D22D8A29280037FCCB /* KeepTrack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KeepTrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F8425ED22EF83D3A00092382 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F850BC742EC699120006DFBB /* License.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = License.md; sourceTree = "<group>"; };
-		F85AC2502E747DE300CA5AFB /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		F83CA1462D907B010067DBDB /* Exceptions for "KeepTrack" folder in "KeepTrack" target */ = {
+		F80899702EF8452900698BD2 /* Exceptions for "KeepTrack" folder in "KeepTrack" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -70,6 +70,10 @@
 		F87668BF2EC7DE6000293948 /* Exceptions for "Docs" folder in "KeepTrack" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				HELP_QUICK_REFERENCE.md,
+				HELP_SYSTEM_ARCHITECTURE.md,
+				HELP_SYSTEM_FIX.md,
+				HELP_SYSTEM_README.md,
 				TESTING_GUIDE.md,
 			);
 			target = F81C71D12D8A29280037FCCB /* KeepTrack */;
@@ -96,7 +100,7 @@
 		F81C71D42D8A29280037FCCB /* KeepTrack */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				F83CA1462D907B010067DBDB /* Exceptions for "KeepTrack" folder in "KeepTrack" target */,
+				F80899702EF8452900698BD2 /* Exceptions for "KeepTrack" folder in "KeepTrack" target */,
 			);
 			path = KeepTrack;
 			sourceTree = "<group>";
@@ -133,10 +137,10 @@
 		F81C71C92D8A29280037FCCB = {
 			isa = PBXGroup;
 			children = (
-				F87668BE2EC7DE5F00293948 /* Docs */,
+				F8425ED22EF83D3A00092382 /* Assets.xcassets */,
 				F850BC742EC699120006DFBB /* License.md */,
+				F87668BE2EC7DE5F00293948 /* Docs */,
 				F83E6F402E84392E00B17E48 /* Shared */,
-				F85AC2502E747DE300CA5AFB /* LaunchScreen.swift */,
 				F81C71D42D8A29280037FCCB /* KeepTrack */,
 				F80813642E731E1F001FD09A /* KeepTrackTests */,
 				F81C71D32D8A29280037FCCB /* Products */,
@@ -264,6 +268,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F8425F012EF83D3A00092382 /* Assets.xcassets in Resources */,
 				F80FB4922E721543005835FA /* ingredients_list.json in Resources */,
 				F80FB4932E721543005835FA /* intakeTypes.json in Resources */,
 				F850BC752EC699120006DFBB /* License.md in Resources */,
@@ -284,7 +289,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F85AC2512E747DE300CA5AFB /* LaunchScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -408,6 +412,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -467,6 +472,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -485,7 +491,7 @@
 				CODE_SIGN_ENTITLEMENTS = KeepTrack/KeepTrackDebug.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 161;
+				CURRENT_PROJECT_VERSION = 162;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = YKHW2TJ32G;
 				ENABLE_APP_SANDBOX = YES;
@@ -538,7 +544,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = KeepTrack/KeepTrack.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 161;
+				CURRENT_PROJECT_VERSION = 162;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = YKHW2TJ32G;
 				ENABLE_APP_SANDBOX = YES;

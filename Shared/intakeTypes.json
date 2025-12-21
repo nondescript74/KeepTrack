@@ -16,6 +16,14 @@
         "id": "DD956CEF-E210-4680-B5F2-64722ED4BD59"
     },
     {
+        "name": "Amlodipine 2.5",
+        "unit": "mg",
+        "amount": 2.5,
+        "descrip": "Blood pressure-lowering",
+        "frequency": "daily",
+        "id": "94A56DFC-179C-43F7-8687-74B71F16B3F5"
+    },
+    {
         "name": "Amlodipine",
         "unit": "mg",
         "amount": 5,
@@ -32,12 +40,28 @@
         "id": "8D2AAD12-7EDE-4ADB-A3A8-44F657A2374A"
     },
     {
+        "name": "Metformin",
+        "unit": "mg",
+        "amount": 500,
+        "descrip": "Blood sugar control",
+        "frequency": "threeTimesADay",
+        "id": "80D42B13-45C1-450B-A321-C53180BB3D56"
+    },
+    {
         "name": "Smoothie",
         "unit": "fluidOunces",
         "amount": 7,
         "descrip": "Nutrient-rich beverage",
         "frequency": "twiceWeekly",
         "id": "AB99BDD7-1617-43A8-B004-DD9D001F1E12"
+    },
+    {
+        "name": "Water-electrolyte",
+        "unit": "fluidOunces",
+        "amount": 8,
+        "descrip": "Hydration",
+        "frequency": "daily",
+        "id": "6F4017F8-DC8B-4686-9655-018EAA378AC6"
     },
     {
         "name": "Water",

@@ -143,6 +143,52 @@ final class CurrentIntakeTypes: ObservableObject {
         }
     }
     
+    /// Force reload from bundle - useful during development to pick up JSON changes
+    func reloadFromBundle() async {
+        await withCheckedContinuation { continuation in
+            DispatchQueue.global(qos: .background).async {
+                let fileManager = FileManager.default
+                
+                // Check if bundle has a newer version
+                guard let bundleURL = Bundle.main.url(forResource: "intakeTypes", withExtension: "json") else {
+                    self.logger.error("Bundle intakeTypes.json not found")
+                    continuation.resume()
+                    return
+                }
+                
+                // Delete existing file in App Group if it exists
+                if fileManager.fileExists(atPath: self.fileURL.path) {
+                    do {
+                        try fileManager.removeItem(at: self.fileURL)
+                        self.logger.info("Deleted existing intakeTypes.json from App Group")
+                    } catch {
+                        self.logger.error("Failed to delete existing file: \(error.localizedDescription)")
+                    }
+                }
+                
+                // Copy fresh from bundle
+                do {
+                    try fileManager.copyItem(at: bundleURL, to: self.fileURL)
+                    self.logger.info("Copied fresh intakeTypes.json from bundle")
+                    
+                    // Now load the fresh data
+                    let data = try Data(contentsOf: self.fileURL)
+                    let types = try JSONDecoder().decode([IntakeType].self, from: data)
+                    let sortedTypes = types.sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+                    
+                    Task { @MainActor in
+                        self.intakeTypeArray = sortedTypes
+                        self.logger.info("Reloaded \(sortedTypes.count) intake types from bundle")
+                        continuation.resume()
+                    }
+                } catch {
+                    self.logger.error("Failed to reload from bundle: \(error.localizedDescription)")
+                    continuation.resume()
+                }
+            }
+        }
+    }
+    
     // MARK: - Helpers
     func getunits(typeName: String) -> String {
         switch typeName.lowercased() {
