@@ -131,7 +131,7 @@ struct AddMorningMedsIntent: AppIntent {
     func perform() async throws -> some IntentResult & ProvidesDialog & ShowsSnippetView {
         // Load intake types from disk
         let intakeTypes = loadIntakeTypesFromDisk()
-        let medNames = ["amlodipine", "losartan", "rosuvastatin", "timolol"]
+        let medNames = ["amlodipine 2.5", "losartan", "rosuvastatin", "timolol"]
         
         let store = await KeepTrack.CommonStore.loadStore()
         _ = KeepTrack.CommonGoals()
