@@ -106,44 +106,53 @@ struct EnterGoal: View {
             .cornerRadius(12)
 
             // Date Picker & Add Button (changed to HStack with compact button)
-            HStack {
-                DatePicker(
-                    "Start Time",
-                    selection: $startDate,
-                    displayedComponents: [.hourAndMinute]
-                )
-                Button(action: ({
-                    if self.name.isEmpty {
-                        return
-                    }
-                    if goals.goals.contains(where: { $0.name == self.name }) {
-                        let remain = goals.goals.filter( { $0.name == self.name } )
-                        if remain.count > 1 {
-                            fatalError( "Too many goals with same name: \(self.name)" )
+            VStack(alignment: .leading, spacing: 8) {
+                Text("First dose time")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                HStack {
+                    DatePicker(
+                        "Start Time",
+                        selection: $startDate,
+                        displayedComponents: [.hourAndMinute]
+                    )
+                    Button(action: ({
+                        if self.name.isEmpty {
+                            return
                         }
-                        var newDates = remain[0].dates
-                        newDates.append(startDate)
-                        let goal = CommonGoal(id: remain[0].id, name: name, description: getMatchingDesription(), dates: newDates, isActive: true, isCompleted: false, dosage: getMatchingAmounts(), units: getMatchingUnits(), frequency: getMatchingFrequency() )
+                        if goals.goals.contains(where: { $0.name == self.name }) {
+                            let remain = goals.goals.filter( { $0.name == self.name } )
+                            if remain.count > 1 {
+                                fatalError( "Too many goals with same name: \(self.name)" )
+                            }
+                            var newDates = remain[0].dates
+                            newDates.append(startDate)
+                            let goal = CommonGoal(id: remain[0].id, name: name, description: getMatchingDesription(), dates: newDates, isActive: true, isCompleted: false, dosage: getMatchingAmounts(), units: getMatchingUnits(), frequency: getMatchingFrequency() )
 
-                        goals.addGoal(goal: goal)
-                    } else {
-                        let dateArrayForGoal: [Date] = matchingDateArray(name: self.name, startDate: startDate)
+                            goals.addGoal(goal: goal)
+                        } else {
+                            let dateArrayForGoal: [Date] = matchingDateArray(name: self.name, startDate: startDate)
 
-                        logger.info( "name: \(self.name)" )
-                        logger.info( "dateArrayForGoal: \(dateArrayForGoal)" )
-                        let goal = CommonGoal(id: UUID(), name: self.name, description: getMatchingDesription(), dates: dateArrayForGoal, isActive: true, isCompleted: false, dosage: getMatchingAmounts(), units: getMatchingUnits(), frequency: getMatchingFrequency() )
-                        goals.addGoal(goal: goal)
-                        logger.info("added a new goal")
-                    }
-                    self.name = cIntakeTypes.intakeTypeArray.sorted(by: {$0.name < $1.name})[0].name
-                }), label: ({
-                    Image(systemName: "plus.arrow.trianglehead.clockwise")
-                        .padding(7)
-                        .background(Color.blue.gradient, in: Capsule())
-                        .foregroundColor(.white)
-                }))
-                .buttonStyle(.bordered)
+                            logger.info( "name: \(self.name)" )
+                            logger.info( "dateArrayForGoal: \(dateArrayForGoal)" )
+                            let goal = CommonGoal(id: UUID(), name: self.name, description: getMatchingDesription(), dates: dateArrayForGoal, isActive: true, isCompleted: false, dosage: getMatchingAmounts(), units: getMatchingUnits(), frequency: getMatchingFrequency() )
+                            goals.addGoal(goal: goal)
+                            logger.info("added a new goal")
+                        }
+                        self.name = cIntakeTypes.intakeTypeArray.sorted(by: {$0.name < $1.name})[0].name
+                    }), label: ({
+                        Image(systemName: "plus.arrow.trianglehead.clockwise")
+                            .padding(7)
+                            .background(Color.blue.gradient, in: Capsule())
+                            .foregroundColor(.white)
+                    }))
+                    .buttonStyle(.bordered)
+                }
+                Text("Other doses will be scheduled automatically based on frequency")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             }
+            .padding()
             .background(.thinMaterial)
             .cornerRadius(12)
 
