@@ -151,6 +151,9 @@
     "Enter Goal" : {
 
     },
+    "First dose time" : {
+
+    },
     "Frequency" : {
 
     },
@@ -233,6 +236,9 @@
 
     },
     "Okay, added %@." : {
+
+    },
+    "Other doses will be scheduled automatically based on frequency" : {
 
     },
     "Please scroll to the bottom to continue" : {
