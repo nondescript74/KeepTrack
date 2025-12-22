@@ -207,10 +207,26 @@ func isGoalMet(goal: CommonGoal, previous: Int) -> Bool {
 }
 
 
-func matchingDateArray(name: String, startDate: Date) -> [Date] {
+func matchingDateArray(name: String, startDate: Date, useUserTime: Bool = false) -> [Date] {
     var calendar = Calendar.current
     calendar.timeZone = .current
-    var datesArray: [Date] = [startDate]
+    
+    // Use either the user-specified time or normalize to their chosen hour
+    let normalizedStartDate: Date
+    if useUserTime {
+        // Keep the user's selected time as-is
+        normalizedStartDate = startDate
+    } else {
+        // Extract just the hour and minute from user's selection, apply to today
+        var components = calendar.dateComponents([.year, .month, .day], from: Date.now)
+        let timeComponents = calendar.dateComponents([.hour, .minute], from: startDate)
+        components.hour = timeComponents.hour
+        components.minute = timeComponents.minute
+        components.second = 0
+        normalizedStartDate = calendar.date(from: components) ?? startDate
+    }
+    
+    var datesArray: [Date] = [normalizedStartDate]
     
     let myIntakeTypeUrl = Bundle.main.url(forResource: "intakeTypes", withExtension: "json")!
     let myIntakeTypeData = try! Data(contentsOf: myIntakeTypeUrl)
@@ -221,24 +237,29 @@ func matchingDateArray(name: String, startDate: Date) -> [Date] {
     
     let myFrequency = mySpecificIntakeType.frequency
     
+    // Calculate subsequent doses spread across a 12-hour waking period from the start time
     switch myFrequency {
     case frequency.daily.rawValue:
         break
     case frequency.twiceADay.rawValue:
-        datesArray.append(calendar.date(byAdding: .hour, value: 12, to: startDate)!)
+        // Start time and 12 hours later
+        datesArray.append(calendar.date(byAdding: .hour, value: 12, to: normalizedStartDate)!)
     case frequency.threeTimesADay.rawValue:
-        datesArray.append(calendar.date(byAdding: .hour, value: 8, to: startDate)!)
-        datesArray.append(calendar.date(byAdding: .hour, value: 16, to: startDate)!)
+        // Start time, +6 hours, +12 hours
+        datesArray.append(calendar.date(byAdding: .hour, value: 6, to: normalizedStartDate)!)
+        datesArray.append(calendar.date(byAdding: .hour, value: 12, to: normalizedStartDate)!)
     case frequency.fourTimesADay.rawValue:
-        datesArray.append(calendar.date(byAdding: .hour, value: 6, to: startDate)!)
-        datesArray.append(calendar.date(byAdding: .hour, value: 12, to: startDate)!)
-        datesArray.append(calendar.date(byAdding: .hour, value: 18, to: startDate)!)
+        // Start time, +4 hours, +8 hours, +12 hours
+        datesArray.append(calendar.date(byAdding: .hour, value: 4, to: normalizedStartDate)!)
+        datesArray.append(calendar.date(byAdding: .hour, value: 8, to: normalizedStartDate)!)
+        datesArray.append(calendar.date(byAdding: .hour, value: 12, to: normalizedStartDate)!)
     case frequency.sixTimesADay.rawValue:
-        datesArray.append(calendar.date(byAdding: .hour, value: 2, to: startDate)!)
-        datesArray.append(calendar.date(byAdding: .hour, value: 4, to: startDate)!)
-        datesArray.append(calendar.date(byAdding: .hour, value: 6, to: startDate)!)
-        datesArray.append(calendar.date(byAdding: .hour, value: 8, to: startDate)!)
-        datesArray.append(calendar.date(byAdding: .hour, value: 10, to: startDate)!)
+        // Start time, +2.5h, +5h, +7.5h, +10h, +12h
+        datesArray.append(calendar.date(byAdding: .minute, value: 150, to: normalizedStartDate)!)  // +2.5 hours
+        datesArray.append(calendar.date(byAdding: .minute, value: 300, to: normalizedStartDate)!)  // +5 hours
+        datesArray.append(calendar.date(byAdding: .minute, value: 450, to: normalizedStartDate)!)  // +7.5 hours
+        datesArray.append(calendar.date(byAdding: .minute, value: 600, to: normalizedStartDate)!)  // +10 hours
+        datesArray.append(calendar.date(byAdding: .minute, value: 720, to: normalizedStartDate)!)  // +12 hours
     default:
         break
     }
