@@ -24,8 +24,9 @@ struct ChangeHistory: View {
                 .font(.title).bold()
                 .foregroundStyle(Color.blue)
                 .shadow(color: .blue.opacity(0.18), radius: 4, x: 0, y: 2)
+                .padding(.top)
             
-            ZStack {
+            VStack(spacing: 8) {
                 HStack {
                     Picker("Select Type", selection: $name) {
                         ForEach(intakeTypes.sortedIntakeTypeNameArray, id: \.self) {
@@ -33,12 +34,16 @@ struct ChangeHistory: View {
                         }
                     }
                     .font(.caption)
+                }
+                
+                HStack {
                     DatePicker(
                         "",
                         selection: $selectedDate,
                         displayedComponents: [.date, .hourAndMinute]
                     )
                     .font(.caption)
+                    
                     Button(action: ({
                         let entry = CommonEntry(id: UUID(), date: selectedDate, units: intakeTypes.sortedIntakeTypeArray.first(where: {$0.name == name})?.unit ?? "no unit", amount: intakeTypes.sortedIntakeTypeArray.first(where: {$0.name == name})?.amount ?? 0, name: name, goalMet: false)
                         ChangeHistory.logger.info("Adding intake  \(name) with goalMet false")
@@ -54,6 +59,7 @@ struct ChangeHistory: View {
                     .buttonStyle(.bordered)
                 }
             }
+            .padding()
             .background(
                 RoundedRectangle(cornerRadius: 10)
                     .fill(Color.yellow.opacity(0.1))
@@ -62,7 +68,6 @@ struct ChangeHistory: View {
                             .stroke(Color.accentColor.opacity(0.35), lineWidth: 2)
                     )
             )
-            .frame(maxHeight: 80)
             .frame(maxWidth: .infinity, alignment: .center)
          
             

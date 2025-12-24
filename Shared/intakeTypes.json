@@ -40,11 +40,19 @@
         "id": "8D2AAD12-7EDE-4ADB-A3A8-44F657A2374A"
     },
     {
+        "name": "Metformin RX",
+        "unit": "mg",
+        "amount": 500,
+        "descrip": "Blood sugar control",
+        "frequency": "daily",
+        "id": "80D42B13-45C1-450B-A321-C53180BB3D56"
+    },
+    {
         "name": "Metformin",
         "unit": "mg",
         "amount": 500,
         "descrip": "Blood sugar control",
-        "frequency": "threeTimesADay",
+        "frequency": "daily",
         "id": "80D42B13-45C1-450B-A321-C53180BB3D56"
     },
     {
@@ -100,7 +108,7 @@
         "unit": "IU",
         "amount": 1000,
         "descrip": "Mind and Immune function support",
-        "frequency": "weekly",
+        "frequency": "twiceWeekly",
         "id": "DA3478BC-9E10-4154-BD9E-15FA75A68216"
     },
     {
