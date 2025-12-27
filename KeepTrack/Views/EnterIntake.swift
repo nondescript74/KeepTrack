@@ -32,6 +32,24 @@ struct EnterIntake: View {
     @State private var name: String = "Water"
     @State private var isSaving: Bool = false
     @State private var showingTypePicker: Bool = false
+    @State private var customAmount: Double?
+    @State private var hasEditedAmount: Bool = false
+    @FocusState private var amountFieldIsFocused: Bool
+    
+    // Get the default amount from the selected intake type
+    private var defaultAmount: Double {
+        cIntakeTypes.intakeTypeArray.first(where: { $0.name == name })?.amount ?? 0
+    }
+    
+    // Use custom amount if set, otherwise use default
+    private var currentAmount: Double {
+        customAmount ?? defaultAmount
+    }
+    
+    // Get the unit for the selected intake type
+    private var currentUnit: String {
+        cIntakeTypes.intakeTypeArray.first(where: { $0.name == name })?.unit ?? "no unit"
+    }
     
     var body: some View {
         ZStack {
@@ -69,6 +87,9 @@ struct EnterIntake: View {
                                     Button {
                                         name = typeName
                                         showingTypePicker = false
+                                        // Reset custom amount when changing intake type
+                                        customAmount = nil
+                                        hasEditedAmount = false
                                     } label: {
                                         HStack {
                                             Text(typeName)
@@ -102,6 +123,39 @@ struct EnterIntake: View {
                             }
                             .presentationDetents([.medium, .large])
                         }
+                        
+                        Spacer()
+                    }
+                    
+                    // Amount field with unit display
+                    HStack(spacing: 12) {
+                        Text("Amount:")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                        
+                        TextField("Amount", value: Binding(
+                            get: { currentAmount },
+                            set: { newValue in
+                                customAmount = newValue
+                                hasEditedAmount = true
+                            }
+                        ), format: .number)
+                        .textFieldStyle(.roundedBorder)
+                        .keyboardType(.decimalPad)
+                        .focused($amountFieldIsFocused)
+                        .onTapGesture {
+                            if !hasEditedAmount {
+                                // Clear the field on first tap
+                                customAmount = 0
+                                hasEditedAmount = true
+                            }
+                        }
+                        .frame(width: 100)
+                        
+                        Text(currentUnit)
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                        
                         Spacer()
                         
                         
@@ -112,11 +166,14 @@ struct EnterIntake: View {
                             
                             let goalToUse = goals.getTodaysGoalForName(namez: self.name)
                             if goalToUse == nil {
-                                let entry = CommonEntry(id: UUID(), date: Date(), units: cIntakeTypes.intakeTypeArray.first(where: {$0.name == name})?.unit ?? "no unit", amount: cIntakeTypes.intakeTypeArray.first(where: {$0.name == name})?.amount ?? 0, name: name, goalMet: true)
+                                let entry = CommonEntry(id: UUID(), date: Date(), units: currentUnit, amount: currentAmount, name: name, goalMet: true)
                                 Task { 
                                     await store.addEntry(entry: entry)
                                     try? await Task.sleep(for: .milliseconds(500))
                                     isSaving = false
+                                    // Reset fields after successful save
+                                    customAmount = nil
+                                    hasEditedAmount = false
                                 }
                                 logger.info("CommonStore: Added intake  \(name) no goals for name")
                                 
@@ -124,11 +181,14 @@ struct EnterIntake: View {
                                 logger.info("goalToUse dates are \(goalToUse!.dates.compactMap({$0}))")
                                 let result = isGoalMet(goal: goalToUse!, previous: store.getTodaysIntake().filter({$0.name == self.name}).count)
                                 logger.info("todays intake \(result)")
-                                let entry = CommonEntry(id: UUID(), date: Date(), units: cIntakeTypes.intakeTypeArray.first(where: {$0.name == name})?.unit ?? "no unit", amount: cIntakeTypes.intakeTypeArray.first(where: {$0.name == name})?.amount ?? 0, name: name, goalMet: result)
+                                let entry = CommonEntry(id: UUID(), date: Date(), units: currentUnit, amount: currentAmount, name: name, goalMet: result)
                                 Task { 
                                     await store.addEntry(entry: entry)
                                     try? await Task.sleep(for: .milliseconds(500))
                                     isSaving = false
+                                    // Reset fields after successful save
+                                    customAmount = nil
+                                    hasEditedAmount = false
                                 }
                                 logger.info("CommonStore: added intake \(name)")
                             }
@@ -143,16 +203,19 @@ struct EnterIntake: View {
                         .disabled(isSaving)
                         .opacity(isSaving ? 0.6 : 1.0)
                     }
+                    .padding(.horizontal)
+                    
                     Spacer()
                 }
                 .padding(.horizontal)
         }
         .environment(store)
         .environment(goals)
-        .task {
-            // Reload from bundle every time this view appears to pick up any JSON changes
-            await cIntakeTypes.reloadFromBundle()
-        }
+        // NOTE: Removed automatic reloadFromBundle() to preserve user-added intake types
+        // .task {
+        //     // Reload from bundle every time this view appears to pick up any JSON changes
+        //     await cIntakeTypes.reloadFromBundle()
+        // }
     }
 }
 

@@ -99,13 +99,25 @@
     "Amount" : {
 
     },
+    "Amount:" : {
+
+    },
+    "App Information" : {
+
+    },
     "App Views" : {
+
+    },
+    "Build" : {
 
     },
     "By Day & Time" : {
 
     },
     "Cancel" : {
+
+    },
+    "Close" : {
 
     },
     "Confirm" : {
@@ -126,6 +138,9 @@
     "Description" : {
 
     },
+    "Diagnostic Log" : {
+
+    },
     "Did you take your %@ at %@?" : {
       "localizations" : {
         "en" : {
@@ -135,6 +150,9 @@
           }
         }
       }
+    },
+    "Done" : {
+
     },
     "Dosage:" : {
 
@@ -149,6 +167,9 @@
 
     },
     "Enter Goal" : {
+
+    },
+    "Error Loading Logs" : {
 
     },
     "First dose time" : {
@@ -167,6 +188,9 @@
 
     },
     "Help & Guidance" : {
+
+    },
+    "Help & Support" : {
 
     },
     "Help System" : {
@@ -211,6 +235,9 @@
     "License Status" : {
 
     },
+    "Loading logs..." : {
+
+    },
     "Log Intake" : {
 
     },
@@ -244,7 +271,13 @@
     "Please scroll to the bottom to continue" : {
 
     },
+    "Refresh" : {
+
+    },
     "Remove This Intake Type" : {
+
+    },
+    "Retry" : {
 
     },
     "Save Changes" : {
@@ -266,6 +299,9 @@
 
     },
     "Settings" : {
+
+    },
+    "Share" : {
 
     },
     "Show Goals" : {
@@ -305,6 +341,9 @@
     "This is an example of how to add help to any view." : {
 
     },
+    "Time Range" : {
+
+    },
     "Times:" : {
 
     },
@@ -324,6 +363,9 @@
 
     },
     "Unit of Measure" : {
+
+    },
+    "Version" : {
 
     },
     "Version %@" : {

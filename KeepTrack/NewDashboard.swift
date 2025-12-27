@@ -26,6 +26,7 @@ struct NewDashboard: View {
     
     @State private var selectedTab: TabSelection = .today
     @State private var showingHelp = false
+    @State private var showingSettings = false
     
     private enum TabSelection {
         case today, yesterday, byDayTime, addHistory, showGoals, enterGoal, editHistory, editGoals, addNew
@@ -105,6 +106,17 @@ struct NewDashboard: View {
                 .background(Color(.systemBackground))
             }
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        showingSettings = true
+                    } label: {
+                        Image(systemName: "gear")
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.blue)
+                    }
+                    .accessibilityLabel("Settings")
+                }
+                
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         logger.debug("Help button tapped for tab: \(String(describing: selectedTab))")
@@ -119,6 +131,9 @@ struct NewDashboard: View {
             }
             .sheet(isPresented: $showingHelp) {
                 HelpView(topic: HelpContentManager.getHelpTopic(for: selectedTab.helpIdentifier))
+            }
+            .sheet(isPresented: $showingSettings) {
+                SettingsView()
             }
         }
         .onChange(of: scenePhase) { _, newPhase in

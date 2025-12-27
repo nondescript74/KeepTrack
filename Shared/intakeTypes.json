@@ -40,10 +40,10 @@
         "id": "8D2AAD12-7EDE-4ADB-A3A8-44F657A2374A"
     },
     {
-        "name": "Metformin RX",
+        "name": "Metformin ER",
         "unit": "mg",
         "amount": 500,
-        "descrip": "Blood sugar control",
+        "descrip": "Blood sugar control.  Extended release.  Take with breakfast.",
         "frequency": "daily",
         "id": "80D42B13-45C1-450B-A321-C53180BB3D56"
     },
