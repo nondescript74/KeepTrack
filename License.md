@@ -1,6 +1,6 @@
 # END USER LICENSE AGREEMENT
 
-**Last Updated:** November 13, 2025
+**Last Updated:** December 27, 2025
 
 **PLEASE READ THIS LICENSE AGREEMENT CAREFULLY BEFORE USING THIS APPLICATION.**
 
@@ -21,15 +21,26 @@ You may not:
 ## 3. DATA AND PRIVACY
 
 This application may collect and store personal health data including:
-- Medication intake records
+- Medication and supplement intake records
 - Health goals and tracking information
-- Notification preferences
+- Notification preferences and schedules
+- Custom intake types and descriptions
 
-**Important:** All data collected by this application is stored locally on your device and is not transmitted to external servers. You are responsible for backing up your data.
+**Important:** All data collected by this application is stored locally on your device and in your iCloud account (if enabled). No data is transmitted to external servers or third parties. You are solely responsible for backing up your data.
 
 ## 4. HEALTH DISCLAIMER
 
-This application is designed to help you track your health-related activities. It is NOT a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.
+**IMPORTANT MEDICAL DISCLAIMER:**
+
+This application is designed to help you track your health-related activities and medications. It is NOT:
+- A substitute for professional medical advice, diagnosis, or treatment
+- A medical device
+- Intended to diagnose, treat, cure, or prevent any disease
+- A replacement for consulting with qualified healthcare providers
+
+Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition. Never disregard professional medical advice or delay in seeking it because of something you have read or tracked in this application.
+
+If you think you may have a medical emergency, call your doctor or emergency services immediately.
 
 ## 5. DISCLAIMER OF WARRANTIES
 
@@ -37,44 +48,81 @@ This application is provided "AS IS" and "AS AVAILABLE" without warranty of any 
 - Warranties of merchantability
 - Fitness for a particular purpose
 - Non-infringement
-- Accuracy or reliability of information
+- Accuracy, reliability, or completeness of information
+- Uninterrupted or error-free operation
+
+You acknowledge that:
+- Software may contain bugs or errors
+- Notifications may not always work as expected
+- Data loss may occur despite best efforts
+- The application relies on device functionality that may fail
 
 ## 6. LIMITATION OF LIABILITY
 
-In no event shall the developers or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with:
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL THE DEVELOPERS, COPYRIGHT HOLDERS, OR CONTRIBUTORS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH:
 - The use or inability to use this application
-- Any errors or omissions in the application
-- Any loss of data or health information
-- Any decisions made based on information provided by the application
+- Any errors, bugs, or omissions in the application
+- Any loss, corruption, or unauthorized access to data
+- Any missed medications or health activities
+- Any decisions made based on information provided by or tracked in the application
+- Any harm to health or well-being allegedly caused by use of the application
 
-## 7. INDEMNIFICATION
+## 7. USER RESPONSIBILITIES
 
-You agree to indemnify and hold harmless the developers from any claims, damages, losses, liabilities, and expenses arising from your use of this application.
+You agree to:
+- Use this application at your own risk
+- Verify all critical information independently
+- Maintain your own backup of important health data
+- Follow your healthcare provider's instructions
+- Not rely solely on this application for medication management
 
-## 8. UPDATES AND MODIFICATIONS
+## 8. INDEMNIFICATION
 
-This application may be updated from time to time to add features, fix bugs, or improve performance. You may be required to accept a new version of this agreement to continue using updated versions of the application.
+You agree to indemnify, defend, and hold harmless the developers from any claims, damages, losses, liabilities, costs, and expenses (including reasonable attorneys' fees) arising from:
+- Your use of this application
+- Your violation of this agreement
+- Your violation of any rights of another person or entity
 
-## 9. TERMINATION
+## 9. UPDATES AND MODIFICATIONS
 
-This license is effective until terminated. Your rights under this license will terminate automatically without notice if you fail to comply with any term of this agreement.
+This application may be updated from time to time to:
+- Add new features
+- Fix bugs or errors
+- Improve performance or user experience
+- Address security issues
 
-## 10. GOVERNING LAW
+You may be required to accept a new version of this agreement to continue using updated versions of the application. Updates may change functionality without prior notice.
+
+## 10. TERMINATION
+
+This license is effective until terminated. Your rights under this license will terminate automatically without notice if you fail to comply with any term of this agreement. Upon termination, you must cease all use of the application and delete all copies.
+
+## 11. GOVERNING LAW
 
 This agreement shall be governed by and construed in accordance with the laws of the jurisdiction in which you reside, without regard to its conflict of law provisions.
 
-## 11. CHANGES TO THIS AGREEMENT
+## 12. CHANGES TO THIS AGREEMENT
 
-We reserve the right to modify this agreement at any time. When we update this agreement, we will update the "Last Updated" date above. Your continued use of the application after changes constitutes acceptance of the new terms.
+We reserve the right to modify this agreement at any time. When we update this agreement, we will update the "Last Updated" date above. Material changes will be communicated through the application. Your continued use of the application after changes constitutes acceptance of the new terms.
 
-## 12. ENTIRE AGREEMENT
+## 13. SEVERABILITY
 
-This agreement constitutes the entire agreement between you and the developers regarding the use of this application and supersedes all prior agreements and understandings.
+If any provision of this agreement is found to be unenforceable or invalid, that provision shall be limited or eliminated to the minimum extent necessary so that this agreement shall otherwise remain in full force and effect.
 
-## 13. CONTACT
+## 14. ENTIRE AGREEMENT
+
+This agreement constitutes the entire agreement between you and the developers regarding the use of this application and supersedes all prior agreements and understandings, whether written or oral.
+
+## 15. NO WAIVER
+
+The failure of the developers to enforce any right or provision of this agreement shall not constitute a waiver of such right or provision.
+
+## 16. CONTACT
 
 If you have questions about this License Agreement, please contact the developer through the App Store.
 
 ---
 
-**BY CLICKING "I ACCEPT," YOU ACKNOWLEDGE THAT YOU HAVE READ AND UNDERSTOOD THIS AGREEMENT AND AGREE TO BE BOUND BY ITS TERMS AND CONDITIONS.**
+**BY CLICKING "I ACCEPT," YOU ACKNOWLEDGE THAT YOU HAVE READ AND UNDERSTOOD THIS AGREEMENT IN ITS ENTIRETY AND AGREE TO BE BOUND BY ITS TERMS AND CONDITIONS.**
+**IF YOU DO NOT AGREE TO THESE TERMS, DO NOT USE THIS APPLICATION.**
+

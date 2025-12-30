@@ -53,10 +53,11 @@ struct EnterIntake: View {
     
     var body: some View {
         ZStack {
-            VStack(spacing: 10) {
+            VStack(spacing: 8) {
                 Text("Log Intake")
                     .font(.title3.bold())
                     .foregroundStyle(Color.accentColor)
+                    .padding(.top, 4)
                     
                     HStack(spacing: 16) {
                         // Custom picker button that shows a sheet instead of context menu
@@ -129,8 +130,8 @@ struct EnterIntake: View {
                     
                     // Amount field with unit display
                     HStack(spacing: 12) {
-                        Text("Amount:")
-                            .font(.subheadline)
+                        Text("Amount ")
+                            .font(.default)
                             .foregroundStyle(.secondary)
                         
                         TextField("Amount", value: Binding(
@@ -150,10 +151,10 @@ struct EnterIntake: View {
                                 hasEditedAmount = true
                             }
                         }
-                        .frame(width: 100)
+                        .frame(width: 40)
                         
                         Text(currentUnit)
-                            .font(.subheadline)
+                            .font(.default)
                             .foregroundStyle(.secondary)
                         
                         Spacer()
@@ -205,7 +206,7 @@ struct EnterIntake: View {
                     }
                     .padding(.horizontal)
                     
-                    Spacer()
+                    // Remove the Spacer() that was pushing content down
                 }
                 .padding(.horizontal)
         }
