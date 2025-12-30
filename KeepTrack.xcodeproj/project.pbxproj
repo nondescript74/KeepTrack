@@ -11,6 +11,7 @@
 		F80FB4932E721543005835FA /* intakeTypes.json in Resources */ = {isa = PBXBuildFile; fileRef = F80FB4692E721543005835FA /* intakeTypes.json */; };
 		F8425F012EF83D3A00092382 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8425ED22EF83D3A00092382 /* Assets.xcassets */; };
 		F850BC752EC699120006DFBB /* License.md in Resources */ = {isa = PBXBuildFile; fileRef = F850BC742EC699120006DFBB /* License.md */; };
+		F870468B2F0492BB00E97376 /* KeepTrackApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F870465E2F0492BB00E97376 /* KeepTrackApp.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +44,7 @@
 		F81C71D22D8A29280037FCCB /* KeepTrack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KeepTrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8425ED22EF83D3A00092382 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F850BC742EC699120006DFBB /* License.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = License.md; sourceTree = "<group>"; };
+		F870465E2F0492BB00E97376 /* KeepTrackApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepTrackApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -74,6 +76,7 @@
 				HELP_SYSTEM_ARCHITECTURE.md,
 				HELP_SYSTEM_FIX.md,
 				HELP_SYSTEM_README.md,
+				SETTINGS_IMPLEMENTATION.md,
 				TESTING_GUIDE.md,
 			);
 			target = F81C71D12D8A29280037FCCB /* KeepTrack */;
@@ -137,6 +140,7 @@
 		F81C71C92D8A29280037FCCB = {
 			isa = PBXGroup;
 			children = (
+				F870465E2F0492BB00E97376 /* KeepTrackApp.swift */,
 				F8425ED22EF83D3A00092382 /* Assets.xcassets */,
 				F850BC742EC699120006DFBB /* License.md */,
 				F87668BE2EC7DE5F00293948 /* Docs */,
@@ -289,6 +293,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F870468B2F0492BB00E97376 /* KeepTrackApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -521,7 +526,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MARKETING_VERSION = 14.1;
+				MARKETING_VERSION = 14.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.headydiscy.KeepTrack;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -574,7 +579,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MARKETING_VERSION = 14.1;
+				MARKETING_VERSION = 14.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.headydiscy.KeepTrack;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;

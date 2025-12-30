@@ -4,4 +4,10 @@
    <FileRef
       location = "self:">
    </FileRef>
+   <FileRef
+      location = "group:SettingsView.swift">
+   </FileRef>
+   <FileRef
+      location = "group:SETTINGS_IMPLEMENTATION.md">
+   </FileRef>
 </Workspace>

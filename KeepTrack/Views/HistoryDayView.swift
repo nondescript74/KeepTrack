@@ -48,8 +48,8 @@ struct HistoryDayView: View {
         VStack(spacing: 0) {
             if kind == .today {
                 EnterIntake()
-                    .padding(.bottom, 8)
-                    .frame(maxWidth: .infinity, maxHeight: 100, alignment: .top)
+                    .padding(.vertical, 12)
+                    .frame(maxWidth: .infinity, alignment: .top)
                     .background(.thinMaterial)
             }
 
