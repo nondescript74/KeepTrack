@@ -10,6 +10,7 @@ import SwiftUI
 struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showDiagnosticLog = false
+    @State private var showReminderTestingHelp = false
     
     var body: some View {
         NavigationStack {
@@ -31,6 +32,19 @@ struct SettingsView: View {
                 }
                 
                 Section("Help & Support") {
+                    Button {
+                        showReminderTestingHelp = true
+                    } label: {
+                        HStack {
+                            Label("Reminder Testing Guide", systemImage: "bell.badge.circle")
+                                .foregroundStyle(.primary)
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    
                     Button {
                         showDiagnosticLog = true
                     } label: {
@@ -56,6 +70,9 @@ struct SettingsView: View {
             }
             .sheet(isPresented: $showDiagnosticLog) {
                 DiagnosticLogView()
+            }
+            .sheet(isPresented: $showReminderTestingHelp) {
+                HelpView(topic: HelpContentManager.getHelpTopic(for: .reminderTesting))
             }
         }
     }
