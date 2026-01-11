@@ -41,6 +41,7 @@ enum HelpViewIdentifier {
     case editGoals
     case addIntakeType
     case license
+    case reminderTesting
 }
 
 /// Central help content manager
@@ -70,6 +71,8 @@ struct HelpContentManager {
             return addIntakeTypeHelp
         case .license:
             return licenseHelp
+        case .reminderTesting:
+            return reminderTestingHelp
         }
     }
     
@@ -91,6 +94,17 @@ struct HelpContentManager {
                 title: "Quick Start Guide",
                 content: "To get started with KeepTrack:\n\n1. Go to 'Add New' to create intake types (e.g., Water, Vitamin C)\n2. Go to 'Goal' to set daily goals for each item\n3. Use 'Add History' to log when you take something\n4. Check 'Today' to see your current progress",
                 tips: nil
+            ),
+            HelpSection(
+                title: "Smart Reminders",
+                content: "KeepTrack includes intelligent reminders for all frequency types:\n\n• Daily reminders: Automatically suppressed if you've logged intake today\n• Weekly reminders: Fire only on specified weekdays, suppressed if logged this week\n• Monthly reminders: Fire only on specified days, suppressed if logged this month\n• Confirm button: Quick logging without opening the app\n• Cancel button: Stop specific unwanted reminders\n• Automatic cleanup: Missed daily reminders are cleaned up\n• Works everywhere: Notifications work whether app is open, in background, or closed\n\nFor detailed information about reminders, see 'Testing Reminders' in the Help menu.",
+                tips: [
+                    "Enable reminders when creating goals",
+                    "Choose the right frequency (daily, weekly, or monthly)",
+                    "Notifications help build consistent habits",
+                    "Tap 'Confirm' on notifications to quickly log intake",
+                    "Weekly and monthly reminders only fire on correct days"
+                ]
             )
         ]
     )
@@ -220,12 +234,15 @@ struct HelpContentManager {
                 ]
             ),
             HelpSection(
-                title: "Goal Notifications",
-                content: "If you've enabled notifications, KeepTrack can remind you when it's time to take something according to your goals.",
+                title: "Goal Notifications & Reminders",
+                content: "If you've enabled notifications, KeepTrack can remind you when it's time to take something according to your goals.\n\nReminder Features:\n• Frequency-aware: Daily, weekly, and monthly reminders work correctly\n• Daily reminders: Suppressed if you logged today before scheduled time\n• Weekly reminders: Suppressed if you logged this week on same weekday\n• Monthly reminders: Suppressed if you logged this month on same day\n• Confirm button to quickly log without opening the app\n• Cancel button to stop unwanted reminders\n• Smart cleanup of missed daily reminders",
                 tips: [
                     "Enable notifications for important medications",
                     "Set reminder times that match your schedule",
-                    "Tap notifications to quickly log entries"
+                    "Tap notifications to quickly log entries",
+                    "Weekly reminders only fire on the correct weekday",
+                    "Monthly reminders only fire on the correct day of month",
+                    "See 'Testing Reminders' in Help for detailed information"
                 ]
             )
         ]
@@ -256,11 +273,22 @@ struct HelpContentManager {
             ),
             HelpSection(
                 title: "Goal Schedules",
-                content: "You can create goals with different schedules: once daily, multiple times per day, specific days of the week, or custom intervals.",
+                content: "You can create goals with different schedules:\n\n• Daily frequencies: Once, twice, three times, or more per day\n• Weekly frequencies: Once, twice, three, or four times per week\n• Monthly frequencies: Once, twice, or three times per month\n\nThe app automatically calculates reminder times based on your chosen frequency.",
                 tips: [
-                    "Multiple daily goals work well for medications",
-                    "Weekly goals suit supplements taken on certain days",
-                    "Custom intervals offer maximum flexibility"
+                    "Daily goals spread reminders throughout the day (e.g., twice daily = 12 hours apart)",
+                    "Weekly goals fire on specific weekdays",
+                    "Monthly goals fire on specific days of the month",
+                    "Each frequency type has smart suppression when you log intake"
+                ]
+            ),
+            HelpSection(
+                title: "Smart Reminders",
+                content: "When you enable notifications for a goal, KeepTrack provides intelligent reminders that adapt to your frequency:\n\n• Daily reminders: Won't remind if you logged today at/before scheduled time\n• Weekly reminders: Won't remind if you logged this week on the same weekday\n• Monthly reminders: Won't remind if you logged this month on the same day\n\nPlus:\n• Confirm button to quickly log without opening the app\n• Cancel button to stop specific reminders\n• Automatically cleans up missed daily reminders\n\nFor detailed testing and understanding of reminders, see 'Testing Reminders' in the Help menu.",
+                tips: [
+                    "Reminders adapt to your behavior and frequency",
+                    "No annoying duplicate notifications",
+                    "Quick actions save time",
+                    "Weekly and monthly reminders only fire on correct days"
                 ]
             )
         ]
@@ -388,4 +416,110 @@ struct HelpContentManager {
             )
         ]
     )
+    
+    // MARK: - Reminder Testing Help
+    private static let reminderTestingHelp = HelpTopic(
+        title: "Testing Reminders",
+        sections: [
+            HelpSection(
+                title: "Setup",
+                content: "To test the reminder system:\n\n1. Ensure notification permissions are granted in Settings\n2. Create a goal with at least 2 reminder times\n3. Test different scenarios to verify functionality",
+                tips: [
+                    "For faster testing, set reminders just a few minutes ahead",
+                    "Check Focus mode isn't blocking notifications",
+                    "Verify you have active goals set up"
+                ]
+            ),
+            HelpSection(
+                title: "Test 1: Automatic Suppression",
+                content: "Verify that reminders are suppressed when intake is logged before the scheduled time.\n\nSteps:\n1. Manually log an intake for the goal before the reminder time (e.g., at 1:55 PM for a 2:00 PM reminder)\n2. Wait for the reminder time to arrive\n3. Expected Result: No notification appears",
+                tips: [
+                    "This prevents duplicate reminders for items already taken",
+                    "The system checks if any entry was logged at or before the scheduled time"
+                ]
+            ),
+            HelpSection(
+                title: "Test 2: Confirm Button",
+                content: "Verify that the Confirm button logs an entry at the current time.\n\nSteps:\n1. Don't log any intake manually\n2. Wait for the reminder to fire\n3. When the notification appears, tap the 'Confirm' button\n4. Open the app and check your history\n5. Expected Result: Entry is logged with the timestamp when you pressed Confirm",
+                tips: [
+                    "This allows quick logging without opening the app",
+                    "The entry will include the goal's name, dosage, and units",
+                    "Perfect for when you're busy and need to confirm quickly"
+                ]
+            ),
+            HelpSection(
+                title: "Test 3: Cancel Button",
+                content: "Verify that the Cancel button permanently stops the reminder.\n\nSteps:\n1. Don't log any intake\n2. Wait for the reminder to fire\n3. When the notification appears, tap the 'Cancel' button\n4. Expected Result: This specific reminder is cancelled and won't repeat",
+                tips: [
+                    "Useful if you decide you don't need this particular reminder",
+                    "The reminder won't come back tomorrow unless you reschedule the goal",
+                    "Other reminders for different times remain active"
+                ]
+            ),
+            HelpSection(
+                title: "Test 4: Superseded Reminders",
+                content: "Verify that later reminders automatically cancel earlier ones.\n\nSteps:\n1. Set up a goal with multiple reminder times (e.g., 2:00 PM and 4:00 PM)\n2. Don't log any intake at 2:00 PM\n3. Ignore the 2:00 PM notification\n4. Wait for 4:00 PM reminder to fire\n5. Expected Result: The 2:00 PM reminder is automatically cancelled when 4:00 PM fires",
+                tips: [
+                    "This prevents notification clutter from missed reminders",
+                    "Only the current and future reminders remain active",
+                    "Helps keep your notification center clean"
+                ]
+            ),
+            HelpSection(
+                title: "Test 5: App in Foreground",
+                content: "Verify reminders work when the app is open.\n\nSteps:\n1. Keep the app open and in focus\n2. Wait for a scheduled reminder time\n3. Expected Result: A banner notification appears at the top of the screen\n4. You can still use Confirm/Cancel buttons",
+                tips: [
+                    "Reminders work whether the app is open, in background, or closed",
+                    "Banner appears temporarily at the top",
+                    "Tap the banner to see more options"
+                ]
+            ),
+            HelpSection(
+                title: "Test 6: Multiple Goals",
+                content: "Verify that different goals don't interfere with each other.\n\nSteps:\n1. Create two different goals (e.g., 'Medication A' and 'Medication B')\n2. Schedule reminders at the same time for both (e.g., both at 3:00 PM)\n3. Log intake for only 'Medication A'\n4. Wait for 3:00 PM\n5. Expected Result: Only the 'Medication B' reminder fires",
+                tips: [
+                    "Each goal's reminders are tracked independently",
+                    "Logging one item doesn't affect other items",
+                    "You can have many goals with overlapping times"
+                ]
+            ),
+            HelpSection(
+                title: "Test 7: Weekly Reminders",
+                content: "Verify weekly reminders work correctly.\n\nSteps:\n1. Create a goal with weekly frequency (e.g., 'Sunday Vitamins')\n2. Set reminder for a specific weekday and time\n3. Log intake on that weekday before the reminder time\n4. Expected Result: Reminder is suppressed for that week\n5. Next week on the same day: Reminder fires normally",
+                tips: [
+                    "Weekly reminders only fire on the specified weekday",
+                    "Logging on other days doesn't suppress the reminder",
+                    "Each week resets - reminders fire again next week",
+                    "Perfect for medications taken on specific days"
+                ]
+            ),
+            HelpSection(
+                title: "Test 8: Monthly Reminders",
+                content: "Verify monthly reminders work correctly.\n\nSteps:\n1. Create a goal with monthly frequency (e.g., 'Prescription Refill')\n2. Set reminder for a specific day of month and time\n3. Log intake on that day before the reminder time\n4. Expected Result: Reminder is suppressed for that month\n5. Next month on the same day: Reminder fires normally",
+                tips: [
+                    "Monthly reminders only fire on the specified day of month",
+                    "Logging on other days doesn't suppress the reminder",
+                    "Each month resets - reminders fire again next month",
+                    "Great for monthly medications or appointments"
+                ]
+            ),
+            HelpSection(
+                title: "Common Issues",
+                content: "If notifications aren't appearing:\n\n• Check notification permissions in Settings → KeepTrack → Notifications\n• Verify Focus mode isn't blocking app notifications\n• Ensure the scheduled time hasn't already passed today\n• Check if intake was already logged (causing suppression)\n• Make sure the goal is active and has reminder times set",
+                tips: nil
+            ),
+            HelpSection(
+                title: "Understanding Reminder Behavior",
+                content: "The reminder system is designed to be intelligent:\n\n• Automatically suppresses reminders for items already logged\n• Frequency-aware: Daily, weekly, and monthly reminders behave appropriately\n• Daily: Suppressed if logged today before scheduled time\n• Weekly: Suppressed if logged this week on same weekday before scheduled time\n• Monthly: Suppressed if logged this month on same day before scheduled time\n• Allows quick confirmation without opening the app\n• Cleans up old daily reminders to prevent clutter\n• Works independently for each goal you create\n• Respects your device's notification settings",
+                tips: [
+                    "Reminders help build consistent habits",
+                    "Use Confirm for quick logging",
+                    "Use Cancel if you change your mind",
+                    "Choose the right frequency for your needs",
+                    "Weekly and monthly reminders only fire on the correct days"
+                ]
+            )
+        ]
+    )
 }
+

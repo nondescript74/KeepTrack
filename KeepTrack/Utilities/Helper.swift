@@ -237,7 +237,7 @@ func matchingDateArray(name: String, startDate: Date, useUserTime: Bool = false)
     
     let myFrequency = mySpecificIntakeType.frequency
     
-    // Calculate subsequent doses spread across a 12-hour waking period from the start time
+    // Handle daily frequencies - spread across 12-hour waking period from start time
     switch myFrequency {
     case frequency.daily.rawValue:
         break
@@ -260,6 +260,54 @@ func matchingDateArray(name: String, startDate: Date, useUserTime: Bool = false)
         datesArray.append(calendar.date(byAdding: .minute, value: 450, to: normalizedStartDate)!)  // +7.5 hours
         datesArray.append(calendar.date(byAdding: .minute, value: 600, to: normalizedStartDate)!)  // +10 hours
         datesArray.append(calendar.date(byAdding: .minute, value: 720, to: normalizedStartDate)!)  // +12 hours
+    
+    // Handle weekly frequencies - spread across the week
+    case frequency.weekly.rawValue:
+        // Just the start date (once per week)
+        break
+    case frequency.twiceWeekly.rawValue:
+        // Start date and 3.5 days later (spread evenly across week)
+        if let nextDate = calendar.date(byAdding: .day, value: 3, to: normalizedStartDate) {
+            datesArray.append(nextDate)
+        }
+    case frequency.threeTimesWeekly.rawValue:
+        // Start date, +2 days, +4 days (Mon, Wed, Fri pattern)
+        if let nextDate1 = calendar.date(byAdding: .day, value: 2, to: normalizedStartDate) {
+            datesArray.append(nextDate1)
+        }
+        if let nextDate2 = calendar.date(byAdding: .day, value: 4, to: normalizedStartDate) {
+            datesArray.append(nextDate2)
+        }
+    case frequency.fourTimesWeekly.rawValue:
+        // Start date, +1 day, +3 days, +5 days
+        if let nextDate1 = calendar.date(byAdding: .day, value: 1, to: normalizedStartDate) {
+            datesArray.append(nextDate1)
+        }
+        if let nextDate2 = calendar.date(byAdding: .day, value: 3, to: normalizedStartDate) {
+            datesArray.append(nextDate2)
+        }
+        if let nextDate3 = calendar.date(byAdding: .day, value: 5, to: normalizedStartDate) {
+            datesArray.append(nextDate3)
+        }
+    
+    // Handle monthly frequencies
+    case frequency.monthly.rawValue:
+        // Just the start date (once per month)
+        break
+    case frequency.twiceMonthly.rawValue:
+        // Start date and ~15 days later
+        if let nextDate = calendar.date(byAdding: .day, value: 15, to: normalizedStartDate) {
+            datesArray.append(nextDate)
+        }
+    case frequency.threeTimesMonthly.rawValue:
+        // Start date, +10 days, +20 days
+        if let nextDate1 = calendar.date(byAdding: .day, value: 10, to: normalizedStartDate) {
+            datesArray.append(nextDate1)
+        }
+        if let nextDate2 = calendar.date(byAdding: .day, value: 20, to: normalizedStartDate) {
+            datesArray.append(nextDate2)
+        }
+    
     default:
         break
     }

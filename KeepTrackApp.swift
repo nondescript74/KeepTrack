@@ -34,6 +34,9 @@ struct KeepTrackApp: App {
         UNUserNotificationCenter.current().delegate = delegate
         _notificationHolder = StateObject(wrappedValue: holder)
         
+        // Setup notification categories for action buttons
+        IntakeReminderManager.setupNotificationCategories()
+        
         // UserDefaults.standard.removeObject(forKey: "AcceptedLicenseVersion")
     }
 
@@ -63,19 +66,118 @@ struct KeepTrackApp: App {
 
 class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
     let onNotificationTap: (String, Date) -> Void
+    
     init(onNotificationTap: @escaping (String, Date) -> Void) {
         self.onNotificationTap = onNotificationTap
     }
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        let identifier = response.notification.request.identifier
-        // expects identifier in form: reminder-<goal.id>-<timestamp>
-        if let dashRange = identifier.range(of: "-", options: .backwards),
-           let timestamp = Double(identifier[dashRange.upperBound...]) {
-            let name = response.notification.request.content.body
-                .replacingOccurrences(of: "Did you take your ", with: "")
-                .components(separatedBy: " ")[0]
-            self.onNotificationTap(name, Date(timeIntervalSince1970: timestamp))
+    
+    // Called when notification will be presented while app is in foreground
+    func userNotificationCenter(_ center: UNUserNotificationCenter, 
+                              willPresent notification: UNNotification,
+                              withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        Task {
+            // Check if we should suppress this reminder
+            let userInfo = notification.request.content.userInfo
+            guard let goalIDString = userInfo["goalID"] as? String,
+                  let goalID = UUID(uuidString: goalIDString),
+                  let goalName = userInfo["goalName"] as? String else {
+                completionHandler([.banner, .sound, .badge])
+                return
+            }
+            
+            // Load store and check if intake was already logged
+            let store = await CommonStore.loadStore()
+            
+            // Get the scheduled time from the trigger
+            if let trigger = notification.request.trigger as? UNCalendarNotificationTrigger,
+               let nextTriggerDate = trigger.nextTriggerDate() {
+                
+                // Cancel any superseded reminders
+                await IntakeReminderManager.cancelSupersededReminders(for: goalID, currentScheduledTime: nextTriggerDate)
+                
+                // Check if we should suppress
+                if await IntakeReminderManager.shouldSuppressReminder(
+                    for: CommonGoal(id: goalID, name: goalName, description: "", dates: [], 
+                                  isActive: true, isCompleted: false, dosage: 0, units: "", frequency: ""),
+                    scheduledTime: nextTriggerDate,
+                    store: store
+                ) {
+                    // Don't show the notification
+                    completionHandler([])
+                    return
+                }
+            }
+            
+            // Show the notification normally
+            completionHandler([.banner, .sound, .badge])
         }
-        completionHandler()
+    }
+    
+    // Called when user interacts with notification
+    func userNotificationCenter(_ center: UNUserNotificationCenter, 
+                              didReceive response: UNNotificationResponse, 
+                              withCompletionHandler completionHandler: @escaping () -> Void) {
+        let userInfo = response.notification.request.content.userInfo
+        let notificationIdentifier = response.notification.request.identifier
+        
+        Task {
+            switch response.actionIdentifier {
+            case "CONFIRM_ACTION":
+                // User confirmed they took the intake - log it now
+                await handleConfirmAction(userInfo: userInfo)
+                
+            case "CANCEL_ACTION":
+                // User cancelled - cancel this specific reminder permanently
+                await handleCancelAction(userInfo: userInfo, notificationIdentifier: notificationIdentifier)
+                
+            case UNNotificationDefaultActionIdentifier:
+                // User tapped the notification body - show the dialog
+                if let goalName = userInfo["goalName"] as? String,
+                   let nextTriggerDate = (response.notification.request.trigger as? UNCalendarNotificationTrigger)?.nextTriggerDate() {
+                    self.onNotificationTap(goalName, nextTriggerDate)
+                }
+                
+            default:
+                break
+            }
+            
+            completionHandler()
+        }
+    }
+    
+    private func handleConfirmAction(userInfo: [AnyHashable: Any]) async {
+        guard let goalName = userInfo["goalName"] as? String,
+              let units = userInfo["units"] as? String,
+              let dosage = userInfo["dosage"] as? Double else {
+            print("Missing required user info for confirm action")
+            return
+        }
+        
+        // Load store and add entry at current time
+        let store = await CommonStore.loadStore()
+        
+        let entry = CommonEntry(
+            id: UUID(),
+            date: Date(), // Log at the time user pressed confirm
+            units: units,
+            amount: dosage,
+            name: goalName,
+            goalMet: true
+        )
+        
+        await store.addEntry(entry: entry)
+        print("Logged intake for \(goalName) at \(Date())")
+    }
+    
+    private func handleCancelAction(userInfo: [AnyHashable: Any], notificationIdentifier: String) async {
+        guard let goalIDString = userInfo["goalID"] as? String,
+              let goalID = UUID(uuidString: goalIDString) else {
+            print("Missing goal ID for cancel action")
+            return
+        }
+        
+        // Cancel this specific reminder
+        IntakeReminderManager.cancelReminder(withIdentifier: notificationIdentifier)
+        print("Cancelled reminder \(notificationIdentifier) for goal \(goalID)")
     }
 }

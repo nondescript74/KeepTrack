@@ -176,6 +176,7 @@ extension HelpViewIdentifier: Identifiable {
         case .editGoals: return "editGoals"
         case .addIntakeType: return "addIntakeType"
         case .license: return "license"
+        case .reminderTesting: return "reminderTesting"
         }
     }
 }
