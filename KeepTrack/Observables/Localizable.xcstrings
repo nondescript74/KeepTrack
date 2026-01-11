@@ -117,6 +117,9 @@
     "Cancel" : {
 
     },
+    "Cancel Reminders" : {
+
+    },
     "Close" : {
 
     },
@@ -268,6 +271,9 @@
     "Other doses will be scheduled automatically based on frequency" : {
 
     },
+    "Pending reminders: %lld" : {
+
+    },
     "Please scroll to the bottom to continue" : {
 
     },
@@ -284,6 +290,9 @@
 
     },
     "Save Changes" : {
+
+    },
+    "Schedule Reminder" : {
 
     },
     "Search ingredients" : {
