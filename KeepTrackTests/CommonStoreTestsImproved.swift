@@ -27,7 +27,7 @@ import Testing
 ///
 /// All tests use dependency injection via `CommonStore.loadStore(storage:)`
 /// to ensure complete isolation between test runs.
-@Suite("CommonStore Tests (Improved with DI)")
+@Suite("CommonStore Tests (Improved with DI)", .serialized)
 struct CommonStoreTestsImproved {
     
     // Helper to create test entries
@@ -36,15 +36,21 @@ struct CommonStoreTestsImproved {
     }
     
     @Test("Loads an empty store successfully")
+    @MainActor
     func loadEmptyStore() async throws {
         let storage = InMemoryStorage()
         let store = await CommonStore.loadStore(storage: storage)
         
-        let isEmpty = await MainActor.run { store.history.isEmpty }
+        // Debug: Print what we got
+        print("DEBUG: History count = \(store.history.count)")
+        print("DEBUG: History = \(store.history)")
+        
+        let isEmpty = store.history.isEmpty
         #expect(isEmpty, "History should be empty on first load")
     }
     
     @Test("Adds and persists an entry")
+    @MainActor
     func addEntry() async throws {
         let storage = InMemoryStorage()
         let store = await CommonStore.loadStore(storage: storage)
@@ -52,9 +58,7 @@ struct CommonStoreTestsImproved {
         let entry = makeEntry(name: "Test Entry", amount: 1)
         await store.addEntry(entry: entry)
         
-        let hasEntry = await MainActor.run { 
-            store.history.contains(where: { $0.name == "Test Entry" }) 
-        }
+        let hasEntry = store.history.contains(where: { $0.name == "Test Entry" })
         #expect(hasEntry, "Entry 'Test Entry' should exist after adding")
         
         // Verify it was actually saved to storage
@@ -64,6 +68,7 @@ struct CommonStoreTestsImproved {
     }
 
     @Test("Removes an entry by ID")
+    @MainActor
     func removeEntryById() async throws {
         let storage = InMemoryStorage()
         let store = await CommonStore.loadStore(storage: storage)
@@ -71,16 +76,12 @@ struct CommonStoreTestsImproved {
         let entry = makeEntry(name: "Test Entry", amount: 1)
         await store.addEntry(entry: entry)
         
-        let existsBefore = await MainActor.run { 
-            store.history.contains(where: { $0.id == entry.id }) 
-        }
+        let existsBefore = store.history.contains(where: { $0.id == entry.id })
         #expect(existsBefore, "Entry should exist before removal")
         
         await store.removeEntryAtId(uuid: entry.id)
         
-        let existsAfter = await MainActor.run { 
-            store.history.contains(where: { $0.id == entry.id }) 
-        }
+        let existsAfter = store.history.contains(where: { $0.id == entry.id })
         #expect(!existsAfter, "Entry should not exist after removal")
         
         // Verify it was removed from storage
@@ -89,6 +90,7 @@ struct CommonStoreTestsImproved {
     }
     
     @Test("Adds multiple entries")
+    @MainActor
     func addMultipleEntries() async throws {
         let storage = InMemoryStorage()
         let store = await CommonStore.loadStore(storage: storage)
@@ -99,10 +101,9 @@ struct CommonStoreTestsImproved {
         await store.addEntry(entry: entry1)
         await store.addEntry(entry: entry2)
         
-        let bothExist = await MainActor.run { 
-            [entry1, entry2].allSatisfy { entry in 
-                store.history.contains(where: { $0.id == entry.id }) 
-            } 
+        let history = store.history
+        let bothExist = [entry1, entry2].allSatisfy { entry in 
+            history.contains(where: { $0.id == entry.id }) 
         }
         #expect(bothExist, "Both entries should exist in history")
         
@@ -111,6 +112,7 @@ struct CommonStoreTestsImproved {
     }
 
     @Test("Removing a nonexistent entry does not affect others")
+    @MainActor
     func removeNonexistentEntry() async throws {
         let storage = InMemoryStorage()
         let store = await CommonStore.loadStore(storage: storage)
@@ -121,9 +123,7 @@ struct CommonStoreTestsImproved {
         let fakeID = UUID()
         await store.removeEntryAtId(uuid: fakeID)
         
-        let stillThere = await MainActor.run { 
-            store.history.contains(where: { $0.id == entry.id }) 
-        }
+        let stillThere = store.history.contains(where: { $0.id == entry.id })
         #expect(stillThere, "Existing entry should not be removed when a nonexistent ID is used")
         
         let savedEntries = try await storage.load()
@@ -131,6 +131,7 @@ struct CommonStoreTestsImproved {
     }
 
     @Test("Handles duplicate entry names with unique IDs")
+    @MainActor
     func duplicateEntriesDifferentIDs() async throws {
         let storage = InMemoryStorage()
         let store = await CommonStore.loadStore(storage: storage)
@@ -141,21 +142,19 @@ struct CommonStoreTestsImproved {
         await store.addEntry(entry: entry1)
         await store.addEntry(entry: entry2)
         
-        let bothThere = await MainActor.run { 
-            store.history.filter { $0.name == "Duplicate" }.count == 2 
-        }
+        let bothThere = store.history.filter { $0.name == "Duplicate" }.count == 2
         #expect(bothThere, "Both duplicate-named entries with different IDs should exist")
         
         await store.removeEntryAtId(uuid: entry1.id)
         
-        let onlySecondLeft = await MainActor.run { 
-            store.history.contains(where: { $0.id == entry2.id }) && 
-            !store.history.contains(where: { $0.id == entry1.id }) 
-        }
+        let history = store.history
+        let onlySecondLeft = history.contains(where: { $0.id == entry2.id }) && 
+            !history.contains(where: { $0.id == entry1.id })
         #expect(onlySecondLeft, "First duplicate should be removable independently")
     }
 
     @Test("Persists history after store reload")
+    @MainActor
     func persistenceAfterReload() async throws {
         let storage = InMemoryStorage()
         let entry = makeEntry(name: "Persisted Entry", amount: 99, goalMet: true)
@@ -169,13 +168,12 @@ struct CommonStoreTestsImproved {
         // Create new store instance with same storage
         let storeReloaded = await CommonStore.loadStore(storage: storage)
         
-        let found = await MainActor.run { 
-            storeReloaded.history.contains(where: { $0.id == entry.id }) 
-        }
+        let found = storeReloaded.history.contains(where: { $0.id == entry.id })
         #expect(found, "Entry should still exist after store reload")
     }
     
     @Test("History is sorted by date descending")
+    @MainActor
     func historySortedByDate() async throws {
         let storage = InMemoryStorage()
         let store = await CommonStore.loadStore(storage: storage)
@@ -193,7 +191,7 @@ struct CommonStoreTestsImproved {
         await store.addEntry(entry: entry2)
         await store.addEntry(entry: entry3)
         
-        let history = await MainActor.run { store.history }
+        let history = store.history
         
         // Should be sorted: tomorrow, today, yesterday
         #expect(history.count == 3)
@@ -203,6 +201,7 @@ struct CommonStoreTestsImproved {
     }
     
     @Test("getTodaysIntake returns only today's entries")
+    @MainActor
     func getTodaysIntake() async throws {
         let storage = InMemoryStorage()
         let store = await CommonStore.loadStore(storage: storage)
@@ -216,7 +215,7 @@ struct CommonStoreTestsImproved {
         await store.addEntry(entry: todayEntry)
         await store.addEntry(entry: yesterdayEntry)
         
-        let todaysIntake = await MainActor.run { store.getTodaysIntake() }
+        let todaysIntake = store.getTodaysIntake()
         
         #expect(todaysIntake.count == 1, "Should only return today's entries")
         #expect(todaysIntake.first?.name == "Today", "Should be the entry from today")
