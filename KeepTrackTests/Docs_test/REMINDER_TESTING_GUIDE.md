@@ -181,7 +181,7 @@ func testSuppression() async throws {
     let goal = makeGoal(name: "Med", frequency: .daily, dates: [scheduledTime])
     let entry = makeEntry(name: "Med", amount: 100, date: entryTime)
     
-    await store.addEntry(entry: entry)
+    await store.addEntry(entry: entry, goals: goals)
     
     let shouldSuppress = await manager.shouldSuppressReminder(
         for: goal,

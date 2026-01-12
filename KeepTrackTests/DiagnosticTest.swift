@@ -63,6 +63,7 @@ struct DiagnosticTest {
         print("🔍 Testing add entry...")
         let storage = InMemoryStorage()
         let store = await CommonStore.loadStore(storage: storage)
+        let goals = CommonGoals()
         
         let entry = CommonEntry(
             id: UUID(),
@@ -73,7 +74,7 @@ struct DiagnosticTest {
             goalMet: false
         )
         
-        await store.addEntry(entry: entry)
+        await store.addEntry(entry: entry, goals: goals)
         print("✅ Entry added")
         
         #expect(store.history.count == 1, "Store should have 1 entry")

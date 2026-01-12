@@ -190,8 +190,9 @@ class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
             return
         }
         
-        // Load store and add entry at current time
+        // Load store and goals
         let store = await CommonStore.loadStore()
+        let goals = await CommonGoals()
         
         let entry = CommonEntry(
             id: UUID(),
@@ -202,7 +203,7 @@ class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
             goalMet: true
         )
         
-        await store.addEntry(entry: entry)
+        await store.addEntry(entry: entry, goals: goals)
         print("Logged intake for \(goalName) at \(Date())")
     }
     

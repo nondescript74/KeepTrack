@@ -165,7 +165,7 @@ struct NewDashboard: View {
                                     name: notification.name,
                                     goalMet: true
                                 )
-                                await store.addEntry(entry: entry)
+                                await store.addEntry(entry: entry, goals: goals)
                             }
                             pendingNotification = nil
                         }

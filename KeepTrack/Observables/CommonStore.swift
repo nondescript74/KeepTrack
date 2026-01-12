@@ -93,10 +93,32 @@ import SwiftUI
 
     // MARK: - CRUD
     @MainActor
-    func addEntry(entry: CommonEntry) async {
+    func addEntry(entry: CommonEntry, goals: CommonGoals? = nil) async {
         self.history.append(entry)
         self.logger.info("CStore: Added entry to CommonStore \(entry.name)")
         await self.save()
+        
+        // Cancel pending notifications that are no longer needed
+        if let goals = goals {
+            await cancelPendingNotificationsIfNeeded(for: entry, goals: goals)
+        }
+    }
+    
+    /// Cancels pending notifications for a manually logged entry
+    private func cancelPendingNotificationsIfNeeded(for entry: CommonEntry, goals: CommonGoals) async {
+        // Find the matching goal for this entry
+        guard let goal = goals.getTodaysGoalForName(namez: entry.name) else {
+            return
+        }
+        
+        // Let IntakeReminderManager handle the cancellation logic
+        await IntakeReminderManager.handleManualIntakeLogged(
+            entry: entry,
+            goal: goal,
+            store: self
+        )
+        
+        self.logger.info("CStore: Checked and cancelled notifications for \(entry.name)")
     }
 
     @MainActor
