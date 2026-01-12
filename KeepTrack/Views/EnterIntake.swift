@@ -169,7 +169,7 @@ struct EnterIntake: View {
                             if goalToUse == nil {
                                 let entry = CommonEntry(id: UUID(), date: Date(), units: currentUnit, amount: currentAmount, name: name, goalMet: true)
                                 Task { 
-                                    await store.addEntry(entry: entry)
+                                    await store.addEntry(entry: entry, goals: goals)
                                     try? await Task.sleep(for: .milliseconds(500))
                                     isSaving = false
                                     // Reset fields after successful save
@@ -184,7 +184,7 @@ struct EnterIntake: View {
                                 logger.info("todays intake \(result)")
                                 let entry = CommonEntry(id: UUID(), date: Date(), units: currentUnit, amount: currentAmount, name: name, goalMet: result)
                                 Task { 
-                                    await store.addEntry(entry: entry)
+                                    await store.addEntry(entry: entry, goals: goals)
                                     try? await Task.sleep(for: .milliseconds(500))
                                     isSaving = false
                                     // Reset fields after successful save

@@ -54,9 +54,10 @@ struct CommonStoreTestsImproved {
     func addEntry() async throws {
         let storage = InMemoryStorage()
         let store = await CommonStore.loadStore(storage: storage)
+        let goals = CommonGoals()
         
         let entry = makeEntry(name: "Test Entry", amount: 1)
-        await store.addEntry(entry: entry)
+        await store.addEntry(entry: entry, goals: goals)
         
         let hasEntry = store.history.contains(where: { $0.name == "Test Entry" })
         #expect(hasEntry, "Entry 'Test Entry' should exist after adding")
@@ -72,9 +73,10 @@ struct CommonStoreTestsImproved {
     func removeEntryById() async throws {
         let storage = InMemoryStorage()
         let store = await CommonStore.loadStore(storage: storage)
+        let goals = CommonGoals()
         
         let entry = makeEntry(name: "Test Entry", amount: 1)
-        await store.addEntry(entry: entry)
+        await store.addEntry(entry: entry, goals: goals)
         
         let existsBefore = store.history.contains(where: { $0.id == entry.id })
         #expect(existsBefore, "Entry should exist before removal")
@@ -94,12 +96,13 @@ struct CommonStoreTestsImproved {
     func addMultipleEntries() async throws {
         let storage = InMemoryStorage()
         let store = await CommonStore.loadStore(storage: storage)
+        let goals = CommonGoals()
         
         let entry1 = makeEntry(name: "Entry 1", amount: 10, goalMet: true)
         let entry2 = makeEntry(name: "Entry 2", amount: 20, goalMet: false)
         
-        await store.addEntry(entry: entry1)
-        await store.addEntry(entry: entry2)
+        await store.addEntry(entry: entry1, goals: goals)
+        await store.addEntry(entry: entry2, goals: goals)
         
         let history = store.history
         let bothExist = [entry1, entry2].allSatisfy { entry in 
@@ -116,9 +119,10 @@ struct CommonStoreTestsImproved {
     func removeNonexistentEntry() async throws {
         let storage = InMemoryStorage()
         let store = await CommonStore.loadStore(storage: storage)
+        let goals = CommonGoals()
         
         let entry = makeEntry(name: "Real Entry", amount: 10, goalMet: true)
-        await store.addEntry(entry: entry)
+        await store.addEntry(entry: entry, goals: goals)
         
         let fakeID = UUID()
         await store.removeEntryAtId(uuid: fakeID)
@@ -135,12 +139,13 @@ struct CommonStoreTestsImproved {
     func duplicateEntriesDifferentIDs() async throws {
         let storage = InMemoryStorage()
         let store = await CommonStore.loadStore(storage: storage)
+        let goals = CommonGoals()
         
         let entry1 = makeEntry(name: "Duplicate", amount: 10, goalMet: true)
         let entry2 = makeEntry(name: "Duplicate", amount: 20, goalMet: false)
         
-        await store.addEntry(entry: entry1)
-        await store.addEntry(entry: entry2)
+        await store.addEntry(entry: entry1, goals: goals)
+        await store.addEntry(entry: entry2, goals: goals)
         
         let bothThere = store.history.filter { $0.name == "Duplicate" }.count == 2
         #expect(bothThere, "Both duplicate-named entries with different IDs should exist")
@@ -157,12 +162,13 @@ struct CommonStoreTestsImproved {
     @MainActor
     func persistenceAfterReload() async throws {
         let storage = InMemoryStorage()
+        let goals = CommonGoals()
         let entry = makeEntry(name: "Persisted Entry", amount: 99, goalMet: true)
         
         // Create first store instance and add entry
         do {
             let store = await CommonStore.loadStore(storage: storage)
-            await store.addEntry(entry: entry)
+            await store.addEntry(entry: entry, goals: goals)
         }
         
         // Create new store instance with same storage
@@ -177,6 +183,7 @@ struct CommonStoreTestsImproved {
     func historySortedByDate() async throws {
         let storage = InMemoryStorage()
         let store = await CommonStore.loadStore(storage: storage)
+        let goals = CommonGoals()
         
         let now = Date.now
         let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: now)!
@@ -187,9 +194,9 @@ struct CommonStoreTestsImproved {
         let entry3 = makeEntry(name: "Today", amount: 3, date: now)
         
         // Add in random order
-        await store.addEntry(entry: entry1)
-        await store.addEntry(entry: entry2)
-        await store.addEntry(entry: entry3)
+        await store.addEntry(entry: entry1, goals: goals)
+        await store.addEntry(entry: entry2, goals: goals)
+        await store.addEntry(entry: entry3, goals: goals)
         
         let history = store.history
         
@@ -205,6 +212,7 @@ struct CommonStoreTestsImproved {
     func getTodaysIntake() async throws {
         let storage = InMemoryStorage()
         let store = await CommonStore.loadStore(storage: storage)
+        let goals = CommonGoals()
         
         let now = Date.now
         let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: now)!
@@ -212,8 +220,8 @@ struct CommonStoreTestsImproved {
         let todayEntry = makeEntry(name: "Today", amount: 10, date: now)
         let yesterdayEntry = makeEntry(name: "Yesterday", amount: 20, date: yesterday)
         
-        await store.addEntry(entry: todayEntry)
-        await store.addEntry(entry: yesterdayEntry)
+        await store.addEntry(entry: todayEntry, goals: goals)
+        await store.addEntry(entry: yesterdayEntry, goals: goals)
         
         let todaysIntake = store.getTodaysIntake()
         

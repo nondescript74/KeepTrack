@@ -67,7 +67,7 @@ struct AddSomethingIntent: AppIntent {
         }
 
         let store = await KeepTrack.CommonStore.loadStore()
-        _ = KeepTrack.CommonGoals()
+        let goals = KeepTrack.CommonGoals()
         
         let formattedAmount: String = {
             if matchedType.amount.truncatingRemainder(dividingBy: 1) == 0 {
@@ -85,7 +85,7 @@ struct AddSomethingIntent: AppIntent {
             name: matchedType.name,
             goalMet: false // Optionally, calculate if the goal was met, using goals as needed
         )
-        await store.addEntry(entry: entry)
+        await store.addEntry(entry: entry, goals: goals)
         
         let snippetView: some View = VStack {
             Text("\(matchedType.name) added")
@@ -134,7 +134,7 @@ struct AddMorningMedsIntent: AppIntent {
         let medNames = ["amlodipine 2.5", "losartan", "rosuvastatin", "timolol"]
         
         let store = await KeepTrack.CommonStore.loadStore()
-        _ = KeepTrack.CommonGoals()
+        let goals = KeepTrack.CommonGoals()
         
         var addedEntries: [CommonEntry] = []
         var notFoundMeds: [String] = []
@@ -149,7 +149,7 @@ struct AddMorningMedsIntent: AppIntent {
                     name: matchedType.name,
                     goalMet: false
                 )
-                await store.addEntry(entry: entry)
+                await store.addEntry(entry: entry, goals: goals)
                 addedEntries.append(entry)
             } else {
                 notFoundMeds.append(medName)

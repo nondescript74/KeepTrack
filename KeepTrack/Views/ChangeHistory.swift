@@ -12,6 +12,7 @@ struct ChangeHistory: View {
     
     static let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "ChangeHistory")
     @Environment(CommonStore.self) private var store
+    @Environment(CommonGoals.self) private var goals
     @EnvironmentObject private var intakeTypes: CurrentIntakeTypes
     
     @State private var selectedIntakeType: IntakeType?
@@ -48,7 +49,7 @@ struct ChangeHistory: View {
                         let entry = CommonEntry(id: UUID(), date: selectedDate, units: intakeTypes.sortedIntakeTypeArray.first(where: {$0.name == name})?.unit ?? "no unit", amount: intakeTypes.sortedIntakeTypeArray.first(where: {$0.name == name})?.amount ?? 0, name: name, goalMet: false)
                         ChangeHistory.logger.info("Adding intake  \(name) with goalMet false")
                         Task {
-                            await store.addEntry(entry: entry)
+                            await store.addEntry(entry: entry, goals: goals)
                         }
                     }), label: ({
                         Image(systemName: "plus.arrow.trianglehead.clockwise")
@@ -102,5 +103,6 @@ struct ChangeHistory: View {
 #Preview {
     ChangeHistory()
         .environment(CommonStore())
+        .environment(CommonGoals())
         .environmentObject(CurrentIntakeTypes())
 }

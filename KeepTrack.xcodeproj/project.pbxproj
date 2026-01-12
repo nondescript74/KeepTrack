@@ -58,6 +58,7 @@
 		F87668BF2EC7DE6000293948 /* Exceptions for "Docs" folder in "KeepTrack" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				BACKUP_EXPORT_FIX.md,
 				DocumentationBACKUP_ARCHITECTURE.md,
 				DocumentationBACKUP_IMPLEMENTATION_SUMMARY.md,
 				DocumentationBACKUP_RESTORE_README.md,
@@ -67,18 +68,22 @@
 				DocumentationINTEGRATION_CHECKLIST.md,
 				DocumentationSWIFTDATA_MIGRATION_GUIDE.md,
 				DocumentationVISUAL_GUIDE.md,
+				find_addentry_calls.sh,
 				HELP_QUICK_REFERENCE.md,
 				HELP_SYSTEM_ARCHITECTURE.md,
 				HELP_SYSTEM_FIX.md,
 				HELP_SYSTEM_README.md,
 				HELP_SYSTEM_REMINDER_INTEGRATION.md,
 				HELP_SYSTEM_WEEKLY_MONTHLY_UPDATE.md,
+				IMPLEMENTATION_COMPLETE_SUMMARY.md,
+				NOTIFICATION_FIX_INSTRUCTIONS.md,
 				QUICK_ACCESS_REMINDER_GUIDE.md,
 				REMINDER_FREQUENCY_UPDATE_SUMMARY.md,
 				REMINDER_IMPROVEMENTS.md,
 				REMINDER_TESTING.md,
 				SETTINGS_IMPLEMENTATION.md,
 				TESTING_GUIDE.md,
+				TODO_NOW.md,
 				WEEKLY_MONTHLY_REMINDERS.md,
 			);
 			target = F81C71D12D8A29280037FCCB /* KeepTrack */;
@@ -494,7 +499,7 @@
 				CODE_SIGN_ENTITLEMENTS = KeepTrack/KeepTrackDebug.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 173;
+				CURRENT_PROJECT_VERSION = 174;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = YKHW2TJ32G;
 				ENABLE_APP_SANDBOX = YES;
@@ -524,7 +529,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 26.1;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MARKETING_VERSION = 16.0;
+				MARKETING_VERSION = 16.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.headydiscy.KeepTrack;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -547,7 +552,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = KeepTrack/KeepTrack.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 173;
+				CURRENT_PROJECT_VERSION = 174;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = YKHW2TJ32G;
 				ENABLE_APP_SANDBOX = YES;
@@ -577,7 +582,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 26.1;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MARKETING_VERSION = 16.0;
+				MARKETING_VERSION = 16.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.headydiscy.KeepTrack;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
