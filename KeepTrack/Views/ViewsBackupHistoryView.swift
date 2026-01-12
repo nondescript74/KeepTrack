@@ -91,6 +91,12 @@ struct BackupHistoryView: View {
         
         let backupsDir = documentsURL.appendingPathComponent("Backups")
         
+        // Ensure the directory exists
+        if !FileManager.default.fileExists(atPath: backupsDir.path) {
+            backupFiles = []
+            return
+        }
+        
         do {
             let fileURLs = try FileManager.default.contentsOfDirectory(
                 at: backupsDir,

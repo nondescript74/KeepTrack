@@ -107,7 +107,7 @@ final class AutoBackupScheduler: ObservableObject {
         
         // Create backups directory if needed
         let backupsDir = documentsURL.appendingPathComponent("Backups")
-        try FileManager.default.createDirectory(at: backupsDir, withIntermediateDirectories: true)
+        try FileManager.default.createDirectory(at: backupsDir, withIntermediateDirectories: true, attributes: nil)
         
         // Export backup
         try await migrationManager.exportBackup(to: backupURL)
