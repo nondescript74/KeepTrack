@@ -13,6 +13,9 @@ struct MovableHistoryList<Element: Identifiable, Content: View>: View {
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "MovableHistoryList")
     
     @Environment(CommonStore.self) var store
+    #if !os(macOS)
+    @Environment(\.editMode) private var editMode
+    #endif
     
     @Binding var data: [Element]
     
@@ -45,7 +48,11 @@ struct MovableHistoryList<Element: Identifiable, Content: View>: View {
                     .onDelete(perform: delete)
             }
         }
-        .toolbar { EditButton() }
+        .toolbar {
+            #if !os(macOS)
+            EditButton()
+            #endif
+        }
         .environment(store)
     }
 }

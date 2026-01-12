@@ -128,7 +128,9 @@ struct MigrationDebugView: View {
             }
         }
         .navigationTitle("Migration Tools")
+        #if !os(macOS)
         .navigationBarTitleDisplayMode(.inline)
+        #endif
         .overlay {
             if isProcessing {
                 ProgressView("Processing...")

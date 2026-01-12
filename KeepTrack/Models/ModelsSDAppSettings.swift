@@ -28,6 +28,12 @@ final class SDAppSettings {
     var autoBackupEnabled: Bool = false
     var cloudSyncEnabled: Bool = true
     
+    // Permission tracking
+    var iCloudAvailable: Bool = false
+    var cloudKitAvailable: Bool = false
+    var documentsAccessible: Bool = false
+    var lastPermissionCheck: Date?
+    
     // License
     var acceptedLicenseVersion: String?
     
@@ -43,6 +49,10 @@ final class SDAppSettings {
          lastBackupDate: Date? = nil,
          autoBackupEnabled: Bool = false,
          cloudSyncEnabled: Bool = true,
+         iCloudAvailable: Bool = false,
+         cloudKitAvailable: Bool = false,
+         documentsAccessible: Bool = false,
+         lastPermissionCheck: Date? = nil,
          acceptedLicenseVersion: String? = nil) {
         self.id = id
         self.notificationsEnabled = notificationsEnabled
@@ -52,6 +62,10 @@ final class SDAppSettings {
         self.lastBackupDate = lastBackupDate
         self.autoBackupEnabled = autoBackupEnabled
         self.cloudSyncEnabled = cloudSyncEnabled
+        self.iCloudAvailable = iCloudAvailable
+        self.cloudKitAvailable = cloudKitAvailable
+        self.documentsAccessible = documentsAccessible
+        self.lastPermissionCheck = lastPermissionCheck
         self.acceptedLicenseVersion = acceptedLicenseVersion
         self.createdAt = Date()
         self.modifiedAt = Date()

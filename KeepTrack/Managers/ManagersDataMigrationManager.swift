@@ -130,13 +130,50 @@ final class DataMigrationManager {
         let goals = try modelContext.fetch(FetchDescriptor<SDGoal>())
         let settings = try modelContext.fetch(FetchDescriptor<SDAppSettings>())
         
+        // Convert SwiftData models to backup structures
+        let backupEntries = entries.map { entry in
+            CommonEntry(
+                id: entry.id,
+                date: entry.date,
+                units: entry.units,
+                amount: entry.amount,
+                name: entry.name,
+                goalMet: entry.goalMet
+            )
+        }
+        
+        let backupTypes = intakeTypes.map { type in
+            IntakeType(
+                id: type.id,
+                name: type.name,
+                unit: type.unit,
+                amount: type.amount,
+                descrip: type.descrip,
+                frequency: type.frequency
+            )
+        }
+        
+        let backupGoals = goals.map { goal in
+            CommonGoal(
+                id: goal.id,
+                name: goal.name,
+                description: goal.goalDescription,
+                dates: goal.dates,
+                isActive: goal.isActive,
+                isCompleted: goal.isCompleted,
+                dosage: goal.dosage,
+                units: goal.units,
+                frequency: goal.frequency
+            )
+        }
+        
         // Create backup structure
         let backup = BackupData(
             version: 1,
             exportDate: Date(),
-            entries: entries.map { $0.toCommonEntry() },
-            intakeTypes: intakeTypes.map { $0.toIntakeType() },
-            goals: goals.map { $0.toCommonGoal() },
+            entries: backupEntries,
+            intakeTypes: backupTypes,
+            goals: backupGoals,
             settings: settings.first.map { BackupSettings(from: $0) }
         )
         

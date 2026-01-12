@@ -92,14 +92,49 @@ struct DiagnosticLogView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding()
                     }
+                    #if os(iOS)
                     .background(Color(.systemGroupedBackground))
+                    #else
+                    .background(Color(nsColor: .controlBackgroundColor))
+                    #endif
                     .clipShape(RoundedRectangle(cornerRadius: 12))
                     .padding(.horizontal)
                 }
             }
             .navigationTitle("Diagnostic Log")
+            #if !os(macOS)
             .navigationBarTitleDisplayMode(.inline)
+            #endif
             .toolbar {
+                #if os(macOS)
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Close") {
+                        dismiss()
+                    }
+                }
+                
+                ToolbarItem(placement: .primaryAction) {
+                    Button {
+                        Task {
+                            await exportLogs()
+                        }
+                    } label: {
+                        Label("Share", systemImage: "square.and.arrow.up")
+                    }
+                    .disabled(logContent.isEmpty || isLoading)
+                }
+                
+                ToolbarItem(placement: .primaryAction) {
+                    Button {
+                        Task {
+                            await loadLogs()
+                        }
+                    } label: {
+                        Label("Refresh", systemImage: "arrow.clockwise")
+                    }
+                    .disabled(isLoading)
+                }
+                #else
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Close") {
                         dismiss()
@@ -127,15 +162,24 @@ struct DiagnosticLogView: View {
                     }
                     .disabled(isLoading)
                 }
+                #endif
             }
             .task {
                 await loadLogs()
             }
+            #if os(iOS)
             .sheet(isPresented: $showShareSheet) {
                 if let shareURL {
-                    ShareSheet(items: [shareURL])
+                    ShareSheetMac(items: [shareURL])
                 }
             }
+            #else
+            .sheet(isPresented: $showShareSheet) {
+                if let shareURL {
+                    ShareSheetMac(items: [shareURL])
+                }
+            }
+            #endif
         }
     }
     
@@ -171,8 +215,9 @@ struct DiagnosticLogView: View {
     }
 }
 
+#if os(iOS)
 // Share sheet wrapper for UIKit's UIActivityViewController
-struct ShareSheet: UIViewControllerRepresentable {
+struct ShareSheetMac: UIViewControllerRepresentable {
     let items: [Any]
     
     func makeUIViewController(context: Context) -> UIActivityViewController {
@@ -182,6 +227,57 @@ struct ShareSheet: UIViewControllerRepresentable {
     
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
+#else
+// Share sheet wrapper for macOS NSSharingService
+struct ShareSheetMac: View {
+    let items: [Any]
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            Image(systemName: "square.and.arrow.up")
+                .font(.largeTitle)
+                .foregroundStyle(.blue)
+            
+            Text("Export Logs")
+                .font(.headline)
+            
+            Text("The log file has been prepared and is ready to share.")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal)
+            
+            HStack(spacing: 12) {
+                Button("Cancel") {
+                    dismiss()
+                }
+                .keyboardShortcut(.cancelAction)
+                
+                Button("Share...") {
+                    shareLogs()
+                    dismiss()
+                }
+                .keyboardShortcut(.defaultAction)
+                .buttonStyle(.borderedProminent)
+            }
+        }
+        .padding()
+        .frame(width: 300)
+    }
+    
+    private func shareLogs() {
+        guard !items.isEmpty else { return }
+        let picker = NSSharingServicePicker(items: items)
+        
+        // Get the key window and show the picker
+        if let window = NSApplication.shared.keyWindow,
+           let contentView = window.contentView {
+            picker.show(relativeTo: .zero, of: contentView, preferredEdge: .minY)
+        }
+    }
+}
+#endif
 
 #Preview {
     DiagnosticLogView()

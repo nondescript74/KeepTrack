@@ -56,8 +56,21 @@ struct HelpView: View {
                 }
                 .padding()
             }
+            #if !os(macOS)
             .navigationBarTitleDisplayMode(.inline)
+            #endif
             .toolbar {
+                #if os(macOS)
+                ToolbarItem(placement: .cancellationAction) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                #else
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         dismiss()
@@ -67,6 +80,7 @@ struct HelpView: View {
                             .foregroundStyle(.secondary)
                     }
                 }
+                #endif
             }
         }
     }
@@ -137,6 +151,18 @@ struct HelpButtonModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .toolbar {
+                #if os(macOS)
+                ToolbarItem(placement: .primaryAction) {
+                    Button {
+                        showingHelp = true
+                    } label: {
+                        Image(systemName: "questionmark.circle")
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.blue)
+                    }
+                    .accessibilityLabel("Show help for this screen")
+                }
+                #else
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         showingHelp = true
@@ -147,6 +173,7 @@ struct HelpButtonModifier: ViewModifier {
                     }
                     .accessibilityLabel("Show help for this screen")
                 }
+                #endif
             }
             .sheet(isPresented: $showingHelp) {
                 HelpView(topic: HelpContentManager.getHelpTopic(for: helpIdentifier))

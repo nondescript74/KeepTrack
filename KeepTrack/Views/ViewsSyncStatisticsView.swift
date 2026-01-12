@@ -10,6 +10,8 @@ import SwiftData
 
 /// Displays detailed sync and backup statistics
 struct SyncStatisticsView: View {
+    @Environment(\.dismiss) private var dismiss
+    
     @Query private var entries: [SDEntry]
     @Query private var intakeTypes: [SDIntakeType]
     @Query private var goals: [SDGoal]
@@ -147,7 +149,7 @@ struct SyncStatisticsView: View {
                 
                 let uniqueThisWeek = Set(thisWeekEntries.map { $0.name }).count
                 HStack {
-                    Label("Unique Items", systemImage: "uniquekey.fill")
+                    Label("Unique Items", systemImage: "checkmark.square")
                     Spacer()
                     Text("\(uniqueThisWeek)")
                         .foregroundStyle(.secondary)
@@ -156,7 +158,16 @@ struct SyncStatisticsView: View {
             }
         }
         .navigationTitle("Statistics")
+        #if !os(macOS)
         .navigationBarTitleDisplayMode(.inline)
+        #endif
+        .toolbar {
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Done") {
+                    dismiss()
+                }
+            }
+        }
     }
     
     @ViewBuilder
