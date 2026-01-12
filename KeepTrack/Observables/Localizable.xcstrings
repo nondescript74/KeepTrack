@@ -42,6 +42,18 @@
         }
       }
     },
+    "%lld" : {
+
+    },
+    "%lld days" : {
+
+    },
+    "⚠️ Issues Found" : {
+
+    },
+    "✅ Valid" : {
+
+    },
     "1. Add '.helpButton(for: .yourView)' to any view" : {
 
     },
@@ -61,6 +73,9 @@
 
     },
     "Accepted Version: %@" : {
+
+    },
+    "Actions" : {
 
     },
     "Active" : {
@@ -93,6 +108,12 @@
     "Add Something" : {
 
     },
+    "Advanced" : {
+
+    },
+    "All data synced" : {
+
+    },
     "All views have contextual help implemented" : {
 
     },
@@ -108,6 +129,27 @@
     "App Views" : {
 
     },
+    "Are you sure you want to delete this backup? This action cannot be undone." : {
+
+    },
+    "Auto Backup" : {
+
+    },
+    "Auto Sync" : {
+
+    },
+    "Automatic backups will appear here when enabled." : {
+
+    },
+    "Backup & Restore" : {
+
+    },
+    "Backup History" : {
+
+    },
+    "Backup your data and sync across devices using iCloud. View detailed statistics about your data." : {
+
+    },
     "Build" : {
 
     },
@@ -120,10 +162,22 @@
     "Cancel Reminders" : {
 
     },
+    "Checking status..." : {
+
+    },
+    "Choose how to handle the imported data" : {
+
+    },
     "Close" : {
 
     },
     "Confirm" : {
+
+    },
+    "Create a backup file to save locally or share. You can restore from a backup file at any time. View your automatic backup history." : {
+
+    },
+    "Create Backup" : {
 
     },
     "Create or update your goals below." : {
@@ -132,7 +186,28 @@
     "Current Goals:" : {
 
     },
+    "Current Schema" : {
+
+    },
+    "Data & Sync" : {
+
+    },
+    "Data Count" : {
+
+    },
+    "Data Overview" : {
+
+    },
+    "Data Statistics" : {
+
+    },
     "Day" : {
+
+    },
+    "Delete" : {
+
+    },
+    "Delete Backup" : {
 
     },
     "Demo View" : {
@@ -154,10 +229,16 @@
         }
       }
     },
+    "Disabled" : {
+
+    },
     "Done" : {
 
     },
     "Dosage:" : {
+
+    },
+    "Duplicate IDs detected" : {
 
     },
     "Edit Goals" : {
@@ -166,16 +247,40 @@
     "Edit History" : {
 
     },
+    "Enable automatic backups to ensure your data is always safe." : {
+
+    },
+    "Enabled" : {
+
+    },
     "Enter amount" : {
 
     },
     "Enter Goal" : {
 
     },
+    "Entries" : {
+
+    },
+    "Entries This Week" : {
+
+    },
+    "Error" : {
+
+    },
     "Error Loading Logs" : {
 
     },
+    "Export" : {
+
+    },
+    "Export Backup" : {
+
+    },
     "First dose time" : {
+
+    },
+    "First Entry" : {
 
     },
     "Frequency" : {
@@ -214,7 +319,19 @@
     "I Accept" : {
 
     },
+    "iCloud" : {
+
+    },
+    "iCloud Sync" : {
+
+    },
     "If you have additional questions, please refer to the app documentation or contact support." : {
+
+    },
+    "Import Backup" : {
+
+    },
+    "Import Strategy" : {
 
     },
     "Inactive" : {
@@ -226,10 +343,31 @@
     "Intake Goals" : {
 
     },
+    "Intake Types" : {
+
+    },
     "Item to Add" : {
 
     },
+    "JSON Migration" : {
+
+    },
     "KeepTrack" : {
+
+    },
+    "Last Backup" : {
+
+    },
+    "Last backup: %@" : {
+
+    },
+    "Last Manual Backup" : {
+
+    },
+    "Last Migration" : {
+
+    },
+    "Latest Entry" : {
 
     },
     "License Agreement" : {
@@ -238,10 +376,25 @@
     "License Status" : {
 
     },
+    "Loading backups..." : {
+
+    },
     "Loading logs..." : {
 
     },
     "Log Intake" : {
+
+    },
+    "Manual Backup" : {
+
+    },
+    "Merge with Existing" : {
+
+    },
+    "Migration" : {
+
+    },
+    "Migration Tools" : {
 
     },
     "Morning Meds Added:" : {
@@ -250,7 +403,16 @@
     "Name" : {
 
     },
+    "Never" : {
+
+    },
     "New version requires license acceptance" : {
+
+    },
+    "Next backup: %@" : {
+
+    },
+    "No Backups" : {
 
     },
     "No entries yet" : {
@@ -259,10 +421,19 @@
     "No goals yet!" : {
 
     },
+    "No manual backup yet" : {
+
+    },
     "Not yet accepted" : {
 
     },
     "Nothing taken today" : {
+
+    },
+    "Notifications" : {
+
+    },
+    "OK" : {
 
     },
     "Okay, added %@." : {
@@ -277,6 +448,18 @@
     "Please scroll to the bottom to continue" : {
 
     },
+    "Preferences" : {
+
+    },
+    "Processing..." : {
+
+    },
+    "Quick Actions" : {
+
+    },
+    "Quick Backup" : {
+
+    },
     "Refresh" : {
 
     },
@@ -286,13 +469,25 @@
     "Remove This Intake Type" : {
 
     },
+    "Replace All Data" : {
+
+    },
+    "Reset Migration Flag" : {
+
+    },
     "Retry" : {
+
+    },
+    "Run JSON Migration" : {
 
     },
     "Save Changes" : {
 
     },
     "Schedule Reminder" : {
+
+    },
+    "Schema Status" : {
 
     },
     "Search ingredients" : {
@@ -331,7 +526,34 @@
     "Statistics" : {
 
     },
+    "Status" : {
+
+    },
     "Still need help?" : {
+
+    },
+    "Storage" : {
+
+    },
+    "SwiftData + CloudKit" : {
+
+    },
+    "Sync disabled" : {
+
+    },
+    "Sync error" : {
+
+    },
+    "Sync Statistics" : {
+
+    },
+    "Synced" : {
+
+    },
+    "Syncing" : {
+
+    },
+    "Syncing..." : {
 
     },
     "Tap the '?' button in the top-right corner to see the help content." : {
@@ -353,7 +575,13 @@
     "This is an example of how to add help to any view." : {
 
     },
+    "This Week" : {
+
+    },
     "Time Range" : {
+
+    },
+    "Timeline" : {
 
     },
     "Times:" : {
@@ -368,13 +596,31 @@
     "Total Help Topics" : {
 
     },
+    "Tracking Duration" : {
+
+    },
     "Type" : {
+
+    },
+    "Unique Items" : {
 
     },
     "Unit" : {
 
     },
     "Unit of Measure" : {
+
+    },
+    "Unknown" : {
+
+    },
+    "Use these tools to troubleshoot migration issues. The schema migration from V1 to V2 happens automatically." : {
+
+    },
+    "Validate Data" : {
+
+    },
+    "Validation" : {
 
     },
     "Version" : {
@@ -408,6 +654,12 @@
           }
         }
       }
+    },
+    "Your Data" : {
+
+    },
+    "Your data automatically syncs across all your devices using iCloud." : {
+
     }
   },
   "version" : "1.1"

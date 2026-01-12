@@ -58,6 +58,15 @@
 		F87668BF2EC7DE6000293948 /* Exceptions for "Docs" folder in "KeepTrack" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				DocumentationBACKUP_ARCHITECTURE.md,
+				DocumentationBACKUP_IMPLEMENTATION_SUMMARY.md,
+				DocumentationBACKUP_RESTORE_README.md,
+				DocumentationBackupSystemQuickStart.swift,
+				DocumentationCOMPLETE_SUMMARY.md,
+				DocumentationINDEX.md,
+				DocumentationINTEGRATION_CHECKLIST.md,
+				DocumentationSWIFTDATA_MIGRATION_GUIDE.md,
+				DocumentationVISUAL_GUIDE.md,
 				HELP_QUICK_REFERENCE.md,
 				HELP_SYSTEM_ARCHITECTURE.md,
 				HELP_SYSTEM_FIX.md,
@@ -485,7 +494,7 @@
 				CODE_SIGN_ENTITLEMENTS = KeepTrack/KeepTrackDebug.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 171;
+				CURRENT_PROJECT_VERSION = 172;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = YKHW2TJ32G;
 				ENABLE_APP_SANDBOX = YES;
@@ -538,7 +547,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = KeepTrack/KeepTrack.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 171;
+				CURRENT_PROJECT_VERSION = 172;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = YKHW2TJ32G;
 				ENABLE_APP_SANDBOX = YES;

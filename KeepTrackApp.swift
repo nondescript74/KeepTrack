@@ -22,6 +22,9 @@ struct KeepTrackApp: App {
     @StateObject private var notificationHolder: PendingNotificationHolder
     @State private var showLaunchScreen = true
     @State private var licenseManager = LicenseManager()
+    
+    // SwiftData
+    private let swiftDataManager = SwiftDataManager.shared
 
     init() {
         let holder = PendingNotificationHolder()
@@ -58,8 +61,42 @@ struct KeepTrackApp: App {
                                 licenseManager.acceptLicense()
                             }
                         }
+                        .task {
+                            // Perform one-time migration on app launch
+                            await performInitialMigration()
+                        }
                 }
             }
+        }
+        .modelContainer(swiftDataManager.container)
+    }
+    
+    // MARK: - Migration
+    
+    @MainActor
+    private func performInitialMigration() async {
+        let versionChecker = SchemaVersionChecker.shared
+        let migrationManager = DataMigrationManager(modelContext: swiftDataManager.mainContext)
+        
+        // Check if this is a first-time migration from JSON to SwiftData
+        guard !migrationManager.isMigrationCompleted else {
+            // JSON migration already done, but check schema version
+            if versionChecker.needsMigration() {
+                print("⚠️ Schema migration from V1 to V2 will occur automatically")
+                // The migration happens automatically via KeepTrackSchemaMigrationPlan
+                // We just need to record it after successful launch
+                versionChecker.recordMigrationToV2()
+            }
+            return
+        }
+        
+        do {
+            // First-time migration from JSON to SwiftData V2
+            try await migrationManager.migrateAllData()
+            versionChecker.recordMigrationToV2()
+            print("✅ Initial data migration completed")
+        } catch {
+            print("❌ Migration failed: \(error.localizedDescription)")
         }
     }
 }
