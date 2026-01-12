@@ -8,7 +8,6 @@
 import Foundation
 import SwiftData
 import OSLog
-import BackgroundTasks
 
 /// Manages automatic backup scheduling
 @MainActor
@@ -16,24 +15,27 @@ final class AutoBackupScheduler: ObservableObject {
     static let shared = AutoBackupScheduler()
     
     private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "AutoBackup")
-    private let backgroundTaskIdentifier = "com.headydiscy.KeepTrack.autobackup"
     
     @Published var isScheduled = false
     @Published var nextScheduledBackup: Date?
     
+    private var backupTimer: Timer?
+    private let backupInterval: TimeInterval = 24 * 60 * 60 // 24 hours
+    
     private init() {
-        registerBackgroundTask()
+        // Start monitoring for auto-backup settings
+        Task {
+            await checkAndScheduleIfNeeded()
+        }
     }
     
-    /// Register the background task for auto-backup
-    func registerBackgroundTask() {
-        BGTaskScheduler.shared.register(
-            forTaskWithIdentifier: backgroundTaskIdentifier,
-            using: nil
-        ) { task in
-            self.handleAutoBackup(task: task as! BGAppRefreshTask)
+    /// Check if auto-backup is enabled and schedule if needed
+    func checkAndScheduleIfNeeded() async {
+        if await isAutoBackupEnabled() {
+            await scheduleAutoBackup()
+        } else {
+            cancelScheduledBackup()
         }
-        logger.info("Background task registered: \(self.backgroundTaskIdentifier)")
     }
     
     /// Schedule next automatic backup
@@ -44,54 +46,58 @@ final class AutoBackupScheduler: ObservableObject {
             return
         }
         
-        let request = BGAppRefreshTaskRequest(identifier: backgroundTaskIdentifier)
+        // Cancel existing timer if any
+        backupTimer?.invalidate()
         
-        // Schedule for 24 hours from now
-        request.earliestBeginDate = Calendar.current.date(byAdding: .hour, value: 24, to: Date())
+        // Calculate next backup time (24 hours from now)
+        let nextBackupDate = Calendar.current.date(byAdding: .hour, value: 24, to: Date()) ?? Date()
+        nextScheduledBackup = nextBackupDate
         
-        do {
-            try BGTaskScheduler.shared.submit(request)
-            nextScheduledBackup = request.earliestBeginDate
-            isScheduled = true
-            logger.info("Auto backup scheduled for \(request.earliestBeginDate?.description ?? "unknown")")
-        } catch {
-            logger.error("Failed to schedule auto backup: \(error.localizedDescription)")
-            isScheduled = false
+        // Schedule timer
+        let timeInterval = nextBackupDate.timeIntervalSinceNow
+        backupTimer = Timer.scheduledTimer(withTimeInterval: max(timeInterval, 60), repeats: false) { [weak self] _ in
+            Task { @MainActor [weak self] in
+                await self?.handleAutoBackup()
+            }
         }
+        
+        isScheduled = true
+        logger.info("Auto backup scheduled for \(nextBackupDate.description)")
     }
     
     /// Cancel scheduled backup
     func cancelScheduledBackup() {
-        BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: backgroundTaskIdentifier)
+        backupTimer?.invalidate()
+        backupTimer = nil
         isScheduled = false
         nextScheduledBackup = nil
         logger.info("Auto backup cancelled")
     }
     
-    /// Handle background backup task
-    private func handleAutoBackup(task: BGAppRefreshTask) {
-        logger.info("Background auto backup task started")
+    /// Handle automatic backup
+    private func handleAutoBackup() async {
+        logger.info("Auto backup task started")
+        
+        do {
+            try await performBackup()
+            logger.info("Auto backup completed successfully")
+        } catch {
+            logger.error("Auto backup failed: \(error.localizedDescription)")
+        }
         
         // Schedule next occurrence
-        Task {
-            await scheduleAutoBackup()
-        }
-        
-        // Perform backup
-        Task {
-            do {
-                try await performBackup()
-                task.setTaskCompleted(success: true)
-                logger.info("Auto backup completed successfully")
-            } catch {
-                logger.error("Auto backup failed: \(error.localizedDescription)")
-                task.setTaskCompleted(success: false)
-            }
-        }
+        await scheduleAutoBackup()
     }
     
     /// Perform the actual backup
     private func performBackup() async throws {
+        // Check permissions first
+        let permissionsChecker = SystemPermissionsChecker.shared
+        guard permissionsChecker.documentsAccessible else {
+            logger.error("Cannot perform backup - documents directory not accessible")
+            throw BackupError_MABS.documentsNotAccessible
+        }
+        
         let manager = SwiftDataManager.shared
         let migrationManager = DataMigrationManager(modelContext: manager.mainContext)
         
@@ -165,11 +171,14 @@ final class AutoBackupScheduler: ObservableObject {
 
 enum BackupError_MABS: Error, LocalizedError {
     case noDocumentsDirectory
+    case documentsNotAccessible
     
     var errorDescription: String? {
         switch self {
         case .noDocumentsDirectory:
             return "Unable to access documents directory for backup"
+        case .documentsNotAccessible:
+            return "Storage access is not available. Please check app permissions and available space."
         }
     }
 }

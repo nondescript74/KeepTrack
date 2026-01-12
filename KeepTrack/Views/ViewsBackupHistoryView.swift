@@ -6,6 +6,12 @@
 //
 
 import SwiftUI
+#if canImport(AppKit)
+import AppKit
+#endif
+#if canImport(UIKit)
+import UIKit
+#endif
 
 /// Shows history of backup files
 struct BackupHistoryView: View {
@@ -14,6 +20,8 @@ struct BackupHistoryView: View {
     @State private var selectedBackup: BackupFileInfo?
     @State private var showingShareSheet = false
     @State private var showingDeleteConfirmation = false
+    @State private var errorMessage: String?
+    @State private var showingError = false
     
     var body: some View {
         Group {
@@ -57,18 +65,29 @@ struct BackupHistoryView: View {
             }
         }
         .navigationTitle("Backup History")
+        #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
+        #endif
         .task {
             await loadBackupFiles()
         }
         .refreshable {
             await loadBackupFiles()
         }
+        #if os(iOS)
         .sheet(isPresented: $showingShareSheet) {
             if let backup = selectedBackup {
                 ShareSheet_VBHV(items: [backup.url])
             }
         }
+        #else
+        .popover(isPresented: $showingShareSheet) {
+            if let backup = selectedBackup {
+                ShareSheet_VBHV(items: [backup.url])
+                    .frame(width: 300, height: 400)
+            }
+        }
+        #endif
         .alert("Delete Backup", isPresented: $showingDeleteConfirmation) {
             Button("Cancel", role: .cancel) { }
             Button("Delete", role: .destructive) {
@@ -79,6 +98,13 @@ struct BackupHistoryView: View {
         } message: {
             Text("Are you sure you want to delete this backup? This action cannot be undone.")
         }
+        .alert("Error", isPresented: $showingError) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            if let errorMessage {
+                Text(errorMessage)
+            }
+        }
     }
     
     private func loadBackupFiles() async {
@@ -86,6 +112,8 @@ struct BackupHistoryView: View {
         defer { isLoading = false }
         
         guard let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            errorMessage = "Could not access documents directory."
+            showingError = true
             return
         }
         
@@ -120,7 +148,8 @@ struct BackupHistoryView: View {
             
             backupFiles = files.sorted { $0.creationDate > $1.creationDate }
         } catch {
-            print("Failed to load backup files: \(error.localizedDescription)")
+            errorMessage = "Failed to load backup files: \(error.localizedDescription)"
+            showingError = true
             backupFiles = []
         }
     }
@@ -132,7 +161,8 @@ struct BackupHistoryView: View {
                 await loadBackupFiles()
             }
         } catch {
-            print("Failed to delete backup: \(error.localizedDescription)")
+            errorMessage = "Failed to delete backup: \(error.localizedDescription)"
+            showingError = true
         }
     }
 }
@@ -194,7 +224,35 @@ struct BackupFileInfo: Identifiable {
 
 // MARK: - Share Sheet
 
+#if os(macOS)
+struct ShareSheet_VBHV: View {
+    let items: [Any]
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            Text("Share Backup")
+                .font(.headline)
+            
+            ShareLink(item: items.first as! URL) {
+                Label("Share File", systemImage: "square.and.arrow.up")
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.borderedProminent)
+            
+            Button("Cancel") {
+                dismiss()
+            }
+            .buttonStyle(.bordered)
+        }
+        .padding()
+        .frame(width: 250)
+    }
+}
+#else
 struct ShareSheet_VBHV: UIViewControllerRepresentable {
+    typealias UIViewControllerType = UIActivityViewController
+    
     let items: [Any]
     
     func makeUIViewController(context: Context) -> UIActivityViewController {
@@ -203,6 +261,7 @@ struct ShareSheet_VBHV: UIViewControllerRepresentable {
     
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
+#endif
 
 // MARK: - Preview
 

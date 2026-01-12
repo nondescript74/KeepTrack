@@ -87,7 +87,11 @@ struct LicenseView: View {
                         hasScrolledToBottom = true
                     }
                 }
+                #if os(iOS)
                 .background(Color(.systemGroupedBackground))
+                #else
+                .background(Color(nsColor: .controlBackgroundColor))
+                #endif
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 
                 // Only show accept button in acceptance mode
@@ -121,6 +125,27 @@ struct LicenseView: View {
                 }
             }
             .toolbar {
+                #if os(macOS)
+                ToolbarItem(placement: .primaryAction) {
+                    Button {
+                        showingHelp = true
+                    } label: {
+                        Image(systemName: "questionmark.circle")
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.blue)
+                    }
+                    .accessibilityLabel("Show help for License")
+                }
+                
+                // Only show Done button when viewing from Settings
+                if viewMode == .viewing {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Done") {
+                            dismiss()
+                        }
+                    }
+                }
+                #else
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         showingHelp = true
@@ -140,6 +165,7 @@ struct LicenseView: View {
                         }
                     }
                 }
+                #endif
             }
         }
         .interactiveDismissDisabled(viewMode == .acceptance)

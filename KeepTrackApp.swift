@@ -20,6 +20,7 @@ class PendingNotificationHolder: ObservableObject {
 struct KeepTrackApp: App {
     @StateObject private var currentIntakeTypes = CurrentIntakeTypes()
     @StateObject private var notificationHolder: PendingNotificationHolder
+    @StateObject private var permissionsChecker = SystemPermissionsChecker.shared
     @State private var showLaunchScreen = true
     @State private var licenseManager = LicenseManager()
     
@@ -56,12 +57,24 @@ struct KeepTrackApp: App {
                 } else {
                     NewDashboard(pendingNotification: $notificationHolder.pendingNotification)
                         .environmentObject(currentIntakeTypes)
+                        .environmentObject(permissionsChecker)
+                        #if os(iOS)
                         .fullScreenCover(isPresented: .constant(!licenseManager.isCheckingLicense && !licenseManager.hasAcceptedCurrentVersion)) {
                             LicenseView(licenseManager: licenseManager) {
                                 licenseManager.acceptLicense()
                             }
                         }
+                        #else
+                        .sheet(isPresented: .constant(!licenseManager.isCheckingLicense && !licenseManager.hasAcceptedCurrentVersion)) {
+                            LicenseView(licenseManager: licenseManager) {
+                                licenseManager.acceptLicense()
+                            }
+                        }
+                        #endif
                         .task {
+                            // Check permissions on startup
+                            await permissionsChecker.checkAllPermissions()
+                            
                             // Perform one-time migration on app launch
                             await performInitialMigration()
                         }

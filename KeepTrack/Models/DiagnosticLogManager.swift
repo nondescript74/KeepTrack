@@ -7,7 +7,9 @@
 
 import Foundation
 import OSLog
+#if os(iOS)
 import UIKit
+#endif
 
 /// Manager for collecting and exporting diagnostic logs
 @MainActor
@@ -30,8 +32,13 @@ class DiagnosticLogManager {
         logText += "Generated: \(Date().formatted(date: .complete, time: .complete))\n"
         logText += "App Version: \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown")\n"
         logText += "Build: \(Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "Unknown")\n"
+        #if os(iOS)
         logText += "Device: \(UIDevice.current.model)\n"
         logText += "iOS Version: \(UIDevice.current.systemVersion)\n"
+        #else
+        logText += "Platform: macOS\n"
+        logText += "OS Version: \(ProcessInfo.processInfo.operatingSystemVersionString)\n"
+        #endif
         logText += "---\n\n"
         
         for entry in entries {

@@ -48,14 +48,6 @@
         "id": "80D42B13-45C1-450B-A321-C53180BB3D56"
     },
     {
-        "name": "Metformin",
-        "unit": "mg",
-        "amount": 500,
-        "descrip": "Blood sugar control",
-        "frequency": "daily",
-        "id": "80D42B13-45C1-450B-A321-C53180BB3D56"
-    },
-    {
         "name": "Smoothie",
         "unit": "fluidOunces",
         "amount": 7,
@@ -112,19 +104,11 @@
         "id": "DA3478BC-9E10-4154-BD9E-15FA75A68216"
     },
     {
-        "name": "Minoxidil",
-        "unit": "ml",
-        "amount": 1,
-        "descrip": "hair growing",
-        "frequency": "daily",
-        "id": "39004559-B0F0-45E0-A482-C8E32A0A7B90"
-    },
-    {
         "name": "Coffee",
         "unit": "fluidOunces",
         "amount": 3,
         "descrip": "Energy boost",
-        "frequency": "twiceDaily",
+        "frequency": "twiceADay",
         "id": "B2755324-D374-4168-8A72-5433C2FD4E68"
     },
     {
@@ -141,7 +125,7 @@
         "unit": "fluidOunces",
         "amount": 4.0,
         "descrip": "Fiber and dairy",
-        "frequency": "threeTimesAWeek",
+        "frequency": "threeTimesWeekly",
         "id": "1CDD12F7-C013-40FC-B6BC-6D3A12E3B022"
     }
     ,
@@ -161,5 +145,32 @@
         "descrip": "Salt",
         "frequency": "daily",
         "id": "E54F20AE-030A-43B0-B8FD-72D0FB647582"
+    }
+    ,
+    {
+        "name": "Banana",
+        "unit": "piece",
+        "amount": 0.5,
+        "descrip": "Half a banana",
+        "frequency": "none",
+        "id": "4E7E6081-09A6-4727-8473-D4D65A14EB52"
+    }
+    ,
+    {
+        "name": "Strawberries",
+        "unit": "cups",
+        "amount": 1,
+        "descrip": "A cup of strawberries",
+        "frequency": "none",
+        "id": "42F45907-C186-4845-8A3D-7D02576C4498"
+    }
+    ,
+    {
+        "name": "Apple",
+        "unit": "piece",
+        "amount": 0.5,
+        "descrip": "Half an apple",
+        "frequency": "none",
+        "id": "DEFE5E64-E80E-41B6-B9AB-48F46D75FD8F"
     }
 ]

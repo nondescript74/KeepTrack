@@ -117,7 +117,9 @@ struct HelpSystemPreview: View {
                 }
             }
             .navigationTitle("Help System Preview")
+            #if !os(macOS)
             .navigationBarTitleDisplayMode(.inline)
+            #endif
             .sheet(item: $selectedTopic) { identifier in
                 HelpView(topic: HelpContentManager.getHelpTopic(for: identifier))
             }

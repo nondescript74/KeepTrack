@@ -2,7 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<!-- CloudKit Entitlements -->
+	<!-- Required for CloudKit -->
 	<key>com.apple.developer.icloud-container-identifiers</key>
 	<array>
 		<string>iCloud.com.headydiscy.KeepTrack</string>
@@ -14,23 +14,18 @@
 	<key>com.apple.developer.ubiquity-kvstore-identifier</key>
 	<string>$(TeamIdentifierPrefix)com.headydiscy.KeepTrack</string>
 	
-	<!-- App Groups for Shared Data -->
+	<!-- Required for App Groups -->
 	<key>com.apple.security.application-groups</key>
 	<array>
 		<string>group.com.headydiscy.KeepTrack</string>
 	</array>
 	
-	<!-- File Access for macOS -->
+	<!-- CRITICAL: Required for file export/import dialogs on macOS -->
 	<key>com.apple.security.files.user-selected.read-write</key>
 	<true/>
 	
-	<!-- App Sandbox (if needed for Mac App Store) -->
-	<!-- Uncomment if you plan to distribute via Mac App Store -->
-	<!--
-	<key>com.apple.security.app-sandbox</key>
-	<true/>
+	<!-- Network access for CloudKit -->
 	<key>com.apple.security.network.client</key>
 	<true/>
-	-->
 </dict>
 </plist>

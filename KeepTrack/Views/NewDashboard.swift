@@ -103,9 +103,14 @@ struct NewDashboard: View {
                 .font(.subheadline)
                 .padding(.bottom, 4)
                 .frame(maxWidth: .infinity)
+                #if os(iOS)
                 .background(Color(.systemBackground))
+                #else
+                .background(Color(nsColor: .windowBackgroundColor))
+                #endif
             }
             .toolbar {
+                #if os(iOS)
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
                         showingSettings = true
@@ -128,6 +133,30 @@ struct NewDashboard: View {
                     }
                     .accessibilityLabel("Show help for this screen")
                 }
+                #else
+                ToolbarItem(placement: .navigation) {
+                    Button {
+                        showingSettings = true
+                    } label: {
+                        Image(systemName: "gear")
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.blue)
+                    }
+                    .accessibilityLabel("Settings")
+                }
+                
+                ToolbarItem(placement: .automatic) {
+                    Button {
+                        logger.debug("Help button tapped for tab: \(String(describing: selectedTab))")
+                        showingHelp = true
+                    } label: {
+                        Image(systemName: "questionmark.circle")
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.blue)
+                    }
+                    .accessibilityLabel("Show help for this screen")
+                }
+                #endif
             }
             .sheet(isPresented: $showingHelp) {
                 HelpView(topic: HelpContentManager.getHelpTopic(for: selectedTab.helpIdentifier))

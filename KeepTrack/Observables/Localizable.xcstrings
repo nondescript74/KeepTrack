@@ -111,6 +111,9 @@
     "Advanced" : {
 
     },
+    "ago" : {
+
+    },
     "All data synced" : {
 
     },
@@ -141,6 +144,9 @@
     "Automatic backups will appear here when enabled." : {
 
     },
+    "Autosave: %@" : {
+
+    },
     "Backup & Restore" : {
 
     },
@@ -162,6 +168,9 @@
     "Cancel Reminders" : {
 
     },
+    "Check iCloud availability and storage permissions. These are required for sync and backups." : {
+
+    },
     "Checking status..." : {
 
     },
@@ -171,7 +180,16 @@
     "Close" : {
 
     },
+    "CloudKit Available" : {
+
+    },
+    "CloudKit Sync" : {
+
+    },
     "Confirm" : {
+
+    },
+    "Container" : {
 
     },
     "Create a backup file to save locally or share. You can restore from a backup file at any time. View your automatic backup history." : {
@@ -181,6 +199,9 @@
 
     },
     "Create or update your goals below." : {
+
+    },
+    "Created At" : {
 
     },
     "Current Goals:" : {
@@ -193,6 +214,9 @@
 
     },
     "Data Count" : {
+
+    },
+    "Data Counts" : {
 
     },
     "Data Overview" : {
@@ -277,6 +301,9 @@
     "Export Backup" : {
 
     },
+    "Export Logs" : {
+
+    },
     "First dose time" : {
 
     },
@@ -322,6 +349,9 @@
     "iCloud" : {
 
     },
+    "iCloud Available" : {
+
+    },
     "iCloud Sync" : {
 
     },
@@ -361,10 +391,16 @@
     "Last backup: %@" : {
 
     },
+    "Last checked:" : {
+
+    },
     "Last Manual Backup" : {
 
     },
     "Last Migration" : {
+
+    },
+    "Last Permission Check" : {
 
     },
     "Latest Entry" : {
@@ -377,6 +413,9 @@
 
     },
     "Loading backups..." : {
+
+    },
+    "Loading intake types..." : {
 
     },
     "Loading logs..." : {
@@ -394,7 +433,16 @@
     "Migration" : {
 
     },
+    "Migration Status" : {
+
+    },
     "Migration Tools" : {
+
+    },
+    "Model Container Info" : {
+
+    },
+    "Modified At" : {
 
     },
     "Morning Meds Added:" : {
@@ -410,6 +458,9 @@
 
     },
     "Next backup: %@" : {
+
+    },
+    "No" : {
 
     },
     "No Backups" : {
@@ -463,6 +514,12 @@
     "Refresh" : {
 
     },
+    "Refresh Status" : {
+
+    },
+    "Reload" : {
+
+    },
     "Reminder Testing Guide" : {
 
     },
@@ -490,7 +547,13 @@
     "Schema Status" : {
 
     },
+    "Schema Version" : {
+
+    },
     "Search ingredients" : {
+
+    },
+    "Select an option" : {
 
     },
     "Select Ingredient" : {
@@ -508,7 +571,19 @@
     "Settings" : {
 
     },
+    "Settings Details" : {
+
+    },
     "Share" : {
+
+    },
+    "Share Backup" : {
+
+    },
+    "Share File" : {
+
+    },
+    "Share..." : {
 
     },
     "Show Goals" : {
@@ -556,6 +631,9 @@
     "Syncing..." : {
 
     },
+    "System Status" : {
+
+    },
     "Tap the '?' button in the top-right corner to see the help content." : {
 
     },
@@ -571,6 +649,9 @@
           }
         }
       }
+    },
+    "The log file has been prepared and is ready to share." : {
+
     },
     "This is an example of how to add help to any view." : {
 
@@ -605,9 +686,6 @@
     "Unique Items" : {
 
     },
-    "Unit" : {
-
-    },
     "Unit of Measure" : {
 
     },
@@ -615,6 +693,9 @@
 
     },
     "Use these tools to troubleshoot migration issues. The schema migration from V1 to V2 happens automatically." : {
+
+    },
+    "V2 (CloudKit Compatible)" : {
 
     },
     "Validate Data" : {
@@ -640,6 +721,9 @@
       }
     },
     "Welcome to KeepTrack!" : {
+
+    },
+    "Yes" : {
 
     },
     "Yesterday" : {

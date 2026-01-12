@@ -29,13 +29,13 @@ public struct CommonEntry: Codable, Identifiable, Hashable, Sendable {
     }
 }
 
-struct CommonEntryTwo: Codable, Identifiable, Hashable {
-    var id: UUID
-    var intake: IntakeType
-    var goalmet: Bool
-    
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(intake)
-        hasher.combine(id)
-    }
-}
+//struct CommonEntryTwo: Codable, Identifiable, Hashable {
+//    var id: UUID
+//    var intake: IntakeType
+//    var goalmet: Bool
+//    
+//    public func hash(into hasher: inout Hasher) {
+//        hasher.combine(intake)
+//        hasher.combine(id)
+//    }
+//}

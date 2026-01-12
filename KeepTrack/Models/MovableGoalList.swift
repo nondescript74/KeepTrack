@@ -12,6 +12,9 @@ struct MovableGoalList<Element: Identifiable, Content: View>: View {
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "MovableGoalList")
     
     @Environment(CommonGoals.self) var goals
+#if !os(macOS)
+    @Environment(\.editMode) private var editMode
+#endif
     
     @Binding var data: [Element]
     
@@ -43,7 +46,11 @@ struct MovableGoalList<Element: Identifiable, Content: View>: View {
                 .onMove(perform: move)
                 .onDelete(perform: delete)
         }
-        .toolbar { EditButton() }
+        .toolbar {
+#if !os(macOS)
+            EditButton()
+#endif
+        }
         .environment(goals)
     }
 }

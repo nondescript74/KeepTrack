@@ -71,7 +71,11 @@ struct GoalDisplayByName: View {
                                 }
                             }
                             .padding(12)
+                            #if os(iOS)
                             .background(RoundedRectangle(cornerRadius: 16).fill(Color(.systemBackground)))
+                            #else
+                            .background(RoundedRectangle(cornerRadius: 16).fill(Color(nsColor: .windowBackgroundColor)))
+                            #endif
                             .overlay(
                                 RoundedRectangle(cornerRadius: 16).stroke(Color.accentColor.opacity(0.18), lineWidth: 1.2)
                             )

@@ -76,6 +76,7 @@ struct EnterGoal: View {
                             Text($0)
                         }
                     }
+                    .pickerStyle(.menu)
                     .fixedSize(horizontal: true, vertical: false)
                     .layoutPriority(1)
                 }

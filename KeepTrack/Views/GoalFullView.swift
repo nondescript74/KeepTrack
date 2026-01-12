@@ -114,7 +114,7 @@ struct GoalFullView: View {
 }
 
 #Preview {
-    let goal = CommonGoal(id: UUID(), name: "Metformin", description: "Sugar control", dates: [Date(), Date().addingTimeInterval(60 * 60 * 2)], isActive: true, isCompleted: false, dosage: 400, units: "mg", frequency: frequency.twiceADay.rawValue)
+    let goal = CommonGoal(id: UUID(), name: "Metformin ER", description: "Sugar control", dates: [Date()], isActive: true, isCompleted: false, dosage: 400, units: "mg", frequency: frequency.twiceADay.rawValue)
     GoalFullView(goal: goal)
         .environment(CommonGoals())
         .environmentObject(CurrentIntakeTypes())

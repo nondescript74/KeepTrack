@@ -48,7 +48,11 @@ struct EditHistory: View {
             .animation(.default, value: items)
         }
         .padding()
+        #if os(iOS)
         .background(Color(.systemGroupedBackground))
+        #else
+        .background(Color(nsColor: .controlBackgroundColor))
+        #endif
         .environment(store)
     }
 }

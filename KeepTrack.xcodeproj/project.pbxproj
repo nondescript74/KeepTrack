@@ -12,6 +12,7 @@
 		F8425F012EF83D3A00092382 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8425ED22EF83D3A00092382 /* Assets.xcassets */; };
 		F850BC752EC699120006DFBB /* License.md in Resources */ = {isa = PBXBuildFile; fileRef = F850BC742EC699120006DFBB /* License.md */; };
 		F870468B2F0492BB00E97376 /* KeepTrackApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F870465E2F0492BB00E97376 /* KeepTrackApp.swift */; };
+		F8F4C6752F155A07006BC8E8 /* ViewsDashboardWithPermissionBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F4C6742F155A07006BC8E8 /* ViewsDashboardWithPermissionBanner.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +46,7 @@
 		F8425ED22EF83D3A00092382 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F850BC742EC699120006DFBB /* License.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = License.md; sourceTree = "<group>"; };
 		F870465E2F0492BB00E97376 /* KeepTrackApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepTrackApp.swift; sourceTree = "<group>"; };
+		F8F4C6742F155A07006BC8E8 /* ViewsDashboardWithPermissionBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewsDashboardWithPermissionBanner.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -59,6 +61,10 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				BACKUP_EXPORT_FIX.md,
+				DASHBOARD_INTEGRATION_GUIDE.md,
+				"Documentation-MACOS_MIGRATION_GUIDE.md",
+				"Documentation-MACOS_PROGRESS_TRACKER.md",
+				"Documentation-MACOS_QUICK_START.md",
 				DocumentationBACKUP_ARCHITECTURE.md,
 				DocumentationBACKUP_IMPLEMENTATION_SUMMARY.md,
 				DocumentationBACKUP_RESTORE_README.md,
@@ -77,6 +83,8 @@
 				HELP_SYSTEM_WEEKLY_MONTHLY_UPDATE.md,
 				IMPLEMENTATION_COMPLETE_SUMMARY.md,
 				NOTIFICATION_FIX_INSTRUCTIONS.md,
+				PERMISSIONS_IMPLEMENTATION.md,
+				PERMISSIONS_QUICK_REFERENCE.md,
 				QUICK_ACCESS_REMINDER_GUIDE.md,
 				REMINDER_FREQUENCY_UPDATE_SUMMARY.md,
 				REMINDER_IMPROVEMENTS.md,
@@ -151,6 +159,7 @@
 				F81C71D42D8A29280037FCCB /* KeepTrack */,
 				F80813642E731E1F001FD09A /* KeepTrackTests */,
 				F81C71D32D8A29280037FCCB /* Products */,
+				F8F4C6742F155A07006BC8E8 /* ViewsDashboardWithPermissionBanner.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -296,6 +305,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F8F4C6752F155A07006BC8E8 /* ViewsDashboardWithPermissionBanner.swift in Sources */,
 				F870468B2F0492BB00E97376 /* KeepTrackApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -499,13 +509,23 @@
 				CODE_SIGN_ENTITLEMENTS = KeepTrack/KeepTrackDebug.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 174;
+				CURRENT_PROJECT_VERSION = 175;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = YKHW2TJ32G;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_PREVIEWS = YES;
-				ENABLE_USER_SELECTED_FILES = readonly;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
+				ENABLE_RESOURCE_ACCESS_USB = NO;
+				ENABLE_USER_SELECTED_FILES = readwrite;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = KeepTrack/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = KeepTrack;
@@ -529,13 +549,13 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 26.1;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MARKETING_VERSION = 16.1;
+				MARKETING_VERSION = 17.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.headydiscy.KeepTrack;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -550,9 +570,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
-				CODE_SIGN_ENTITLEMENTS = KeepTrack/KeepTrack.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "KeepTrack/KeepTrack-macOS.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 174;
+				CURRENT_PROJECT_VERSION = 175;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = YKHW2TJ32G;
 				ENABLE_APP_SANDBOX = YES;
@@ -582,12 +602,12 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 26.1;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MARKETING_VERSION = 16.1;
+				MARKETING_VERSION = 17.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.headydiscy.KeepTrack;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

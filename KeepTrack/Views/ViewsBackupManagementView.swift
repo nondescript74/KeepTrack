@@ -21,6 +21,7 @@ struct BackupManagementView: View {
     @State private var showingImportPicker = false
     @State private var isProcessing = false
     @State private var alertMessage: AlertMessage?
+    @State private var backupDocument: BackupDocument?
     
     var appSettings: SDAppSettings? {
         settings.first
@@ -36,7 +37,9 @@ struct BackupManagementView: View {
                     icon: "square.and.arrow.up.fill",
                     color: .blue
                 ) {
-                    showingExportPicker = true
+                    Task {
+                        await prepareExport()
+                    }
                 }
                 
                 quickActionButton(
@@ -53,10 +56,12 @@ struct BackupManagementView: View {
             Spacer()
         }
         .navigationTitle("Quick Backup")
+        #if !os(macOS)
         .navigationBarTitleDisplayMode(.inline)
+        #endif
         .fileExporter(
             isPresented: $showingExportPicker,
-            document: BackupDocument(data: Data()),
+            document: backupDocument,
             contentType: .json,
             defaultFilename: "KeepTrack-Backup-\(formattedDate()).json"
         ) { result in
@@ -131,16 +136,42 @@ struct BackupManagementView: View {
         return formatter.string(from: Date())
     }
     
+    private func prepareExport() async {
+        isProcessing = true
+        defer { isProcessing = false }
+        
+        do {
+            let migrationManager = DataMigrationManager(modelContext: modelContext)
+            
+            // Create a temporary URL to export the data
+            let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("temp-backup.json")
+            
+            // Export to temporary location
+            try await migrationManager.exportBackup(to: tempURL)
+            
+            // Read the data
+            let data = try Data(contentsOf: tempURL)
+            
+            // Clean up temp file
+            try? FileManager.default.removeItem(at: tempURL)
+            
+            // Create the document with actual data
+            backupDocument = BackupDocument(data: data)
+            
+            // Show the file picker
+            showingExportPicker = true
+        } catch {
+            alertMessage = AlertMessage(
+                title: "Export Failed",
+                message: "Failed to prepare backup: \(error.localizedDescription)"
+            )
+        }
+    }
+    
     private func handleExportResult(_ result: Result<URL, Error>) {
         Task {
             do {
-                isProcessing = true
-                defer { isProcessing = false }
-                
                 let url = try result.get()
-                let migrationManager = DataMigrationManager(modelContext: modelContext)
-                
-                try await migrationManager.exportBackup(to: url)
                 
                 // Update last backup date
                 if let appSettings = appSettings {
@@ -150,7 +181,7 @@ struct BackupManagementView: View {
                 
                 alertMessage = AlertMessage(
                     title: "Success",
-                    message: "Backup exported successfully!"
+                    message: "Backup exported successfully to \(url.lastPathComponent)"
                 )
             } catch {
                 alertMessage = AlertMessage(

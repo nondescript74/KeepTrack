@@ -109,7 +109,9 @@ struct AddIntakeType: View {
                                     hasEditedAmountField = true
                                 }
                             }
+                            #if os(iOS)
                             .keyboardType(.numbersAndPunctuation)
+                            #endif
                             .foregroundStyle(Color.blue)
                             .onChange(of: iTypeAmount) { oldValue, newValue in
                                 logger.debug("Amount changed: \(oldValue) -> \(newValue)")
@@ -127,16 +129,38 @@ struct AddIntakeType: View {
                         .font(.headline)
                         .foregroundStyle(.secondary)
                     
-                    Picker("Unit", selection: $selectedUnit) {
+                    Menu {
                         ForEach(units.allCases, id: \.self) { unit in
-                            Text(unit.displayName).tag(unit)
+                            Button {
+                                selectedUnit = unit
+                                logger.debug("Unit changed to: \(unit.rawValue)")
+                            } label: {
+                                HStack {
+                                    Text(unit.displayName)
+                                    if selectedUnit == unit {
+                                        Image(systemName: "checkmark")
+                                    }
+                                }
+                            }
                         }
+                    } label: {
+                        HStack {
+                            Text(selectedUnit.displayName)
+                                .foregroundStyle(.primary)
+                            Spacer()
+                            Image(systemName: "chevron.down")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 10)
+                        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 8))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.accentColor.opacity(0.6), lineWidth: 1)
+                        )
                     }
-                    .pickerStyle(.menu)
-                    .onChange(of: selectedUnit) { oldValue, newValue in
-                        logger.debug("Unit changed: \(oldValue.rawValue) -> \(newValue.rawValue)")
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .buttonStyle(.plain)
                 }
                 
                 Divider()
@@ -170,16 +194,38 @@ struct AddIntakeType: View {
                         .font(.headline)
                         .foregroundStyle(.secondary)
                     
-                    Picker("Frequency", selection: $selectedFrequency) {
+                    Menu {
                         ForEach(frequency.allCases, id: \.self) { freq in
-                            Text(freq.displayName).tag(freq)
+                            Button {
+                                selectedFrequency = freq
+                                logger.debug("Frequency changed to: \(freq.rawValue)")
+                            } label: {
+                                HStack {
+                                    Text(freq.displayName)
+                                    if selectedFrequency == freq {
+                                        Image(systemName: "checkmark")
+                                    }
+                                }
+                            }
                         }
+                    } label: {
+                        HStack {
+                            Text(selectedFrequency.displayName)
+                                .foregroundStyle(.primary)
+                            Spacer()
+                            Image(systemName: "chevron.down")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 10)
+                        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 8))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.accentColor.opacity(0.6), lineWidth: 1)
+                        )
                     }
-                    .pickerStyle(.menu)
-                    .onChange(of: selectedFrequency) { oldValue, newValue in
-                        logger.debug("Frequency changed: \(oldValue.rawValue) -> \(newValue.rawValue)")
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .buttonStyle(.plain)
                 }
                 
                 Divider()
@@ -327,17 +373,32 @@ struct AddIntakeType: View {
                         logger.debug("Search text changed: '\(oldValue)' -> '\(newValue)', filtered count: \(filteredIngredientNames.count)")
                     }
                     .navigationTitle("Select Ingredient")
+                    #if !os(macOS)
                     .navigationBarTitleDisplayMode(.inline)
+                    #endif
                     .toolbar {
+                        #if os(macOS)
                         ToolbarItem(placement: .cancellationAction) {
                             Button("Cancel") {
                                 logger.debug("Ingredient picker cancelled")
                                 showingIngredientPicker = false
                             }
                         }
+                        #else
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button("Cancel") {
+                                logger.debug("Ingredient picker cancelled")
+                                showingIngredientPicker = false
+                            }
+                        }
+                        #endif
                     }
                 }
+                #if os(macOS)
+                .frame(minWidth: 400, minHeight: 500)
+                #else
                 .presentationDetents([.medium, .large])
+                #endif
             }
         }
         .scrollDismissesKeyboard(.interactively)

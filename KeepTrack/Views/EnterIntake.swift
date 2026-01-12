@@ -83,46 +83,15 @@ struct EnterIntake: View {
                                 .stroke(Color.accentColor.opacity(0.6), lineWidth: 1.5)
                         )
                         .sheet(isPresented: $showingTypePicker) {
-                            NavigationStack {
-                                List(cIntakeTypes.sortedIntakeTypeNameArray, id: \.self) { typeName in
-                                    Button {
-                                        name = typeName
-                                        showingTypePicker = false
-                                        // Reset custom amount when changing intake type
-                                        customAmount = nil
-                                        hasEditedAmount = false
-                                    } label: {
-                                        HStack {
-                                            Text(typeName)
-                                                .foregroundStyle(.primary)
-                                            Spacer()
-                                            if name == typeName {
-                                                Image(systemName: "checkmark")
-                                                    .foregroundStyle(.blue)
-                                            }
-                                        }
-                                    }
+                            TypePickerSheet(
+                                selectedName: $name,
+                                isPresented: $showingTypePicker,
+                                onSelect: {
+                                    customAmount = nil
+                                    hasEditedAmount = false
                                 }
-                                .navigationTitle("Select Type")
-                                .navigationBarTitleDisplayMode(.inline)
-                                .toolbar {
-                                    ToolbarItem(placement: .cancellationAction) {
-                                        Button("Cancel") {
-                                            showingTypePicker = false
-                                        }
-                                    }
-                                    ToolbarItem(placement: .primaryAction) {
-                                        Button {
-                                            Task {
-                                                await cIntakeTypes.reloadFromBundle()
-                                            }
-                                        } label: {
-                                            Image(systemName: "arrow.clockwise")
-                                        }
-                                    }
-                                }
-                            }
-                            .presentationDetents([.medium, .large])
+                            )
+                            .environmentObject(cIntakeTypes)
                         }
                         
                         Spacer()
@@ -142,7 +111,9 @@ struct EnterIntake: View {
                             }
                         ), format: .number)
                         .textFieldStyle(.roundedBorder)
+                        #if os(iOS)
                         .keyboardType(.decimalPad)
+                        #endif
                         .focused($amountFieldIsFocused)
                         .onTapGesture {
                             if !hasEditedAmount {
@@ -212,11 +183,93 @@ struct EnterIntake: View {
         }
         .environment(store)
         .environment(goals)
-        // NOTE: Removed automatic reloadFromBundle() to preserve user-added intake types
-        // .task {
-        //     // Reload from bundle every time this view appears to pick up any JSON changes
-        //     await cIntakeTypes.reloadFromBundle()
-        // }
+        .task {
+            // If no intake types are loaded, try reloading
+            if cIntakeTypes.sortedIntakeTypeNameArray.isEmpty {
+                logger.warning("No intake types loaded, attempting to reload from bundle")
+                await cIntakeTypes.reloadFromBundle()
+            }
+        }
+    }
+}
+
+// MARK: - Type Picker Sheet
+private struct TypePickerSheet: View {
+    let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "TypePickerSheet")
+    @EnvironmentObject var cIntakeTypes: CurrentIntakeTypes
+    @Binding var selectedName: String
+    @Binding var isPresented: Bool
+    let onSelect: () -> Void
+    
+    var body: some View {
+        NavigationStack {
+            Group {
+                if cIntakeTypes.sortedIntakeTypeNameArray.isEmpty {
+                    VStack(spacing: 20) {
+                        ProgressView()
+                        Text("Loading intake types...")
+                            .foregroundStyle(.secondary)
+                        Button("Reload") {
+                            Task {
+                                await cIntakeTypes.reloadFromBundle()
+                            }
+                        }
+                        .buttonStyle(.bordered)
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                } else {
+                    List(cIntakeTypes.sortedIntakeTypeNameArray, id: \.self) { typeName in
+                        Button {
+                            logger.info("Selected type: \(typeName)")
+                            selectedName = typeName
+                            isPresented = false
+                            onSelect()
+                        } label: {
+                            HStack {
+                                Text(typeName)
+                                    .foregroundStyle(.primary)
+                                Spacer()
+                                if selectedName == typeName {
+                                    Image(systemName: "checkmark")
+                                        .foregroundStyle(.blue)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .navigationTitle("Select Type")
+            #if !os(macOS)
+            .navigationBarTitleDisplayMode(.inline)
+            #endif
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") {
+                        isPresented = false
+                    }
+                }
+                ToolbarItem(placement: .primaryAction) {
+                    Button {
+                        logger.info("Reload button tapped")
+                        Task {
+                            await cIntakeTypes.reloadFromBundle()
+                        }
+                    } label: {
+                        Image(systemName: "arrow.clockwise")
+                    }
+                }
+            }
+        }
+        #if os(macOS)
+        .frame(minWidth: 400, minHeight: 500)
+        #else
+        .presentationDetents([.large])
+        .presentationDragIndicator(.visible)
+        #endif
+        .onAppear {
+            logger.info("TypePickerSheet appeared with \(cIntakeTypes.sortedIntakeTypeNameArray.count) types")
+            logger.info("Types: \(cIntakeTypes.sortedIntakeTypeNameArray.joined(separator: ", "))")
+        }
     }
 }
 
