@@ -4,7 +4,4 @@
    <FileRef
       location = "self:">
    </FileRef>
-   <FileRef
-      location = "group:KeepTrack.entitlements">
-   </FileRef>
 </Workspace>

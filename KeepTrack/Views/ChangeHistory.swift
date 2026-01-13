@@ -18,6 +18,7 @@ struct ChangeHistory: View {
     @State private var selectedIntakeType: IntakeType?
     @State private var selectedDate: Date = Date()
     @State private var name: String = "Water"
+    @State private var showingTypePicker: Bool = false
     
     var body: some View {
         VStack {
@@ -29,12 +30,35 @@ struct ChangeHistory: View {
             
             VStack(spacing: 8) {
                 HStack {
-                    Picker("Select Type", selection: $name) {
-                        ForEach(intakeTypes.sortedIntakeTypeNameArray, id: \.self) {
-                            Text($0).font(.caption)
+                    // Custom picker button that shows a sheet instead of menu
+                    Button {
+                        showingTypePicker = true
+                    } label: {
+                        HStack {
+                            Text(name)
+                                .foregroundStyle(.primary)
+                            Image(systemName: "chevron.down")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
                         }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
                     }
-                    .font(.caption)
+                    .buttonStyle(.plain)
+                    .fixedSize(horizontal: true, vertical: false)
+                    .layoutPriority(1)
+                    .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 12))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(Color.accentColor.opacity(0.6), lineWidth: 1.5)
+                    )
+                    .sheet(isPresented: $showingTypePicker) {
+                        HistoryTypePickerSheet(
+                            selectedName: $name,
+                            isPresented: $showingTypePicker
+                        )
+                        .environmentObject(intakeTypes)
+                    }
                 }
                 
                 HStack {
@@ -96,6 +120,84 @@ struct ChangeHistory: View {
             .frame(maxHeight: .infinity)
             
             Spacer()
+        }
+    }
+}
+
+// MARK: - Type Picker Sheet for History
+private struct HistoryTypePickerSheet: View {
+    let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "HistoryTypePickerSheet")
+    @EnvironmentObject var intakeTypes: CurrentIntakeTypes
+    @Binding var selectedName: String
+    @Binding var isPresented: Bool
+    
+    var body: some View {
+        NavigationStack {
+            Group {
+                if intakeTypes.sortedIntakeTypeNameArray.isEmpty {
+                    VStack(spacing: 20) {
+                        ProgressView()
+                        Text("Loading intake types...")
+                            .foregroundStyle(.secondary)
+                        Button("Reload") {
+                            Task {
+                                await intakeTypes.reloadFromBundle()
+                            }
+                        }
+                        .buttonStyle(.bordered)
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                } else {
+                    List(intakeTypes.sortedIntakeTypeNameArray, id: \.self) { typeName in
+                        Button {
+                            logger.info("Selected type: \(typeName)")
+                            selectedName = typeName
+                            isPresented = false
+                        } label: {
+                            HStack {
+                                Text(typeName)
+                                    .foregroundStyle(.primary)
+                                Spacer()
+                                if selectedName == typeName {
+                                    Image(systemName: "checkmark")
+                                        .foregroundStyle(.blue)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .navigationTitle("Select Type")
+            #if !os(macOS)
+            .navigationBarTitleDisplayMode(.inline)
+            #endif
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") {
+                        isPresented = false
+                    }
+                }
+                ToolbarItem(placement: .primaryAction) {
+                    Button {
+                        logger.info("Reload button tapped")
+                        Task {
+                            await intakeTypes.reloadFromBundle()
+                        }
+                    } label: {
+                        Image(systemName: "arrow.clockwise")
+                    }
+                }
+            }
+        }
+        #if os(macOS)
+        .frame(minWidth: 400, minHeight: 500)
+        #else
+        .presentationDetents([.large])
+        .presentationDragIndicator(.visible)
+        #endif
+        .onAppear {
+            logger.info("HistoryTypePickerSheet appeared with \(intakeTypes.sortedIntakeTypeNameArray.count) types")
+            logger.info("Types: \(intakeTypes.sortedIntakeTypeNameArray.joined(separator: ", "))")
         }
     }
 }

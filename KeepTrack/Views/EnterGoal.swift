@@ -17,6 +17,7 @@ struct EnterGoal: View {
     
     @State fileprivate var name: String = "Water"
     @State fileprivate var startDate: Date = Date()
+    @State private var showingTypePicker: Bool = false
 #if os(iOS)
     @State fileprivate var stateFul: Bool = true
 #endif
@@ -71,14 +72,35 @@ struct EnterGoal: View {
                 HStack {
                     Text("Select intake:")
                     Spacer()
-                    Picker("Select Type", selection: $name) {
-                        ForEach(cIntakeTypes.sortedIntakeTypeNameArray, id: \.self) {
-                            Text($0)
+                    // Custom picker button that shows a sheet instead of menu
+                    Button {
+                        showingTypePicker = true
+                    } label: {
+                        HStack {
+                            Text(name)
+                                .foregroundStyle(.primary)
+                            Image(systemName: "chevron.down")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
                         }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
                     }
-                    .pickerStyle(.menu)
+                    .buttonStyle(.plain)
                     .fixedSize(horizontal: true, vertical: false)
                     .layoutPriority(1)
+                    .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 12))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(Color.accentColor.opacity(0.6), lineWidth: 1.5)
+                    )
+                    .sheet(isPresented: $showingTypePicker) {
+                        GoalTypePickerSheet(
+                            selectedName: $name,
+                            isPresented: $showingTypePicker
+                        )
+                        .environmentObject(cIntakeTypes)
+                    }
                 }
                 Text(getMatchingDesription())
                     .font(.caption)
@@ -177,6 +199,84 @@ struct EnterGoal: View {
         }
         .environment(goals)
         .environmentObject(cIntakeTypes)
+    }
+}
+
+// MARK: - Type Picker Sheet for Goals
+private struct GoalTypePickerSheet: View {
+    let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "KeepTrack", category: "GoalTypePickerSheet")
+    @EnvironmentObject var cIntakeTypes: CurrentIntakeTypes
+    @Binding var selectedName: String
+    @Binding var isPresented: Bool
+    
+    var body: some View {
+        NavigationStack {
+            Group {
+                if cIntakeTypes.sortedIntakeTypeNameArray.isEmpty {
+                    VStack(spacing: 20) {
+                        ProgressView()
+                        Text("Loading intake types...")
+                            .foregroundStyle(.secondary)
+                        Button("Reload") {
+                            Task {
+                                await cIntakeTypes.reloadFromBundle()
+                            }
+                        }
+                        .buttonStyle(.bordered)
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                } else {
+                    List(cIntakeTypes.sortedIntakeTypeNameArray, id: \.self) { typeName in
+                        Button {
+                            logger.info("Selected type: \(typeName)")
+                            selectedName = typeName
+                            isPresented = false
+                        } label: {
+                            HStack {
+                                Text(typeName)
+                                    .foregroundStyle(.primary)
+                                Spacer()
+                                if selectedName == typeName {
+                                    Image(systemName: "checkmark")
+                                        .foregroundStyle(.blue)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .navigationTitle("Select Intake Type")
+            #if !os(macOS)
+            .navigationBarTitleDisplayMode(.inline)
+            #endif
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") {
+                        isPresented = false
+                    }
+                }
+                ToolbarItem(placement: .primaryAction) {
+                    Button {
+                        logger.info("Reload button tapped")
+                        Task {
+                            await cIntakeTypes.reloadFromBundle()
+                        }
+                    } label: {
+                        Image(systemName: "arrow.clockwise")
+                    }
+                }
+            }
+        }
+        #if os(macOS)
+        .frame(minWidth: 400, minHeight: 500)
+        #else
+        .presentationDetents([.large])
+        .presentationDragIndicator(.visible)
+        #endif
+        .onAppear {
+            logger.info("GoalTypePickerSheet appeared with \(cIntakeTypes.sortedIntakeTypeNameArray.count) types")
+            logger.info("Types: \(cIntakeTypes.sortedIntakeTypeNameArray.joined(separator: ", "))")
+        }
     }
 }
 
