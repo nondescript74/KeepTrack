@@ -14,7 +14,6 @@
 	<array>
 		<string>fetch</string>
 		<string>remote-notification</string>
-		<string>com.headydiscy.KeepTrack.refreshReminders</string>
 		<string>processing</string>
 	</array>
 </dict>
